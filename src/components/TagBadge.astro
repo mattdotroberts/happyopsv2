@@ -1,0 +1,49 @@
+---
+interface Props {
+  tag: string;
+  linked?: boolean;
+}
+
+const { tag, linked = true } = Astro.props;
+---
+
+{linked ? (
+  <a href={`/tags/${tag}`} class="badge">
+    {tag}
+  </a>
+) : (
+  <span class="badge">{tag}</span>
+)}
+
+<style>
+  .badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    transition: color var(--transition-fast);
+  }
+
+  .badge::before {
+    content: '[';
+    color: var(--color-border-strong);
+  }
+
+  .badge::after {
+    content: ']';
+    color: var(--color-border-strong);
+  }
+
+  a.badge:hover {
+    color: var(--color-accent-primary);
+    text-decoration: none;
+  }
+
+  a.badge:hover::before,
+  a.badge:hover::after {
+    color: var(--color-accent-primary);
+  }
+</style>

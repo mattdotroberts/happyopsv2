@@ -1,0 +1,74 @@
+---
+interface Props {
+  headline: string;
+  description?: string;
+  ctaText: string;
+  ctaHref: string;
+  variant?: 'default' | 'centered';
+}
+
+const { headline, description, ctaText, ctaHref, variant = 'default' } = Astro.props;
+---
+
+<section class:list={['cta-section', variant === 'centered' && 'cta-section--centered']}>
+  <div class="container cta-section__inner">
+    <div class="cta-section__content">
+      <h2 class="cta-section__headline">{headline}</h2>
+      {description && <p class="cta-section__description">{description}</p>}
+    </div>
+    <a href={ctaHref} class="button button--primary">
+      {ctaText}
+    </a>
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    padding: var(--space-3xl) 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    margin: var(--space-4xl) 0;
+  }
+
+  .cta-section__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xl);
+  }
+
+  .cta-section--centered .cta-section__inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cta-section__content {
+    flex: 1;
+  }
+
+  .cta-section__headline {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-sm);
+  }
+
+  .cta-section__description {
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 500px;
+  }
+
+  .cta-section--centered .cta-section__description {
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .cta-section__inner {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .cta-section__description {
+      margin: 0 auto;
+    }
+  }
+</style>

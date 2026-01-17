@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import CTASection from '../../components/CTASection.astro';
+import { getCollection } from 'astro:content';
+
+const services = await getCollection('services');
+const sortedServices = services.sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="Services"
+  description="AI & automation workshops, team training, and consultancy. Practical solutions for companies looking to work smarter."
+>
+  <div class="container">
+    <header class="page-header">
+      <span class="page-header__label">[SERVICES]</span>
+      <h1 class="page-header__title">How We Help</h1>
+      <p class="page-header__subtitle">
+        From department training to full consultancy projects, we offer flexible solutions that match your team's needs and goals.
+      </p>
+    </header>
+
+    <hr />
+
+    <section class="services-grid">
+      {sortedServices.map((service) => (
+        <ServiceCard service={service} />
+      ))}
+    </section>
+
+    <section class="benefits">
+      <h2 class="benefits__title">Why Work With Us</h2>
+      <div class="benefits-grid">
+        <div class="benefit">
+          <h3 class="benefit__title">Team-Specific Programs</h3>
+          <p class="benefit__description">Maximum value and relevance - we design training around your team's actual workflows and challenges.</p>
+        </div>
+        <div class="benefit">
+          <h3 class="benefit__title">High Impact & Practical</h3>
+          <p class="benefit__description">Start running within hours, not weeks. Everything we teach can be applied immediately.</p>
+        </div>
+        <div class="benefit">
+          <h3 class="benefit__title">Problem-Solving Based</h3>
+          <p class="benefit__description">We don't just teach tools - we solve real issues straight away during our sessions.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <CTASection
+    headline="Ready to transform how your team works?"
+    description="Book a free discovery call to discuss your needs."
+    ctaText="Book a Call"
+    ctaHref="/contact"
+    variant="centered"
+  />
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding: var(--space-2xl) 0;
+    text-align: center;
+  }
+
+  .page-header__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-md);
+  }
+
+  .page-header__title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .page-header__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-xl);
+    padding: var(--space-3xl) 0;
+  }
+
+  .benefits {
+    padding: var(--space-4xl) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .benefits__title {
+    font-size: var(--text-2xl);
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-xl);
+  }
+
+  .benefit {
+    text-align: center;
+  }
+
+  .benefit__title {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-sm);
+  }
+
+  .benefit__description {
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: var(--leading-relaxed);
+  }
+</style>

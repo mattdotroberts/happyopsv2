@@ -1,0 +1,140 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import CTASection from '../components/CTASection.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  useCase: CollectionEntry<'useCases'>;
+}
+
+const { useCase } = Astro.props;
+const { title, description, pubDate, category, headline, image } = useCase.data;
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={image}
+  type="article"
+  publishedTime={pubDate}
+>
+  <article class="article container">
+    <header class="article__header">
+      <div class="article__meta">
+        <span class="article__category">{category}</span>
+        <span class="article__separator">·</span>
+        <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+      </div>
+
+      <h1 class="article__title">{title}</h1>
+
+      {headline && (
+        <p class="article__headline">{headline}</p>
+      )}
+    </header>
+
+    {image && (
+      <img src={image} alt={title} class="article__image" />
+    )}
+
+    <hr />
+
+    <div class="prose">
+      <slot />
+    </div>
+
+    <hr />
+
+    <footer class="article__footer">
+      <a href="/use-cases" class="button button--secondary">
+        &larr; Back to all use cases
+      </a>
+      <a href="/contact" class="button">
+        Get started
+      </a>
+    </footer>
+  </article>
+
+  <CTASection
+    headline="Ready to implement this in your team?"
+    description="Book a free discovery call to explore how we can help automate your workflows."
+    ctaText="Schedule a Call"
+    ctaHref="/contact"
+    variant="centered"
+  />
+</BaseLayout>
+
+<style>
+  .article {
+    max-width: var(--max-width-content);
+  }
+
+  .article__header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .article__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .article__category {
+    color: var(--color-accent-primary);
+    font-weight: 600;
+  }
+
+  .article__separator {
+    color: var(--color-text-muted);
+  }
+
+  .article__title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .article__headline {
+    font-size: var(--text-xl);
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+
+  .article__image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--space-xl);
+    border: 1px solid var(--color-border);
+  }
+
+  .article__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-xl);
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  .button--secondary {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-primary);
+  }
+
+  .button--secondary:hover {
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+  }
+</style>

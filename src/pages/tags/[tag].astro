@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog', ({ data }) => {
+    return data.draft !== true;
+  });
+
+  const uniqueTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))];
+
+  return uniqueTags.map(tag => ({
+    params: { tag },
+    props: {
+      posts: allPosts
+        .filter(post => post.data.tags?.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<BaseLayout
+  title={`Posts tagged "${tag}"`}
+  description={`All blog posts tagged with ${tag}.`}
+>
+  <div class="container">
+    <header class="page-header">
+      <a href="/tags" class="page-header__back">&larr; All tags</a>
+      <h1 class="page-header__title">[{tag.toUpperCase()}]</h1>
+      <p class="page-header__subtitle">
+        {posts.length} {posts.length === 1 ? 'post' : 'posts'}
+      </p>
+    </header>
+
+    <hr />
+
+    <section class="articles">
+      {posts.map((post) => (
+        <ArticleCard post={post} />
+      ))}
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding: var(--space-2xl) 0;
+  }
+
+  .page-header__back {
+    display: inline-block;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .page-header__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-sm);
+    color: var(--color-accent-primary);
+  }
+
+  .page-header__subtitle {
+    color: var(--color-text-secondary);
+  }
+
+  .articles {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

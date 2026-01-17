@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.draft !== true;
+});
+
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="Blog"
+  description="Insights on AI automation, team productivity, and working smarter with technology."
+>
+  <div class="container">
+    <header class="page-header">
+      <h1 class="page-header__title">Blog</h1>
+      <p class="page-header__subtitle">
+        Insights on AI automation, team productivity, and working smarter.
+      </p>
+    </header>
+
+    <hr />
+
+    <section class="articles">
+      {sortedPosts.map((post) => (
+        <ArticleCard post={post} />
+      ))}
+    </section>
+
+    {sortedPosts.length === 0 && (
+      <p class="empty-state">No posts yet. Check back soon!</p>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding: var(--space-2xl) 0;
+  }
+
+  .page-header__title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .page-header__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+  }
+
+  .articles {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: var(--space-4xl) 0;
+    color: var(--color-text-muted);
+  }
+</style>

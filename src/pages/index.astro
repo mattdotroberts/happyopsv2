@@ -1,0 +1,614 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Testimonial from '../components/Testimonial.astro';
+import CTASection from '../components/CTASection.astro';
+import NewsletterSignup from '../components/NewsletterSignup.astro';
+
+const problems = [
+  {
+    title: "Manual Work",
+    description: "Your team is stuck copying, pasting, and processing instead of focusing on real work."
+  },
+  {
+    title: "Difficult to Scale",
+    description: "Your organisation is complex. Creating systems allows your organisation to scale."
+  },
+  {
+    title: "Lose Focus",
+    description: "Your team has many repetitive tasks that are distracting the team from growing the business."
+  },
+  {
+    title: "Overwhelmed",
+    description: "Staying ahead of technology is complicated and time consuming; but fundamental in surviving the new AI era."
+  },
+  {
+    title: "Too Many Admin Tasks",
+    description: "Reducing repetitive tasks will impact the happiness of your team directly, becoming better and more productive."
+  },
+  {
+    title: "Make Mistakes",
+    description: "Messy systems are slowing you down. Too much admin and human touch leads to mistakes."
+  }
+];
+
+const testimonials = [
+  {
+    quote: "We've saved +20 hours/month with the new workflows. Thank you for empowering us to solve a real bottleneck we had with a growth plan.",
+    author: "Pontus",
+    role: "CEO TPSDA - Non profit",
+    image: "/images/testimonials/pontus.png"
+  },
+  {
+    quote: "Feels so good to be back focusing on our members. We spent far too much time on our newsletter and content; now we can spend our time speaking to community members like a human.",
+    author: "Kasia",
+    role: "Communications, ASRA",
+    image: "/images/testimonials/kasia.png"
+  },
+  {
+    quote: "We've saved a whole job role's worth of work; so they could focus on optimization. We understand how we could utilise Slack and AI to help handle customer service queries.",
+    author: "Derick Peters",
+    role: "CEO, Hatchster",
+    image: "/images/testimonials/derick.png"
+  }
+];
+
+const features = [
+  {
+    title: "AI Operations",
+    description: "We embrace AI technology as the glue that connects all the technology around us."
+  },
+  {
+    title: "No-Code First",
+    description: "We take pride in delivering a template that resonates with your needs and exceeds expectations."
+  },
+  {
+    title: "Adaptability to Departments",
+    description: "Team specific programs mean maximum value and relevance."
+  },
+  {
+    title: "Practical",
+    description: "The courses are high impact and practical where your team can start to run within hours."
+  },
+  {
+    title: "User Satisfaction",
+    description: "We constantly exceed expectations. See our reviews."
+  },
+  {
+    title: "Real Use Cases",
+    description: "Your team is trained based on their problems so that issues are solved straight away."
+  }
+];
+
+const pricing = [
+  {
+    title: "Cohort Based Course",
+    subtitle: "Become a Happy Operator",
+    description: "Ideal to kick-start your team or yourself into automation and AI with a non-technical perspective.",
+    price: "890",
+    period: "per seat",
+    features: [
+      "5 weeks",
+      "100% Online",
+      "30 min. per day",
+      "100% practical",
+      "% Discount for teams",
+      "No-Code approach",
+      "1:1 sessions"
+    ],
+    cta: "Learn more",
+    href: "/contact"
+  },
+  {
+    title: "Workshop / Summit",
+    subtitle: "Team Training",
+    description: "Ideal to train a specific department with custom use cases and application.",
+    price: "750",
+    period: "per seat",
+    features: [
+      "8-20 hours workshop",
+      "% Group discount available",
+      "Online or in person",
+      "Non-technical oriented",
+      "100% practical",
+      "Adjusted to department needs",
+      "1 month support slack channel"
+    ],
+    cta: "Learn more",
+    href: "/workshops",
+    featured: true
+  },
+  {
+    title: "Happy Operator on Demand",
+    subtitle: "Consultancy & Projects",
+    description: "A mix into consultancy, hands-on project and training where we help you solve bottlenecks.",
+    price: "5,000",
+    period: "/month",
+    features: [
+      "2 Senior Operators on demand",
+      "Turnaround within 48 hours",
+      "Office hours x 1h/week",
+      "Unlimited users",
+      "Pause / cancel any time",
+      "Slack direct communication",
+      "Up to 10 tickets/mo."
+    ],
+    cta: "Chat with us",
+    href: "/contact"
+  }
+];
+
+const faqs = [
+  {
+    question: "What types of workshops does Happy Operators offer?",
+    answer: "Happy Operators provides tailored workshops such as 'Automate your daily tasks', 'Boost your Marketing with AI', and 'Welcome to saving 20% of your day'."
+  },
+  {
+    question: "How can AI and automation benefit my team?",
+    answer: "Implementing AI and automation can help your team work faster, smarter, and with fewer headaches by reducing manual tasks and minimizing errors."
+  },
+  {
+    question: "Are the workshops available both online and in person?",
+    answer: "Yes, Happy Operators offers flexible workshop formats, including both online and in-person sessions."
+  },
+  {
+    question: "Do you offer ongoing support after the training is completed?",
+    answer: "Yes, we have a private Slack group so that you and the team can ask questions and get support."
+  },
+  {
+    question: "What if we are not satisfied with the training?",
+    answer: "You have a money back guarantee if you are not satisfied with the training."
+  }
+];
+
+const techStack = [
+  { name: "Make", category: "Automations", certified: true },
+  { name: "n8n", category: "Automation" },
+  { name: "Zapier", category: "Automation" },
+  { name: "Power Automate", category: "Automations" },
+  { name: "Airtable", category: "NoCode Database" },
+  { name: "Notion", category: "NoCode Database" },
+  { name: "Supabase", category: "Database" },
+  { name: "OpenAI", category: "AI Tools" },
+  { name: "Anthropic", category: "AI Tools" },
+  { name: "Softr", category: "Internal App Builder", certified: true },
+  { name: "Bubble", category: "Web & Mobile App Builder", partner: true },
+  { name: "Relay", category: "Automations", partner: true },
+];
+---
+
+<BaseLayout
+  title="AI & Automation Workshops"
+  description="Help your teams work faster and smarter with AI & automation workshops. Practical, team-specific training that delivers results within hours."
+>
+  <Hero
+    headline="Train your team in AI & Automation"
+    subtitle="AI & automation training that transforms your team to work faster, smarter, and with fewer headaches."
+    primaryCta={{ text: "Talk to us", href: "/contact" }}
+    secondaryCta={{ text: "See Case Study", href: "/case-study" }}
+  />
+
+  <section class="container section">
+    <header class="section__header">
+      <span class="section__label">[PROBLEM]</span>
+      <h2 class="section__title">You've heard about Automation and AI but you don't know where to start</h2>
+      <p class="section__subtitle">
+        Mistakes are being made as you scale and try to automate.
+      </p>
+    </header>
+
+    <div class="problems-grid">
+      {problems.map((problem) => (
+        <div class="problem-card">
+          <h3 class="problem-card__title">{problem.title}</h3>
+          <p class="problem-card__description">{problem.description}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section">
+    <header class="section__header">
+      <span class="section__label">[SOLUTION]</span>
+      <h2 class="section__title">Learn AI. Automate workflows. Get time back.</h2>
+      <p class="section__subtitle">
+        We deliver ad hoc workshops for your team
+      </p>
+    </header>
+
+    <div class="features-grid">
+      {features.map((feature) => (
+        <div class="feature-card">
+          <h3 class="feature-card__title">{feature.title}</h3>
+          <p class="feature-card__description">{feature.description}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="section__cta">
+      <a href="/workshops" class="button">View Workshops</a>
+    </div>
+  </section>
+
+  <CTASection
+    headline="See our latest Case Study"
+    description="JamesEdition saved 250+ hours annually with our AI automation training."
+    ctaText="Read Case Study"
+    ctaHref="/case-study"
+    variant="centered"
+  />
+
+  <section class="container section">
+    <header class="section__header">
+      <span class="section__label">[TESTIMONIALS]</span>
+      <h2 class="section__title">Customer Voices</h2>
+    </header>
+
+    <div class="testimonials-grid">
+      {testimonials.map((t) => (
+        <Testimonial quote={t.quote} author={t.author} role={t.role} image={t.image} />
+      ))}
+    </div>
+  </section>
+
+  <section class="container section section--pricing">
+    <header class="section__header">
+      <span class="section__label">[HOW WE DO IT]</span>
+      <h2 class="section__title">We build ad hoc solutions for your needs</h2>
+      <p class="section__subtitle">
+        All our trainings and services offer: EN & ES languages · EU & UK availability · 15 Days Refund Policy
+      </p>
+    </header>
+
+    <div class="pricing-grid">
+      {pricing.map((plan) => (
+        <div class:list={['pricing-card', { 'pricing-card--featured': plan.featured }]}>
+          {plan.featured && <span class="pricing-card__badge">Most Popular</span>}
+          <div class="pricing-card__header">
+            <h3 class="pricing-card__title">{plan.title}</h3>
+            <p class="pricing-card__subtitle">{plan.subtitle}</p>
+          </div>
+          <p class="pricing-card__description">{plan.description}</p>
+          <div class="pricing-card__price">
+            <span class="pricing-card__amount">€{plan.price}</span>
+            <span class="pricing-card__period">{plan.period}</span>
+          </div>
+          <ul class="pricing-card__features">
+            {plan.features.map((feature) => (
+              <li>{feature}</li>
+            ))}
+          </ul>
+          <a href={plan.href} class="button pricing-card__cta">{plan.cta}</a>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section">
+    <header class="section__header">
+      <span class="section__label">[TECH STACK]</span>
+      <h2 class="section__title">Our tech stack</h2>
+      <p class="section__subtitle">
+        We are either certified, experts or partner with these tools.
+      </p>
+    </header>
+
+    <div class="tech-grid">
+      {techStack.map((tech) => (
+        <div class="tech-card">
+          <span class="tech-card__name">{tech.name}</span>
+          <span class="tech-card__category">{tech.category}</span>
+          {tech.certified && <span class="tech-card__badge">Certified</span>}
+          {tech.partner && <span class="tech-card__badge tech-card__badge--partner">Partner</span>}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section section--faq">
+    <header class="section__header">
+      <h2 class="section__title">Your questions answered</h2>
+    </header>
+
+    <div class="faq-list">
+      {faqs.map((faq) => (
+        <details class="faq-item">
+          <summary class="faq-item__question">{faq.question}</summary>
+          <p class="faq-item__answer">{faq.answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="container section section--newsletter">
+    <header class="section__header">
+      <span class="section__label">[STAY UPDATED]</span>
+      <h2 class="section__title">Get AI & Automation Tips</h2>
+      <p class="section__subtitle">
+        Practical insights on working smarter, delivered to your inbox.
+      </p>
+    </header>
+    <NewsletterSignup />
+  </section>
+</BaseLayout>
+
+<style>
+  .section {
+    padding: var(--space-4xl) 0;
+  }
+
+  .section__header {
+    text-align: center;
+    margin-bottom: var(--space-3xl);
+  }
+
+  .section__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-md);
+  }
+
+  .section__title {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .section__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .section__cta {
+    text-align: center;
+    margin-top: var(--space-3xl);
+  }
+
+  .problems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .problem-card {
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+  }
+
+  .problem-card__title {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-sm);
+    color: var(--color-accent-primary);
+  }
+
+  .problem-card__description {
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: var(--leading-relaxed);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .feature-card {
+    padding: var(--space-xl);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-md);
+  }
+
+  .feature-card__title {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-sm);
+  }
+
+  .feature-card__description {
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: var(--leading-relaxed);
+  }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-xl);
+  }
+
+  .section--pricing {
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-4xl);
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  .pricing-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+  }
+
+  .pricing-card--featured {
+    border-color: var(--color-accent-primary);
+    transform: scale(1.02);
+  }
+
+  .pricing-card__badge {
+    position: absolute;
+    top: calc(-1 * var(--space-sm));
+    left: 50%;
+    transform: translateX(-50%);
+    padding: var(--space-xs) var(--space-md);
+    background: var(--color-accent-primary);
+    color: var(--color-bg-primary);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    border-radius: var(--border-radius-sm);
+    white-space: nowrap;
+  }
+
+  .pricing-card__header {
+    margin-bottom: var(--space-md);
+  }
+
+  .pricing-card__title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-xs);
+  }
+
+  .pricing-card__subtitle {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .pricing-card__description {
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-lg);
+    flex-grow: 1;
+  }
+
+  .pricing-card__price {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-lg);
+  }
+
+  .pricing-card__amount {
+    font-size: var(--text-3xl);
+    font-weight: 700;
+  }
+
+  .pricing-card__period {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .pricing-card__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-xl);
+  }
+
+  .pricing-card__features li {
+    padding: var(--space-sm) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .pricing-card__features li:last-child {
+    border-bottom: none;
+  }
+
+  .pricing-card__cta {
+    width: 100%;
+    text-align: center;
+  }
+
+  .tech-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-md);
+  }
+
+  .tech-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-md) var(--space-lg);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+  }
+
+  .tech-card__name {
+    font-weight: 600;
+  }
+
+  .tech-card__category {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .tech-card__badge {
+    font-size: var(--text-xs);
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--color-accent-primary);
+    color: var(--color-bg-primary);
+    border-radius: var(--border-radius-sm);
+  }
+
+  .tech-card__badge--partner {
+    background: var(--color-text-muted);
+  }
+
+  .section--faq {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .faq-list {
+    max-width: var(--max-width-prose);
+    margin: 0 auto;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-item__question {
+    padding: var(--space-lg) 0;
+    font-size: var(--text-lg);
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq-item__question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item__question::after {
+    content: '+';
+    float: right;
+    font-size: var(--text-xl);
+    color: var(--color-text-muted);
+  }
+
+  .faq-item[open] .faq-item__question::after {
+    content: '−';
+  }
+
+  .faq-item__answer {
+    padding: 0 0 var(--space-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+  }
+
+  .section--newsletter {
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--space-4xl);
+  }
+</style>

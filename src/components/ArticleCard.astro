@@ -1,0 +1,99 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import TagBadge from './TagBadge.astro';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate, tags, image } = post.data;
+
+const formattedDate = pubDate.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'short',
+  day: 'numeric'
+});
+---
+
+<article class="article-card">
+  <a href={`/blog/${post.id}`} class="article-card__link">
+    {image && (
+      <img src={image} alt={title} class="article-card__image" loading="lazy" />
+    )}
+    <div class="article-card__meta">
+      <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+    </div>
+
+    <h3 class="article-card__title">{title}</h3>
+
+    <p class="article-card__excerpt">{description}</p>
+  </a>
+
+  {tags && tags.length > 0 && (
+    <div class="article-card__tags">
+      {tags.map((tag) => (
+        <TagBadge tag={tag} />
+      ))}
+    </div>
+  )}
+</article>
+
+<style>
+  .article-card {
+    padding: var(--space-xl) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .article-card:last-child {
+    border-bottom: none;
+  }
+
+  .article-card__link {
+    display: block;
+    color: inherit;
+  }
+
+  .article-card__link:hover {
+    text-decoration: none;
+  }
+
+  .article-card__image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--space-md);
+    border: 1px solid var(--color-border-subtle);
+  }
+
+  .article-card__meta {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .article-card__title {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-sm);
+    transition: color var(--transition-fast);
+  }
+
+  .article-card__link:hover .article-card__title {
+    color: var(--color-accent-primary);
+  }
+
+  .article-card__excerpt {
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+  }
+
+  .article-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+</style>

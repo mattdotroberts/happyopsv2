@@ -1,0 +1,385 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Contact"
+  description="Book a discovery call to discuss how AI and automation can help your team work smarter."
+>
+  <div class="container">
+    <header class="page-header">
+      <span class="page-header__label">[CONTACT]</span>
+      <h1 class="page-header__title">Let's Talk</h1>
+      <p class="page-header__subtitle">
+        Book a free discovery call to discuss your team's challenges and how we can help.
+      </p>
+    </header>
+
+    <hr />
+
+    <section class="contact-content">
+      <!-- 1. Book a Call -->
+      <div class="book-call-card">
+        <h2 class="book-call-card__title">Book a Call Now</h2>
+        <p class="book-call-card__text">
+          Schedule a free 30-minute discovery call directly.
+        </p>
+        <a href="https://cal.com/happyoperators/30min" class="button book-call-card__button" target="_blank" rel="noopener">
+          Book a 30-min Call
+        </a>
+      </div>
+
+      <div class="divider-or">
+        <span>or send us a message</span>
+      </div>
+
+      <!-- 2. Contact Form -->
+      <div class="contact-form-wrapper">
+        <form class="contact-form" id="contact-form">
+          <div class="form-group">
+            <label for="name" class="form-label">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-input"
+              placeholder="Your name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">Email <span class="required">*</span></label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="form-input"
+              placeholder="you@company.com"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="message" class="form-label">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              class="form-textarea"
+              placeholder="Tell us about your team and what you're looking to achieve..."
+              rows="5"
+            ></textarea>
+          </div>
+
+          <button type="submit" class="button form-submit">Submit</button>
+
+          <p class="form-note">
+            We'll get back to you within 24 hours.
+          </p>
+        </form>
+      </div>
+
+      <!-- 3. What to Expect -->
+      <div class="contact-info">
+        <h2 class="contact-info__title">What to Expect</h2>
+        <div class="expect-grid">
+          <div class="expect-item">
+            <strong>Discovery Call (30 min)</strong>
+            <p>We'll learn about your team, current processes, and pain points.</p>
+          </div>
+          <div class="expect-item">
+            <strong>Custom Proposal</strong>
+            <p>Based on our call, we'll put together a tailored plan for your needs.</p>
+          </div>
+          <div class="expect-item">
+            <strong>Quick Turnaround</strong>
+            <p>Most projects can start within 1-2 weeks of approval.</p>
+          </div>
+        </div>
+
+        <div class="contact-footer">
+          <div class="contact-footer__item">
+            <h3 class="contact-info__subtitle">Prefer email?</h3>
+            <p><a href="mailto:hello@happyoperators.com">hello@happyoperators.com</a></p>
+          </div>
+          <div class="contact-footer__item">
+            <h3 class="contact-info__subtitle">Availability</h3>
+            <p>EN & ES languages · EU & UK</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('contact-form');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form as HTMLFormElement);
+    const data = Object.fromEntries(formData.entries());
+
+    const submitBtn = form.querySelector('.form-submit') as HTMLButtonElement;
+    const originalText = submitBtn.textContent;
+
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
+
+    try {
+      const response = await fetch('https://happyoperators.app.n8n.cloud/webhook/50248466-4ddb-4fb8-b784-f87e6497da8c', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Failed to send');
+
+      submitBtn.textContent = 'Sent!';
+      (form as HTMLFormElement).reset();
+
+      setTimeout(() => {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }, 2000);
+    } catch (error) {
+      submitBtn.textContent = 'Error - Try Again';
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .page-header {
+    padding: var(--space-2xl) 0;
+    text-align: center;
+  }
+
+  .page-header__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-md);
+  }
+
+  .page-header__title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .page-header__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contact-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    padding: var(--space-3xl) 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .contact-form-wrapper {
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+  }
+
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .form-label {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  .required {
+    color: var(--color-accent-primary);
+  }
+
+  .form-input,
+  .form-textarea {
+    padding: var(--space-md);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--text-base);
+    color: var(--color-text-primary);
+    transition: border-color var(--transition-fast);
+  }
+
+  .form-input:focus,
+  .form-textarea:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+  }
+
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .form-textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .form-submit {
+    width: 100%;
+  }
+
+  .form-note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-align: center;
+    margin: 0;
+  }
+
+  .book-call-card {
+    padding: var(--space-xl);
+    background: var(--color-accent-primary);
+    border-radius: var(--border-radius-md);
+    text-align: center;
+    margin-bottom: var(--space-xl);
+  }
+
+  .book-call-card__title {
+    font-size: var(--text-xl);
+    color: white;
+    margin-bottom: var(--space-sm);
+  }
+
+  .book-call-card__text {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: var(--space-lg);
+  }
+
+  .book-call-card__button {
+    background: white;
+    color: var(--color-accent-primary);
+    font-weight: 600;
+  }
+
+  .book-call-card__button:hover {
+    background: var(--color-bg-primary);
+  }
+
+  .divider-or {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+  }
+
+  .divider-or::before,
+  .divider-or::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  .divider-or span {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .contact-info {
+    text-align: center;
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .contact-info__title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-lg);
+  }
+
+  .expect-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+    margin-bottom: var(--space-2xl);
+  }
+
+  @media (max-width: 640px) {
+    .expect-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .expect-item {
+    text-align: center;
+  }
+
+  .expect-item strong {
+    display: block;
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-xs);
+  }
+
+  .expect-item p {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+    line-height: var(--leading-relaxed);
+  }
+
+  .contact-footer {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-3xl);
+    padding: var(--space-lg);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-sm);
+  }
+
+  @media (max-width: 480px) {
+    .contact-footer {
+      flex-direction: column;
+      gap: var(--space-lg);
+    }
+  }
+
+  .contact-footer__item {
+    text-align: center;
+  }
+
+  .contact-info__subtitle {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+  }
+
+  .contact-footer__item p {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .contact-footer__item a {
+    color: var(--color-accent-primary);
+  }
+</style>

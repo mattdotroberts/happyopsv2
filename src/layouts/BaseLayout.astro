@@ -1,0 +1,96 @@
+---
+import '../styles/global.css';
+import '../styles/components.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: Date;
+}
+
+const {
+  title,
+  description,
+  image = '/og-default.png',
+  type = 'website',
+  publishedTime
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const fullTitle = `${title} | Happy Operators`;
+---
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="generator" content={Astro.generator} />
+
+  <!-- Primary Meta Tags -->
+  <title>{fullTitle}</title>
+  <meta name="title" content={fullTitle} />
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalURL} />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content={type} />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={new URL(image, Astro.site)} />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content={canonicalURL} />
+  <meta property="twitter:title" content={fullTitle} />
+  <meta property="twitter:description" content={description} />
+  <meta property="twitter:image" content={new URL(image, Astro.site)} />
+
+  {publishedTime && (
+    <meta property="article:published_time" content={publishedTime.toISOString()} />
+  )}
+
+  <!-- Feeds -->
+  <link rel="sitemap" href="/sitemap-index.xml" />
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <!-- Theme Script (inline to prevent flash) -->
+  <script is:inline>
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    })();
+    document.documentElement.setAttribute('data-theme', theme);
+  </script>
+</head>
+<body>
+  <Header />
+
+  <main class="main">
+    <slot />
+  </main>
+
+  <Footer />
+</body>
+</html>
+
+<style>
+  .main {
+    min-height: calc(100vh - 200px);
+    padding-top: var(--space-3xl);
+    padding-bottom: var(--space-3xl);
+  }
+</style>

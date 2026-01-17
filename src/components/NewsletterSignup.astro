@@ -1,0 +1,151 @@
+---
+interface Props {
+  variant?: 'default' | 'compact';
+}
+
+const { variant = 'default' } = Astro.props;
+---
+
+<div class:list={['newsletter', variant === 'compact' && 'newsletter--compact']}>
+  <form class="newsletter__form" data-newsletter-form>
+    <input
+      type="email"
+      name="email"
+      placeholder="your@email.com"
+      required
+      class="newsletter__input"
+      data-newsletter-input
+    />
+    <button type="submit" class="button newsletter__button" data-newsletter-button>
+      Subscribe
+    </button>
+  </form>
+  <p class="newsletter__message" data-newsletter-message></p>
+</div>
+
+<script>
+  function setupNewsletterForms() {
+    const forms = document.querySelectorAll('[data-newsletter-form]');
+
+    forms.forEach((form) => {
+      if (form.dataset.initialized) return;
+      form.dataset.initialized = 'true';
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const input = form.querySelector('[data-newsletter-input]') as HTMLInputElement;
+        const button = form.querySelector('[data-newsletter-button]') as HTMLButtonElement;
+        const message = form.parentElement?.querySelector('[data-newsletter-message]') as HTMLElement;
+
+        const email = input.value.trim();
+
+        // Email format validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          message.textContent = 'Please enter a valid email address';
+          message.className = 'newsletter__message newsletter__message--error';
+          return;
+        }
+
+        // Set loading state
+        button.disabled = true;
+        button.textContent = 'Subscribing...';
+        message.textContent = '';
+
+        try {
+          const data = new Blob([JSON.stringify({ email })], { type: 'application/json' });
+          const success = navigator.sendBeacon(
+            'https://happyoperators.app.n8n.cloud/webhook/26635d4a-a8c5-46d6-892f-7ef0dbfa9b4e',
+            data
+          );
+
+          if (success) {
+            message.textContent = 'Thanks for subscribing!';
+            message.className = 'newsletter__message newsletter__message--success';
+            input.value = '';
+          } else {
+            throw new Error('Beacon failed');
+          }
+        } catch (error) {
+          message.textContent = 'Something went wrong. Please try again.';
+          message.className = 'newsletter__message newsletter__message--error';
+        } finally {
+          button.disabled = false;
+          button.textContent = 'Subscribe';
+        }
+      });
+    });
+  }
+
+  // Run on initial load
+  setupNewsletterForms();
+
+  // Re-run after Astro page transitions
+  document.addEventListener('astro:after-swap', setupNewsletterForms);
+</script>
+
+<style>
+  .newsletter {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .newsletter__form {
+    display: flex;
+    gap: var(--space-sm);
+    max-width: 400px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .newsletter--compact .newsletter__form {
+    max-width: 100%;
+  }
+
+  .newsletter__input {
+    flex: 1;
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    transition: border-color var(--transition-fast);
+  }
+
+  .newsletter__input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .newsletter__input:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+  }
+
+  .newsletter__button {
+    flex-shrink: 0;
+  }
+
+  .newsletter__button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .newsletter__message {
+    font-size: var(--text-sm);
+    margin-top: var(--space-sm);
+    min-height: 1.5em;
+  }
+
+  .newsletter__message--success {
+    color: var(--color-accent-primary);
+  }
+
+  .newsletter__message--error {
+    color: #ff6b6b;
+  }
+</style>

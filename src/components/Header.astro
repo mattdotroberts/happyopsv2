@@ -1,0 +1,107 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+
+const navLinks = [
+  { href: '/use-cases', label: 'Use Cases' },
+  { href: '/workshops', label: 'Workshops' },
+  { href: '/case-study', label: 'Case Study' },
+  { href: '/about', label: 'About' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="header">
+  <div class="container header__inner">
+    <a href="/" class="header__logo">
+      <img src="/images/logo.png" alt="Happy Operators" class="header__logo-icon" />
+      <span class="header__logo-text">Happy Operators</span>
+    </a>
+
+    <nav class="header__nav" aria-label="Main navigation">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class:list={['header__link', { 'header__link--active': currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href)) }]}
+        >
+          {link.label}
+        </a>
+      ))}
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background-color: var(--color-bg-primary);
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--space-lg) 0;
+  }
+
+  .header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-sans);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .header__logo-icon {
+    width: 28px;
+    height: auto;
+  }
+
+  .header__logo-text {
+    font-weight: 500;
+  }
+
+  .header__logo:hover {
+    text-decoration: none;
+    color: var(--color-text-primary);
+  }
+
+  .header__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+  }
+
+  .header__link {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .header__link:hover {
+    color: var(--color-text-primary);
+    text-decoration: none;
+  }
+
+  .header__link--active {
+    color: var(--color-accent-primary);
+  }
+
+  @media (max-width: 640px) {
+    .header__nav {
+      gap: var(--space-md);
+    }
+
+    .header__link {
+      font-size: var(--text-xs);
+    }
+  }
+</style>

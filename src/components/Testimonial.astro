@@ -1,0 +1,72 @@
+---
+interface Props {
+  quote: string;
+  author: string;
+  role?: string;
+  image?: string;
+}
+
+const { quote, author, role, image } = Astro.props;
+---
+
+<blockquote class="testimonial">
+  <p class="testimonial__quote">"{quote}"</p>
+  <footer class="testimonial__footer">
+    {image && <img src={image} alt={author} class="testimonial__image" />}
+    <div class="testimonial__info">
+      <cite class="testimonial__author">{author}</cite>
+      {role && <span class="testimonial__role">{role}</span>}
+    </div>
+  </footer>
+</blockquote>
+
+<style>
+  .testimonial {
+    padding: var(--space-xl);
+    border-left: 3px solid var(--color-accent-primary);
+    background-color: var(--color-bg-secondary);
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+  }
+
+  .testimonial__quote {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    font-style: italic;
+    color: var(--color-text-primary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-md);
+  }
+
+  .testimonial__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .testimonial__image {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .testimonial__info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .testimonial__author {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-style: normal;
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .testimonial__role {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+</style>

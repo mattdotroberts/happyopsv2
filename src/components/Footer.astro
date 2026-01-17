@@ -1,0 +1,164 @@
+---
+import NewsletterSignup from './NewsletterSignup.astro';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__cta">
+      <h3 class="footer__cta-title">Still not sure? Book a free discovery call with Matt and Rafa</h3>
+      <p class="footer__cta-text">Learn more about how we work and how we can help you and your business take the next step.</p>
+      <a href="/contact" class="button footer__cta-button">Schedule a Chat with us</a>
+    </div>
+
+    <hr class="footer__divider-line" />
+
+    <div class="footer__info">
+      <div class="footer__founders">
+        <div class="footer__founders-images">
+          <img src="/images/founders/matt.jpg" alt="Matt" class="footer__founder-image" />
+          <img src="/images/founders/rafa.jpg" alt="Rafa" class="footer__founder-image" />
+        </div>
+        <span class="footer__founders-names">Matt & Rafa</span>
+        <a href="https://happylabs.dev" class="footer__founders-company" target="_blank" rel="noopener">HappyLabs.dev</a>
+      </div>
+
+      <nav class="footer__links">
+        <a href="/use-cases" class="footer__link">Use Cases</a>
+        <span class="footer__divider">·</span>
+        <a href="/workshops" class="footer__link">Workshops</a>
+        <span class="footer__divider">·</span>
+        <a href="/case-study" class="footer__link">Case Study</a>
+        <span class="footer__divider">·</span>
+        <a href="/about" class="footer__link">About</a>
+        <span class="footer__divider">·</span>
+        <a href="/contact" class="footer__link">Contact</a>
+      </nav>
+
+      <p class="footer__text">
+        &copy; Happy Operators {currentYear}. All rights reserved. <a href="/privacy" class="footer__legal-link">Privacy Policy</a>.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--color-border);
+    padding: var(--space-4xl) 0 var(--space-3xl);
+    margin-top: var(--space-5xl);
+  }
+
+  .footer__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3xl);
+    text-align: center;
+  }
+
+  .footer__cta {
+    max-width: 500px;
+  }
+
+  .footer__cta-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .footer__cta-text {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-lg);
+    line-height: var(--leading-relaxed);
+  }
+
+  .footer__cta-button {
+    display: inline-block;
+  }
+
+  .footer__divider-line {
+    width: 100%;
+    max-width: 400px;
+    border: none;
+    border-top: 1px solid var(--color-border-subtle);
+    margin: 0;
+  }
+
+  .footer__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .footer__founders {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .footer__founders-images {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .footer__founder-image {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-border);
+  }
+
+  .footer__founders-names {
+    font-weight: 600;
+    font-size: var(--text-lg);
+  }
+
+  .footer__founders-company {
+    font-size: var(--text-sm);
+    color: var(--color-accent-primary);
+  }
+
+  .footer__founders-company:hover {
+    text-decoration: underline;
+  }
+
+  .footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .footer__link {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .footer__link:hover {
+    color: var(--color-accent-primary);
+    text-decoration: none;
+  }
+
+  .footer__divider {
+    color: var(--color-border);
+  }
+
+  .footer__text {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  .footer__legal-link {
+    color: var(--color-text-muted);
+  }
+
+  .footer__legal-link:hover {
+    color: var(--color-accent-primary);
+  }
+</style>
