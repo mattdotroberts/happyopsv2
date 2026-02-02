@@ -1,8 +1,9 @@
 ---
 import '../styles/global.css';
 import '../styles/components.css';
+import '../styles/animations.css';
 import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import FooterModern from '../components/FooterModern.astro';
 
 interface Props {
   title: string;
@@ -83,7 +84,29 @@ const fullTitle = `${title} | Happy Operators`;
     <slot />
   </main>
 
-  <Footer />
+  <FooterModern />
+
+  <script>
+    // Scroll reveal animation using Intersection Observer
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    // Observe all elements with reveal classes
+    document.querySelectorAll('.reveal, .reveal-fade, .reveal-scale, .stagger-children').forEach((el) => {
+      revealObserver.observe(el);
+    });
+  </script>
 </body>
 </html>
 

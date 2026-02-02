@@ -1,0 +1,74 @@
+---
+import FeatureBox from './FeatureBox.astro';
+
+const features = [
+  {
+    label: "Workshops & Training",
+    headline: "We Teach",
+    description: "Practical AI and automation training that transforms your team. Hands-on workshops tailored to your industry.",
+    href: "/workshops",
+    linkText: "View Workshops"
+  },
+  {
+    label: "Client Projects",
+    headline: "We Build",
+    description: "Custom automation systems that save hundreds of hours. From strategy to implementation.",
+    href: "/case-study",
+    linkText: "See Case Study"
+  },
+  {
+    label: "Our Product",
+    headline: "We Ship",
+    description: "Hapi — AI-powered transcription for macOS. Built by operators, for operators.",
+    href: "https://hapi.so",
+    linkText: "Try Hapi",
+    external: true
+  }
+];
+---
+
+<section class="feature-grid-section">
+  <div class="container container--wide">
+    <div class="feature-grid reveal stagger-children">
+      {features.map((feature) => (
+        <FeatureBox
+          label={feature.label}
+          headline={feature.headline}
+          description={feature.description}
+          href={feature.href}
+          linkText={feature.linkText}
+          external={feature.external}
+        />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature-grid-section {
+    padding: var(--space-4xl) 0;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+  }
+
+  @media (max-width: 1024px) {
+    .feature-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .feature-grid-section {
+      padding: var(--space-2xl) 0;
+    }
+
+    .feature-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+  }
+</style>

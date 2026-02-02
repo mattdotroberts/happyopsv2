@@ -1,0 +1,68 @@
+/* ===========================================
+   Animation Utilities
+   Scroll reveal and stagger animations
+   =========================================== */
+
+/* ===== Base Reveal Animation ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity var(--transition-reveal), transform var(--transition-reveal);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Reveal Variants ===== */
+.reveal-fade {
+  opacity: 0;
+  transition: opacity var(--transition-reveal);
+}
+
+.reveal-fade.revealed {
+  opacity: 1;
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity var(--transition-reveal), transform var(--transition-reveal);
+}
+
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ===== Stagger Children ===== */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--transition-reveal), transform var(--transition-reveal);
+}
+
+.stagger-children.revealed > *:nth-child(1) { transition-delay: calc(var(--stagger-delay) * 0); }
+.stagger-children.revealed > *:nth-child(2) { transition-delay: calc(var(--stagger-delay) * 1); }
+.stagger-children.revealed > *:nth-child(3) { transition-delay: calc(var(--stagger-delay) * 2); }
+.stagger-children.revealed > *:nth-child(4) { transition-delay: calc(var(--stagger-delay) * 3); }
+.stagger-children.revealed > *:nth-child(5) { transition-delay: calc(var(--stagger-delay) * 4); }
+.stagger-children.revealed > *:nth-child(6) { transition-delay: calc(var(--stagger-delay) * 5); }
+
+.stagger-children.revealed > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-fade,
+  .reveal-scale,
+  .stagger-children > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

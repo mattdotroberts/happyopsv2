@@ -1,0 +1,128 @@
+---
+interface Props {
+  label: string;
+  headline: string;
+  description: string;
+  href: string;
+  linkText?: string;
+  external?: boolean;
+}
+
+const { label, headline, description, href, linkText = "Explore", external = false } = Astro.props;
+---
+
+<a
+  href={href}
+  class="feature-box"
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+>
+  <span class="feature-box__label">{label}</span>
+  <h3 class="feature-box__headline">{headline}</h3>
+  <p class="feature-box__description">{description}</p>
+  <span class="feature-box__link">
+    {linkText} <span class="feature-box__arrow">→</span>
+  </span>
+</a>
+
+<style>
+  .feature-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-2xl);
+    background-color: var(--color-feature-bg);
+    border: 1px solid var(--color-feature-border);
+    border-radius: var(--border-radius-lg);
+    text-decoration: none;
+    transition: transform var(--transition-lift),
+                box-shadow var(--transition-lift),
+                border-color var(--transition-fast);
+    overflow: hidden;
+  }
+
+  .feature-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 50% 100%,
+      var(--color-feature-glow) 0%,
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity var(--transition-lift);
+    pointer-events: none;
+  }
+
+  .feature-box:hover {
+    transform: translateY(-8px);
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+    text-decoration: none;
+  }
+
+  .feature-box:hover::before {
+    opacity: 1;
+  }
+
+  .feature-box__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-lg);
+  }
+
+  .feature-box__headline {
+    font-family: var(--font-serif);
+    font-size: var(--text-3xl);
+    font-weight: 500;
+    color: #FAFAFA;
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-md);
+  }
+
+  .feature-box__description {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: #A1A1A1;
+    line-height: var(--leading-relaxed);
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .feature-box__link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent-primary);
+    margin-top: var(--space-xl);
+    transition: gap var(--transition-fast);
+  }
+
+  .feature-box:hover .feature-box__link {
+    gap: var(--space-md);
+  }
+
+  .feature-box__arrow {
+    transition: transform var(--transition-fast);
+  }
+
+  .feature-box:hover .feature-box__arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 640px) {
+    .feature-box {
+      padding: var(--space-xl);
+    }
+
+    .feature-box__headline {
+      font-size: var(--text-2xl);
+    }
+  }
+</style>

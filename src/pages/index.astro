@@ -1,36 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
+import MinimalHero from '../components/MinimalHero.astro';
+import FeatureBoxGrid from '../components/FeatureBoxGrid.astro';
 import Testimonial from '../components/Testimonial.astro';
 import CTASection from '../components/CTASection.astro';
-import NewsletterSignup from '../components/NewsletterSignup.astro';
-
-const problems = [
-  {
-    title: "Manual Work",
-    description: "Your team is stuck copying, pasting, and processing instead of focusing on real work."
-  },
-  {
-    title: "Difficult to Scale",
-    description: "Your organisation is complex. Creating systems allows your organisation to scale."
-  },
-  {
-    title: "Lose Focus",
-    description: "Your team has many repetitive tasks that are distracting the team from growing the business."
-  },
-  {
-    title: "Overwhelmed",
-    description: "Staying ahead of technology is complicated and time consuming; but fundamental in surviving the new AI era."
-  },
-  {
-    title: "Too Many Admin Tasks",
-    description: "Reducing repetitive tasks will impact the happiness of your team directly, becoming better and more productive."
-  },
-  {
-    title: "Make Mistakes",
-    description: "Messy systems are slowing you down. Too much admin and human touch leads to mistakes."
-  }
-];
 
 const testimonials = [
   {
@@ -50,33 +23,6 @@ const testimonials = [
     author: "Derick Peters",
     role: "CEO, Hatchster",
     image: "/images/testimonials/derick.png"
-  }
-];
-
-const features = [
-  {
-    title: "AI Operations",
-    description: "We embrace AI technology as the glue that connects all the technology around us."
-  },
-  {
-    title: "No-Code First",
-    description: "We take pride in delivering a template that resonates with your needs and exceeds expectations."
-  },
-  {
-    title: "Adaptability to Departments",
-    description: "Team specific programs mean maximum value and relevance."
-  },
-  {
-    title: "Practical",
-    description: "The courses are high impact and practical where your team can start to run within hours."
-  },
-  {
-    title: "User Satisfaction",
-    description: "We constantly exceed expectations. See our reviews."
-  },
-  {
-    title: "Real Use Cases",
-    description: "Your team is trained based on their problems so that issues are solved straight away."
   }
 ];
 
@@ -138,6 +84,21 @@ const pricing = [
   }
 ];
 
+const techStack = [
+  { name: "Make", category: "Automations", certified: true },
+  { name: "n8n", category: "Automation" },
+  { name: "Zapier", category: "Automation" },
+  { name: "Power Automate", category: "Automations" },
+  { name: "Airtable", category: "NoCode Database" },
+  { name: "Notion", category: "NoCode Database" },
+  { name: "Supabase", category: "Database" },
+  { name: "OpenAI", category: "AI Tools" },
+  { name: "Anthropic", category: "AI Tools" },
+  { name: "Softr", category: "Internal App Builder", certified: true },
+  { name: "Bubble", category: "Web & Mobile App Builder", partner: true },
+  { name: "Relay", category: "Automations", partner: true },
+];
+
 const faqs = [
   {
     question: "What types of workshops does Happy Operators offer?",
@@ -160,73 +121,31 @@ const faqs = [
     answer: "You have a money back guarantee if you are not satisfied with the training."
   }
 ];
-
-const techStack = [
-  { name: "Make", category: "Automations", certified: true },
-  { name: "n8n", category: "Automation" },
-  { name: "Zapier", category: "Automation" },
-  { name: "Power Automate", category: "Automations" },
-  { name: "Airtable", category: "NoCode Database" },
-  { name: "Notion", category: "NoCode Database" },
-  { name: "Supabase", category: "Database" },
-  { name: "OpenAI", category: "AI Tools" },
-  { name: "Anthropic", category: "AI Tools" },
-  { name: "Softr", category: "Internal App Builder", certified: true },
-  { name: "Bubble", category: "Web & Mobile App Builder", partner: true },
-  { name: "Relay", category: "Automations", partner: true },
-];
 ---
 
 <BaseLayout
   title="AI & Automation Workshops"
   description="Help your teams work faster and smarter with AI & automation workshops. Practical, team-specific training that delivers results within hours."
 >
-  <Hero
+  <MinimalHero
     headline="Train your team in AI & Automation"
-    subtitle="AI & automation training that transforms your team to work faster, smarter, and with fewer headaches."
+    subtitle="Practical training that transforms how your team works. Save hours every week with AI and automation skills that stick."
     primaryCta={{ text: "Talk to us", href: "/contact" }}
     secondaryCta={{ text: "See Case Study", href: "/case-study" }}
   />
 
-  <section class="container section">
-    <header class="section__header">
-      <span class="section__label">[PROBLEM]</span>
-      <h2 class="section__title">You've heard about Automation and AI but you don't know where to start</h2>
-      <p class="section__subtitle">
-        Mistakes are being made as you scale and try to automate.
-      </p>
-    </header>
-
-    <div class="problems-grid">
-      {problems.map((problem) => (
-        <div class="problem-card">
-          <h3 class="problem-card__title">{problem.title}</h3>
-          <p class="problem-card__description">{problem.description}</p>
-        </div>
-      ))}
-    </div>
-  </section>
+  <FeatureBoxGrid />
 
   <section class="container section">
-    <header class="section__header">
-      <span class="section__label">[SOLUTION]</span>
-      <h2 class="section__title">Learn AI. Automate workflows. Get time back.</h2>
-      <p class="section__subtitle">
-        We deliver ad hoc workshops for your team
-      </p>
+    <header class="section__header reveal">
+      <span class="section__label">[TESTIMONIALS]</span>
+      <h2 class="section__title">What our clients say</h2>
     </header>
 
-    <div class="features-grid">
-      {features.map((feature) => (
-        <div class="feature-card">
-          <h3 class="feature-card__title">{feature.title}</h3>
-          <p class="feature-card__description">{feature.description}</p>
-        </div>
+    <div class="testimonials-grid reveal stagger-children">
+      {testimonials.map((t) => (
+        <Testimonial quote={t.quote} author={t.author} role={t.role} image={t.image} />
       ))}
-    </div>
-
-    <div class="section__cta">
-      <a href="/workshops" class="button">View Workshops</a>
     </div>
   </section>
 
@@ -238,21 +157,8 @@ const techStack = [
     variant="centered"
   />
 
-  <section class="container section">
-    <header class="section__header">
-      <span class="section__label">[TESTIMONIALS]</span>
-      <h2 class="section__title">Customer Voices</h2>
-    </header>
-
-    <div class="testimonials-grid">
-      {testimonials.map((t) => (
-        <Testimonial quote={t.quote} author={t.author} role={t.role} image={t.image} />
-      ))}
-    </div>
-  </section>
-
   <section class="container section section--pricing">
-    <header class="section__header">
+    <header class="section__header reveal">
       <span class="section__label">[HOW WE DO IT]</span>
       <h2 class="section__title">We build ad hoc solutions for your needs</h2>
       <p class="section__subtitle">
@@ -260,7 +166,7 @@ const techStack = [
       </p>
     </header>
 
-    <div class="pricing-grid">
+    <div class="pricing-grid reveal stagger-children">
       {pricing.map((plan) => (
         <div class:list={['pricing-card', { 'pricing-card--featured': plan.featured }]}>
           {plan.featured && <span class="pricing-card__badge">Most Popular</span>}
@@ -285,7 +191,7 @@ const techStack = [
   </section>
 
   <section class="container section">
-    <header class="section__header">
+    <header class="section__header reveal">
       <span class="section__label">[TECH STACK]</span>
       <h2 class="section__title">Our tech stack</h2>
       <p class="section__subtitle">
@@ -293,24 +199,23 @@ const techStack = [
       </p>
     </header>
 
-    <div class="tech-grid">
+    <div class="tech-strip reveal">
       {techStack.map((tech) => (
-        <div class="tech-card">
-          <span class="tech-card__name">{tech.name}</span>
-          <span class="tech-card__category">{tech.category}</span>
-          {tech.certified && <span class="tech-card__badge">Certified</span>}
-          {tech.partner && <span class="tech-card__badge tech-card__badge--partner">Partner</span>}
+        <div class="tech-item">
+          <span class="tech-item__name">{tech.name}</span>
+          {tech.certified && <span class="tech-item__badge">Certified</span>}
+          {tech.partner && <span class="tech-item__badge tech-item__badge--partner">Partner</span>}
         </div>
       ))}
     </div>
   </section>
 
   <section class="container section section--faq">
-    <header class="section__header">
+    <header class="section__header reveal">
       <h2 class="section__title">Your questions answered</h2>
     </header>
 
-    <div class="faq-list">
+    <div class="faq-list reveal">
       {faqs.map((faq) => (
         <details class="faq-item">
           <summary class="faq-item__question">{faq.question}</summary>
@@ -318,17 +223,6 @@ const techStack = [
         </details>
       ))}
     </div>
-  </section>
-
-  <section class="container section section--newsletter">
-    <header class="section__header">
-      <span class="section__label">[STAY UPDATED]</span>
-      <h2 class="section__title">Get AI & Automation Tips</h2>
-      <p class="section__subtitle">
-        Practical insights on working smarter, delivered to your inbox.
-      </p>
-    </header>
-    <NewsletterSignup />
   </section>
 </BaseLayout>
 
@@ -362,58 +256,6 @@ const techStack = [
     color: var(--color-text-secondary);
     max-width: 600px;
     margin: 0 auto;
-  }
-
-  .section__cta {
-    text-align: center;
-    margin-top: var(--space-3xl);
-  }
-
-  .problems-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-lg);
-  }
-
-  .problem-card {
-    padding: var(--space-xl);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-md);
-  }
-
-  .problem-card__title {
-    font-size: var(--text-lg);
-    margin-bottom: var(--space-sm);
-    color: var(--color-accent-primary);
-  }
-
-  .problem-card__description {
-    color: var(--color-text-secondary);
-    margin: 0;
-    line-height: var(--leading-relaxed);
-  }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-lg);
-  }
-
-  .feature-card {
-    padding: var(--space-xl);
-    background: var(--color-bg-secondary);
-    border-radius: var(--border-radius-md);
-  }
-
-  .feature-card__title {
-    font-size: var(--text-lg);
-    margin-bottom: var(--space-sm);
-  }
-
-  .feature-card__description {
-    color: var(--color-text-secondary);
-    margin: 0;
-    line-height: var(--leading-relaxed);
   }
 
   .testimonials-grid {
@@ -525,42 +367,36 @@ const techStack = [
     text-align: center;
   }
 
-  .tech-grid {
+  .tech-strip {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--space-md);
+    gap: var(--space-sm);
   }
 
-  .tech-card {
-    display: flex;
-    flex-direction: column;
+  .tech-item {
+    display: inline-flex;
     align-items: center;
     gap: var(--space-xs);
-    padding: var(--space-md) var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
     background: var(--color-bg-secondary);
     border-radius: var(--border-radius-sm);
-    text-align: center;
+    font-size: var(--text-sm);
   }
 
-  .tech-card__name {
-    font-weight: 600;
+  .tech-item__name {
+    font-weight: 500;
   }
 
-  .tech-card__category {
+  .tech-item__badge {
     font-size: var(--text-xs);
-    color: var(--color-text-muted);
-  }
-
-  .tech-card__badge {
-    font-size: var(--text-xs);
-    padding: var(--space-xs) var(--space-sm);
+    padding: 2px var(--space-sm);
     background: var(--color-accent-primary);
     color: var(--color-bg-primary);
     border-radius: var(--border-radius-sm);
   }
 
-  .tech-card__badge--partner {
+  .tech-item__badge--partner {
     background: var(--color-text-muted);
   }
 
@@ -604,11 +440,5 @@ const techStack = [
     padding: 0 0 var(--space-lg);
     color: var(--color-text-secondary);
     line-height: var(--leading-relaxed);
-  }
-
-  .section--newsletter {
-    text-align: center;
-    border-top: 1px solid var(--color-border);
-    margin-top: var(--space-4xl);
   }
 </style>
