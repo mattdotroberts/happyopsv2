@@ -1,15 +1,13 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ArticleCard from '../../components/ArticleCard.astro';
-import { getCollection } from 'astro:content';
+import BlogCard from '../../components/BlogCard.astro';
+import { getPublishedPosts } from '../../lib/notion';
 
-const allPosts = await getCollection('blog', ({ data }) => {
-  return data.draft !== true;
-});
+const allPosts = await getPublishedPosts();
 
-const sortedPosts = allPosts.sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+// Featured post is the first one, grid posts are the rest
+const featuredPost = allPosts[0] || null;
+const gridPosts = allPosts.slice(1);
 ---
 
 <BaseLayout
@@ -26,13 +24,21 @@ const sortedPosts = allPosts.sort(
 
     <hr />
 
-    <section class="articles">
-      {sortedPosts.map((post) => (
-        <ArticleCard post={post} />
-      ))}
-    </section>
+    {allPosts.length > 0 ? (
+      <section class="blog-layout">
+        {featuredPost && (
+          <BlogCard post={featuredPost} featured={true} />
+        )}
 
-    {sortedPosts.length === 0 && (
+        {gridPosts.length > 0 && (
+          <div class="blog-grid stagger-children">
+            {gridPosts.map((post) => (
+              <BlogCard post={post} />
+            ))}
+          </div>
+        )}
+      </section>
+    ) : (
       <p class="empty-state">No posts yet. Check back soon!</p>
     )}
   </div>
@@ -53,9 +59,29 @@ const sortedPosts = allPosts.sort(
     color: var(--color-text-secondary);
   }
 
-  .articles {
+  .blog-layout {
     display: flex;
     flex-direction: column;
+    gap: var(--space-2xl);
+    padding: var(--space-xl) 0;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 640px) {
+    .blog-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .blog-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   .empty-state {

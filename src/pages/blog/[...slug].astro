@@ -1,19 +1,287 @@
 ---
-import { getCollection, render } from 'astro:content';
-import BlogPostLayout from '../../layouts/BlogPostLayout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TagBadge from '../../components/TagBadge.astro';
+import { getPublishedPosts, getPostBySlug } from '../../lib/notion';
+import { renderNotionContent } from '../../lib/notion-renderer';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getPublishedPosts();
   return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post },
+    params: { slug: post.slug },
+    props: { slug: post.slug },
   }));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { slug } = Astro.props;
+const post = await getPostBySlug(slug);
+
+if (!post) {
+  return Astro.redirect('/404');
+}
+
+const { title, publishedDate, tags, image, blocks } = post;
+
+const formattedDate = publishedDate
+  ? publishedDate.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : '';
+
+const contentHtml = renderNotionContent(blocks);
 ---
 
-<BlogPostLayout post={post}>
-  <Content />
-</BlogPostLayout>
+<BaseLayout
+  title={title}
+  description={post.excerpt || `Read ${title} on Happy Operators`}
+  image={image || undefined}
+  type="article"
+  publishedTime={publishedDate || undefined}
+>
+  <article class="article container">
+    <header class="article__header">
+      <div class="article__meta">
+        <time datetime={publishedDate?.toISOString()}>{formattedDate}</time>
+      </div>
+
+      <h1 class="article__title">{title}</h1>
+
+      {tags && tags.length > 0 && (
+        <div class="article__tags">
+          {tags.map((tag) => (
+            <TagBadge tag={tag} />
+          ))}
+        </div>
+      )}
+    </header>
+
+    {image && (
+      <img src={image} alt={title} class="article__image" />
+    )}
+
+    <hr />
+
+    <div class="prose" set:html={contentHtml} />
+
+    <hr />
+
+    <footer class="article__footer">
+      <a href="/blog" class="button">
+        &larr; Back to all posts
+      </a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .article {
+    max-width: var(--max-width-content);
+  }
+
+  .article__header {
+    margin-bottom: var(--space-xl);
+  }
+
+  .article__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .article__title {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-lg);
+  }
+
+  .article__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .article__image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--space-xl);
+    border: 1px solid var(--color-border);
+  }
+
+  .article__footer {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: var(--space-xl);
+  }
+
+  /* Prose styles for Notion content */
+  .prose :global(h2) {
+    font-size: var(--text-2xl);
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .prose :global(h3) {
+    font-size: var(--text-xl);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-sm);
+  }
+
+  .prose :global(h4) {
+    font-size: var(--text-lg);
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-sm);
+  }
+
+  .prose :global(p) {
+    margin-bottom: var(--space-md);
+    line-height: var(--leading-relaxed);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-bottom: var(--space-md);
+    padding-left: var(--space-xl);
+  }
+
+  .prose :global(li) {
+    margin-bottom: var(--space-xs);
+    line-height: var(--leading-relaxed);
+  }
+
+  .prose :global(blockquote) {
+    border-left: 3px solid var(--color-accent-primary);
+    padding-left: var(--space-lg);
+    margin: var(--space-lg) 0;
+    font-style: italic;
+    color: var(--color-text-secondary);
+  }
+
+  .prose :global(pre) {
+    background: var(--color-bg-tertiary);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius-md);
+    overflow-x: auto;
+    margin: var(--space-lg) 0;
+  }
+
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+  }
+
+  .prose :global(p code) {
+    background: var(--color-bg-tertiary);
+    padding: 0.2em 0.4em;
+    border-radius: var(--border-radius-sm);
+  }
+
+  .prose :global(figure) {
+    margin: var(--space-xl) 0;
+  }
+
+  .prose :global(figure img) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-border);
+  }
+
+  .prose :global(figcaption) {
+    text-align: center;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--space-sm);
+  }
+
+  .prose :global(.callout) {
+    display: flex;
+    gap: var(--space-md);
+    background: var(--color-bg-secondary);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius-md);
+    margin: var(--space-lg) 0;
+  }
+
+  .prose :global(.callout-icon) {
+    font-size: var(--text-xl);
+    flex-shrink: 0;
+  }
+
+  .prose :global(.callout-content) {
+    flex: 1;
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: var(--space-2xl) 0;
+  }
+
+  .prose :global(.video-embed) {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    margin: var(--space-xl) 0;
+  }
+
+  .prose :global(.video-embed iframe) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: var(--border-radius-md);
+  }
+
+  .prose :global(.bookmark) {
+    display: block;
+    padding: var(--space-md);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    margin: var(--space-md) 0;
+    transition: border-color var(--transition-fast);
+  }
+
+  .prose :global(.bookmark:hover) {
+    border-color: var(--color-accent-primary);
+  }
+
+  .prose :global(.todo-item) {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xs);
+  }
+
+  .prose :global(.todo-item input) {
+    margin-top: 0.3em;
+  }
+
+  .prose :global(details) {
+    margin: var(--space-md) 0;
+  }
+
+  .prose :global(summary) {
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .prose :global(.toggle-content) {
+    padding-left: var(--space-lg);
+    margin-top: var(--space-sm);
+  }
+
+  .prose :global(.columns) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-lg);
+    margin: var(--space-lg) 0;
+  }
+</style>

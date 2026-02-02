@@ -8,7 +8,7 @@ const { tag, linked = true } = Astro.props;
 ---
 
 {linked ? (
-  <a href={`/tags/${tag}`} class="badge">
+  <a href={`/blog/tag/${tag.toLowerCase().replace(/\s+/g, '-')}`} class="badge">
     {tag}
   </a>
 ) : (

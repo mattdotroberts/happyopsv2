@@ -10,10 +10,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.0.0",
     "@astrojs/rss": "^4.0.0",
     "@astrojs/sitemap": "^3.0.0",
+    "@fontsource/crimson-pro": "^5.0.0",
     "@fontsource/geist-mono": "^5.0.0",
-    "@fontsource/crimson-pro": "^5.0.0"
+    "@notionhq/client": "^5.9.0",
+    "astro": "^5.0.0"
   }
 }
