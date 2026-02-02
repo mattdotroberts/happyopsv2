@@ -1,0 +1,235 @@
+---
+interface Props {
+  headline: string;
+  subtitle: string;
+  primaryCta?: {
+    text: string;
+    href: string;
+  };
+  secondaryCta?: {
+    text: string;
+    href: string;
+  };
+}
+
+const { headline, subtitle, primaryCta, secondaryCta } = Astro.props;
+
+// Split headline into words for animation
+const words = headline.split(' ');
+---
+
+<section class="hero-scroll">
+  <div class="container container--wide hero-scroll__inner">
+    <div class="hero-scroll__headline">
+      <h1 class="hero-scroll__title" id="hero-title">
+        {words.map((word, index) => (
+          <span class="hero-word" data-index={index}>{word}</span>
+        ))}
+      </h1>
+    </div>
+    <div class="hero-scroll__content">
+      <p class="hero-scroll__subtitle">{subtitle}</p>
+      {(primaryCta || secondaryCta) && (
+        <div class="hero-scroll__ctas">
+          {primaryCta && (
+            <a href={primaryCta.href} class="button button--primary">
+              {primaryCta.text}
+            </a>
+          )}
+          {secondaryCta && (
+            <a href={secondaryCta.href} class="button">
+              {secondaryCta.text}
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Scroll-based word highlight animation
+  const heroTitle = document.getElementById('hero-title');
+  const words = heroTitle?.querySelectorAll('.hero-word');
+
+  if (words && words.length > 0) {
+    const updateWordHighlights = () => {
+      const heroSection = document.querySelector('.hero-scroll');
+      if (!heroSection) return;
+
+      const rect = heroSection.getBoundingClientRect();
+      const sectionHeight = rect.height;
+      const scrollProgress = Math.max(0, Math.min(1, -rect.top / (sectionHeight * 0.5)));
+
+      // Calculate how many words should be highlighted based on scroll
+      const wordsToHighlight = Math.floor(scrollProgress * (words.length + 2));
+
+      words.forEach((word, index) => {
+        if (index < wordsToHighlight) {
+          word.classList.add('highlighted');
+        } else {
+          word.classList.remove('highlighted');
+        }
+      });
+    };
+
+    // Initial highlight of first few words
+    const initHighlight = () => {
+      words.forEach((word, index) => {
+        if (index < 3) {
+          word.classList.add('highlighted');
+        }
+      });
+    };
+
+    // Run on scroll
+    window.addEventListener('scroll', updateWordHighlights, { passive: true });
+
+    // Initial state
+    initHighlight();
+
+    // Also run on load in case page is already scrolled
+    updateWordHighlights();
+  }
+</script>
+
+<style>
+  .hero-scroll {
+    padding: var(--space-5xl) 0;
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-scroll__inner {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-4xl);
+    align-items: start;
+  }
+
+  .hero-scroll__headline {
+    position: sticky;
+    top: 120px;
+  }
+
+  .hero-scroll__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .hero-word {
+    display: inline;
+    color: var(--color-text-muted);
+    transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-word::after {
+    content: ' ';
+  }
+
+  .hero-word.highlighted {
+    color: var(--color-text-primary);
+  }
+
+  /* Underline effect for key words */
+  .hero-word:nth-child(2), /* "AI" */
+  .hero-word:nth-child(3) { /* "transformation" */
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--color-text-muted);
+    transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                text-decoration-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hero-word:nth-child(2).highlighted,
+  .hero-word:nth-child(3).highlighted {
+    text-decoration-color: var(--color-accent-primary);
+  }
+
+  .hero-scroll__content {
+    padding-top: var(--space-xl);
+  }
+
+  .hero-scroll__subtitle {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0 0 var(--space-2xl);
+  }
+
+  .hero-scroll__ctas {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  /* Dark mode adjustments */
+  [data-theme="dark"] .hero-word {
+    color: var(--color-text-muted);
+  }
+
+  [data-theme="dark"] .hero-word.highlighted {
+    color: var(--color-text-primary);
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .hero-scroll__inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+    }
+
+    .hero-scroll__headline {
+      position: relative;
+      top: 0;
+    }
+
+    .hero-scroll {
+      min-height: auto;
+      padding: var(--space-4xl) 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-scroll {
+      padding: var(--space-2xl) 0;
+    }
+
+    .hero-scroll__title {
+      font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .hero-scroll__subtitle {
+      font-size: var(--text-lg);
+    }
+
+    .hero-scroll__ctas {
+      flex-direction: column;
+    }
+
+    .hero-scroll__ctas .button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-word {
+      transition: none;
+      color: var(--color-text-primary);
+    }
+
+    .hero-word:nth-child(2),
+    .hero-word:nth-child(3) {
+      text-decoration-color: var(--color-accent-primary);
+    }
+  }
+</style>
