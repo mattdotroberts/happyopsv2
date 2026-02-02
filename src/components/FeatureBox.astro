@@ -60,11 +60,11 @@ const { label, headline, description, href, linkText = "Explore", external = fal
   /* Scroll-activated expanded state */
   .feature-box-wrapper.expanded .feature-box {
     --box-scale: 1;
-    --box-radius: 0px;
-    --box-margin: 0rem;
+    --box-radius: 16px;
+    --box-margin: 1rem;
     transform: scale(1);
-    border-radius: 0;
-    margin: 0;
+    border-radius: var(--box-radius);
+    margin: 0 var(--box-margin);
   }
 
   .feature-box::before {

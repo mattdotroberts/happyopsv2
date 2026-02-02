@@ -55,8 +55,8 @@ const features = [
         if (entry.isIntersecting) {
           entry.target.classList.add('expanded');
         } else {
-          // Optional: remove expanded state when scrolling away
-          // entry.target.classList.remove('expanded');
+          // Remove expanded state when scrolling away
+          entry.target.classList.remove('expanded');
         }
       });
     }, observerOptions);

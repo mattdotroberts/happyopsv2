@@ -7,9 +7,14 @@ interface Props {
     href: string;
   };
   urgencyText?: string;
+  socialProof?: {
+    count: string;
+    label: string;
+    avatars: string[];
+  };
 }
 
-const { headline, subtitle, primaryCta, urgencyText } = Astro.props;
+const { headline, subtitle, primaryCta, urgencyText, socialProof } = Astro.props;
 
 // Split headline into words for animation
 const words = headline.split(' ');
@@ -36,6 +41,25 @@ const words = headline.split(' ');
           )}
         </div>
       )}
+      {socialProof && (
+        <div class="hero-scroll__social-proof">
+          <div class="hero-scroll__avatars">
+            {socialProof.avatars.map((avatar, i) => (
+              <div class="hero-scroll__avatar" style={`--avatar-index: ${i}`}>
+                {avatar ? (
+                  <img src={avatar} alt="" loading="lazy" />
+                ) : (
+                  <span class="hero-scroll__avatar-placeholder"></span>
+                )}
+              </div>
+            ))}
+          </div>
+          <div class="hero-scroll__social-text">
+            <span class="hero-scroll__social-count">{socialProof.count}</span>
+            <span class="hero-scroll__social-label">{socialProof.label}</span>
+          </div>
+        </div>
+      )}
     </div>
   </div>
 </section>
@@ -51,11 +75,12 @@ const words = headline.split(' ');
       if (!heroSection) return;
 
       const rect = heroSection.getBoundingClientRect();
-      const sectionHeight = rect.height;
-      const scrollProgress = Math.max(0, Math.min(1, -rect.top / (sectionHeight * 0.5)));
+      const viewportHeight = window.innerHeight;
+      // Start highlighting as soon as page loads, complete by the time section is 30% scrolled
+      const scrollProgress = Math.max(0, Math.min(1, (viewportHeight - rect.top) / (viewportHeight * 0.5)));
 
       // Calculate how many words should be highlighted based on scroll
-      const wordsToHighlight = Math.floor(scrollProgress * (words.length + 2));
+      const wordsToHighlight = Math.floor(scrollProgress * (words.length + 1));
 
       words.forEach((word, index) => {
         if (index < wordsToHighlight) {
@@ -183,6 +208,68 @@ const words = headline.split(' ');
     }
   }
 
+  /* Social proof */
+  .hero-scroll__social-proof {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .hero-scroll__avatars {
+    display: flex;
+  }
+
+  .hero-scroll__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--color-bg-primary);
+    overflow: hidden;
+    margin-left: calc(var(--avatar-index) * -12px);
+    position: relative;
+    z-index: calc(10 - var(--avatar-index));
+    background: var(--color-bg-secondary);
+  }
+
+  .hero-scroll__avatar:first-child {
+    margin-left: 0;
+  }
+
+  .hero-scroll__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-scroll__avatar-placeholder {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--color-accent-primary) 0%, var(--color-accent-secondary, #ff8c42) 100%);
+  }
+
+  .hero-scroll__social-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .hero-scroll__social-count {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .hero-scroll__social-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
   /* Dark mode adjustments */
   [data-theme="dark"] .hero-word {
     color: var(--color-text-muted);
@@ -230,6 +317,10 @@ const words = headline.split(' ');
 
     .hero-scroll__urgency {
       align-self: center;
+    }
+
+    .hero-scroll__social-proof {
+      justify-content: center;
     }
   }
 
