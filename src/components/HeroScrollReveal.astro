@@ -6,13 +6,10 @@ interface Props {
     text: string;
     href: string;
   };
-  secondaryCta?: {
-    text: string;
-    href: string;
-  };
+  urgencyText?: string;
 }
 
-const { headline, subtitle, primaryCta, secondaryCta } = Astro.props;
+const { headline, subtitle, primaryCta, urgencyText } = Astro.props;
 
 // Split headline into words for animation
 const words = headline.split(' ');
@@ -29,17 +26,13 @@ const words = headline.split(' ');
     </div>
     <div class="hero-scroll__content">
       <p class="hero-scroll__subtitle">{subtitle}</p>
-      {(primaryCta || secondaryCta) && (
+      {primaryCta && (
         <div class="hero-scroll__ctas">
-          {primaryCta && (
-            <a href={primaryCta.href} class="button button--primary">
-              {primaryCta.text}
-            </a>
-          )}
-          {secondaryCta && (
-            <a href={secondaryCta.href} class="button">
-              {secondaryCta.text}
-            </a>
+          <a href={primaryCta.href} class="button button--primary">
+            {primaryCta.text}
+          </a>
+          {urgencyText && (
+            <p class="hero-scroll__urgency">{urgencyText}</p>
           )}
         </div>
       )}
@@ -116,7 +109,7 @@ const words = headline.split(' ');
   .hero-scroll__title {
     font-family: var(--font-serif);
     font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.1;
     letter-spacing: -0.02em;
     margin: 0;
@@ -166,8 +159,28 @@ const words = headline.split(' ');
 
   .hero-scroll__ctas {
     display: flex;
+    flex-direction: column;
     gap: var(--space-md);
-    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .hero-scroll__urgency {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
   }
 
   /* Dark mode adjustments */
@@ -210,13 +223,13 @@ const words = headline.split(' ');
       font-size: var(--text-lg);
     }
 
-    .hero-scroll__ctas {
-      flex-direction: column;
-    }
-
     .hero-scroll__ctas .button {
       width: 100%;
       justify-content: center;
+    }
+
+    .hero-scroll__urgency {
+      align-self: center;
     }
   }
 
