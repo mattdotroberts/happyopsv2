@@ -27,48 +27,58 @@ const features = [
 ];
 ---
 
-<section class="feature-grid-section">
-  <div class="container container--wide">
-    <div class="feature-grid reveal stagger-children">
-      {features.map((feature) => (
-        <FeatureBox
-          label={feature.label}
-          headline={feature.headline}
-          description={feature.description}
-          href={feature.href}
-          linkText={feature.linkText}
-          external={feature.external}
-        />
-      ))}
-    </div>
-  </div>
+<section class="feature-stack">
+  {features.map((feature) => (
+    <FeatureBox
+      label={feature.label}
+      headline={feature.headline}
+      description={feature.description}
+      href={feature.href}
+      linkText={feature.linkText}
+      external={feature.external}
+    />
+  ))}
 </section>
 
+<script>
+  // Scroll-based expansion animation for feature boxes
+  const featureWrappers = document.querySelectorAll('.feature-box-wrapper');
+
+  if (featureWrappers.length > 0) {
+    const observerOptions = {
+      threshold: 0.3,
+      rootMargin: '-10% 0px -10% 0px'
+    };
+
+    const featureObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('expanded');
+        } else {
+          // Optional: remove expanded state when scrolling away
+          // entry.target.classList.remove('expanded');
+        }
+      });
+    }, observerOptions);
+
+    featureWrappers.forEach((wrapper) => {
+      featureObserver.observe(wrapper);
+    });
+  }
+</script>
+
 <style>
-  .feature-grid-section {
-    padding: var(--space-4xl) 0;
+  .feature-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    padding: var(--space-2xl) 0;
   }
 
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-xl);
-  }
-
-  @media (max-width: 1024px) {
-    .feature-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 640px) {
-    .feature-grid-section {
-      padding: var(--space-2xl) 0;
-    }
-
-    .feature-grid {
-      grid-template-columns: 1fr;
-      gap: var(--space-lg);
+  @media (max-width: 768px) {
+    .feature-stack {
+      gap: var(--space-md);
+      padding: var(--space-xl) 0;
     }
   }
 </style>

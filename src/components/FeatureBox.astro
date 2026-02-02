@@ -11,34 +11,60 @@ interface Props {
 const { label, headline, description, href, linkText = "Explore", external = false } = Astro.props;
 ---
 
-<a
-  href={href}
-  class="feature-box"
-  target={external ? "_blank" : undefined}
-  rel={external ? "noopener noreferrer" : undefined}
->
-  <span class="feature-box__label">{label}</span>
-  <h3 class="feature-box__headline">{headline}</h3>
-  <p class="feature-box__description">{description}</p>
-  <span class="feature-box__link">
-    {linkText} <span class="feature-box__arrow">→</span>
-  </span>
-</a>
+<div class="feature-box-wrapper">
+  <a
+    href={href}
+    class="feature-box"
+    target={external ? "_blank" : undefined}
+    rel={external ? "noopener noreferrer" : undefined}
+  >
+    <div class="feature-box__content">
+      <span class="feature-box__label">{label}</span>
+      <h3 class="feature-box__headline">{headline}</h3>
+      <p class="feature-box__description">{description}</p>
+      <span class="feature-box__link">
+        {linkText} <span class="feature-box__arrow">→</span>
+      </span>
+    </div>
+  </a>
+</div>
 
 <style>
+  .feature-box-wrapper {
+    --box-scale: 0.92;
+    --box-radius: 24px;
+    --box-margin: 2rem;
+    width: 100%;
+  }
+
   .feature-box {
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: var(--space-2xl);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 60vh;
+    padding: var(--space-4xl) var(--space-2xl);
     background-color: var(--color-feature-bg);
-    border: 1px solid var(--color-feature-border);
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--box-radius);
+    margin: 0 var(--box-margin);
     text-decoration: none;
-    transition: transform var(--transition-lift),
-                box-shadow var(--transition-lift),
-                border-color var(--transition-fast);
     overflow: hidden;
+    transform: scale(var(--box-scale));
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                border-radius 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                margin 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Scroll-activated expanded state */
+  .feature-box-wrapper.expanded .feature-box {
+    --box-scale: 1;
+    --box-radius: 0px;
+    --box-margin: 0rem;
+    transform: scale(1);
+    border-radius: 0;
+    margin: 0;
   }
 
   .feature-box::before {
@@ -46,51 +72,61 @@ const { label, headline, description, href, linkText = "Explore", external = fal
     position: absolute;
     inset: 0;
     background: radial-gradient(
-      circle at 50% 100%,
+      ellipse at 50% 100%,
       var(--color-feature-glow) 0%,
-      transparent 60%
+      transparent 50%
     );
     opacity: 0;
-    transition: opacity var(--transition-lift);
+    transition: opacity 0.6s ease;
     pointer-events: none;
-  }
-
-  .feature-box:hover {
-    transform: translateY(-8px);
-    border-color: var(--color-accent-primary);
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
-    text-decoration: none;
   }
 
   .feature-box:hover::before {
     opacity: 1;
   }
 
+  .feature-box__content {
+    max-width: 700px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+  }
+
+  .feature-box-wrapper.expanded .feature-box__content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .feature-box__label {
+    display: block;
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--color-accent-primary);
     text-transform: uppercase;
     letter-spacing: var(--tracking-wider);
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-xl);
   }
 
   .feature-box__headline {
     font-family: var(--font-serif);
-    font-size: var(--text-3xl);
-    font-weight: 500;
+    font-size: clamp(3rem, 8vw, 6rem);
+    font-weight: 400;
     color: #FAFAFA;
-    line-height: var(--leading-tight);
-    margin-bottom: var(--space-md);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: var(--space-lg);
   }
 
   .feature-box__description {
     font-family: var(--font-mono);
-    font-size: var(--text-sm);
+    font-size: var(--text-lg);
     color: #A1A1A1;
     line-height: var(--leading-relaxed);
-    margin: 0;
-    flex-grow: 1;
+    margin: 0 0 var(--space-2xl);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .feature-box__link {
@@ -98,14 +134,17 @@ const { label, headline, description, href, linkText = "Explore", external = fal
     align-items: center;
     gap: var(--space-sm);
     font-family: var(--font-mono);
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     color: var(--color-accent-primary);
-    margin-top: var(--space-xl);
-    transition: gap var(--transition-fast);
+    padding: var(--space-sm) var(--space-lg);
+    border: 1px solid var(--color-accent-primary);
+    border-radius: var(--border-radius-sm);
+    transition: all var(--transition-fast);
   }
 
   .feature-box:hover .feature-box__link {
-    gap: var(--space-md);
+    background: var(--color-accent-primary);
+    color: #0A0A0A;
   }
 
   .feature-box__arrow {
@@ -116,13 +155,47 @@ const { label, headline, description, href, linkText = "Explore", external = fal
     transform: translateX(4px);
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
+    .feature-box-wrapper {
+      --box-margin: 1rem;
+    }
+
     .feature-box {
-      padding: var(--space-xl);
+      min-height: 50vh;
+      padding: var(--space-3xl) var(--space-xl);
     }
 
     .feature-box__headline {
-      font-size: var(--text-2xl);
+      font-size: clamp(2.5rem, 10vw, 4rem);
+    }
+
+    .feature-box__description {
+      font-size: var(--text-base);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .feature-box-wrapper {
+      --box-margin: 0.5rem;
+    }
+
+    .feature-box {
+      min-height: 70vh;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .feature-box,
+    .feature-box__content {
+      transition: none;
+      transform: none;
+      opacity: 1;
+    }
+
+    .feature-box {
+      border-radius: 0;
+      margin: 0;
     }
   }
 </style>
