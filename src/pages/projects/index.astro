@@ -1,0 +1,172 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+// Get all projects, sorted by date (newest first)
+const allProjects = (await getCollection('projects'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Featured project is the one marked as featured, or the first one
+const featuredProject = allProjects.find(p => p.data.featured) || allProjects[0] || null;
+const gridProjects = allProjects.filter(p => p !== featuredProject);
+---
+
+<BaseLayout
+  title="Projects | Happy Operators"
+  description="See how we've helped agencies and teams automate their operations with AI. Real projects, real results."
+>
+  <div class="container">
+    <header class="page-header">
+      <span class="page-header__label">[Our Work]</span>
+      <h1 class="page-header__title">Projects</h1>
+      <p class="page-header__subtitle">
+        Real automation systems. Real results. Here's what we've built for our clients.
+      </p>
+    </header>
+
+    <hr />
+
+    {allProjects.length > 0 ? (
+      <section class="projects-layout">
+        {featuredProject && (
+          <ProjectCard
+            title={featuredProject.data.title}
+            slug={featuredProject.id}
+            client={featuredProject.data.client}
+            clientLogo={featuredProject.data.clientLogo}
+            industry={featuredProject.data.industry}
+            heroImage={featuredProject.data.heroImage}
+            techStack={featuredProject.data.techStack}
+            featured={true}
+          />
+        )}
+
+        {gridProjects.length > 0 && (
+          <div class="projects-grid stagger-children">
+            {gridProjects.map((project) => (
+              <ProjectCard
+                title={project.data.title}
+                slug={project.id}
+                client={project.data.client}
+                clientLogo={project.data.clientLogo}
+                industry={project.data.industry}
+                heroImage={project.data.heroImage}
+                techStack={project.data.techStack}
+              />
+            ))}
+          </div>
+        )}
+      </section>
+    ) : (
+      <div class="empty-state">
+        <p>Projects coming soon. We're documenting our recent work.</p>
+      </div>
+    )}
+
+    <section class="cta-section">
+      <h2 class="cta-section__title">Have a project in mind?</h2>
+      <p class="cta-section__text">Let's talk about how we can help automate your operations.</p>
+      <a href="/contact" class="cta-button">Book a Call</a>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    padding: var(--space-3xl) 0 var(--space-2xl);
+  }
+
+  .page-header__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-md);
+  }
+
+  .page-header__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-5xl);
+    font-weight: 400;
+    margin-bottom: var(--space-md);
+    line-height: var(--leading-tight);
+  }
+
+  .page-header__subtitle {
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    max-width: 50ch;
+  }
+
+  .projects-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2xl);
+    padding: var(--space-xl) 0;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 640px) {
+    .projects-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .projects-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: var(--space-4xl) 0;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .cta-section {
+    text-align: center;
+    padding: var(--space-4xl) 0;
+    margin-top: var(--space-2xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .cta-section__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .cta-section__text {
+    font-family: var(--font-mono);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xl);
+  }
+
+  .cta-button {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    color: var(--color-accent-primary);
+    padding: var(--space-md) var(--space-xl);
+    border: 1px solid var(--color-accent-primary);
+    border-radius: var(--border-radius-sm);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .cta-button:hover {
+    background: var(--color-accent-primary);
+    color: white;
+  }
+</style>

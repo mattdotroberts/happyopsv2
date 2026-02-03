@@ -86,3 +86,102 @@ draft: false
 ## Deployment
 
 Deployed to Vercel. Push to main triggers automatic deployment.
+
+## Design Principles
+
+### Visual Philosophy
+- **Minimal and clean** - Lots of whitespace, no clutter
+- **Developer aesthetic** - Monospace body text, bracketed labels, terminal-inspired
+- **Warm but professional** - Cream backgrounds (light mode), dark grays (dark mode), orange accent
+
+### Typography Hierarchy
+- **Headings**: Crimson Pro (serif) - elegant, editorial feel
+- **Body/UI**: Geist Mono (monospace) - technical, developer-friendly
+- **Labels**: Uppercase mono, wider letter-spacing, often in `[BRACKETS]`
+
+### Color Usage
+- Accent orange (`--color-accent-primary`) for: CTAs, links, hover states, labels
+- Never use raw hex values - always use CSS variables
+- Text hierarchy: `--color-text-primary` → `--color-text-secondary` → `--color-text-muted`
+
+### Spacing
+Always use the spacing scale variables:
+```css
+--space-xs: 0.25rem    /* Tiny gaps */
+--space-sm: 0.5rem     /* Inline spacing */
+--space-md: 1rem       /* Default padding */
+--space-lg: 1.5rem     /* Card padding */
+--space-xl: 2rem       /* Section gaps */
+--space-2xl: 3rem      /* Between sections */
+--space-3xl: 4rem      /* Major breaks */
+--space-4xl: 6rem      /* Section padding */
+```
+
+## Component Patterns
+
+### CSS Naming
+Use BEM-like convention:
+```css
+.component { }
+.component__element { }
+.component--modifier { }
+```
+
+### Section Structure
+```astro
+<section class="container section">
+  <header class="section__header reveal">
+    <span class="section__label">[LABEL]</span>
+    <h2 class="section__title">Title</h2>
+  </header>
+  <!-- content with reveal stagger-children -->
+</section>
+```
+
+### Card Components
+- Border: `1px solid var(--color-border)`
+- Border radius: `var(--border-radius-md)` (8px)
+- Hover: `border-color: var(--color-accent-primary)` + subtle lift
+- Always use `transition: var(--transition-fast)` for hover states
+
+### Buttons
+```astro
+<a href="/path" class="button">Default</a>
+<a href="/path" class="button button--primary">Primary</a>
+```
+
+### Animation Classes
+- `reveal` - Fade up on scroll (add to elements)
+- `stagger-children` - Stagger children animations (add to container)
+- Always respect `prefers-reduced-motion`
+
+## Do's and Don'ts
+
+### Do
+- Use CSS variables for all colors, spacing, typography
+- Keep component styles scoped in `<style>` tags
+- Add `reveal` class to section headers and content blocks
+- Use `.container` for max-width centering
+- Include `@media (max-width: 768px)` breakpoint for mobile
+
+### Don't
+- Don't use inline styles
+- Don't use arbitrary pixel values - use the scale
+- Don't add new fonts without updating variables.css
+- Don't hardcode colors - use semantic variables
+- Don't skip the bracketed label pattern for sections
+- Don't forget dark mode - test both themes
+
+## Component Reference
+
+| Component | Use Case |
+|-----------|----------|
+| `FeatureBox` | Large CTA cards with scroll animation |
+| `BlogCard` | Blog post cards (standard + featured variants) |
+| `ServiceCard` | Service listing items |
+| `UseCaseCard` | Use case listing items |
+| `Testimonial` | Customer quotes |
+| `CTASection` | Call-to-action banners |
+| `TagBadge` | Bracketed tag labels |
+| `HeroScrollReveal` | Homepage hero with parallax |
+| `MinimalHero` | Simple page headers |

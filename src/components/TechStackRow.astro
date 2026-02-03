@@ -1,0 +1,76 @@
+---
+interface Props {
+  techStack: Array<{ name: string; logo: string }>;
+}
+
+const { techStack } = Astro.props;
+---
+
+<div class="tech-stack">
+  <span class="tech-stack__label">Built with</span>
+  <div class="tech-stack__items">
+    {techStack.map((tech) => (
+      <div class="tech-stack__item">
+        <img src={tech.logo} alt={tech.name} class="tech-stack__logo" />
+        <span class="tech-stack__name">{tech.name}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .tech-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .tech-stack__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .tech-stack__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xl);
+  }
+
+  .tech-stack__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .tech-stack__logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    transition: transform var(--transition-fast);
+  }
+
+  .tech-stack__item:hover .tech-stack__logo {
+    transform: scale(1.1);
+  }
+
+  .tech-stack__name {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 480px) {
+    .tech-stack__items {
+      gap: var(--space-lg);
+    }
+
+    .tech-stack__logo {
+      width: 40px;
+      height: 40px;
+    }
+  }
+</style>

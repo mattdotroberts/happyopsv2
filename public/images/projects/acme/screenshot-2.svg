@@ -1,0 +1,10 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#1A1A1A"/>
+  <rect x="50" y="50" width="1500" height="900" rx="12" fill="#252525"/>
+  <rect x="80" y="80" width="150" height="30" rx="4" fill="#F26A3D"/>
+  <rect x="80" y="140" width="700" height="400" rx="8" fill="#2A2A2A"/>
+  <rect x="800" y="140" width="700" height="400" rx="8" fill="#2A2A2A"/>
+  <rect x="80" y="560" width="1420" height="340" rx="8" fill="#2A2A2A"/>
+  <text x="430" y="340" text-anchor="middle" fill="#666" font-family="system-ui" font-size="18">Lead Score</text>
+  <text x="1150" y="340" text-anchor="middle" fill="#666" font-family="system-ui" font-size="18">Company Info</text>
+</svg>

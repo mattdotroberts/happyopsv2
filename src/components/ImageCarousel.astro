@@ -1,0 +1,207 @@
+---
+interface Props {
+  images: string[];
+  alt?: string;
+}
+
+const { images, alt = "Project screenshot" } = Astro.props;
+---
+
+<div class="carousel" data-carousel>
+  <div class="carousel__track" data-carousel-track>
+    {images.map((image, index) => (
+      <div class="carousel__slide" data-carousel-slide>
+        <img src={image} alt={`${alt} ${index + 1}`} loading="lazy" />
+      </div>
+    ))}
+  </div>
+
+  {images.length > 1 && (
+    <>
+      <button class="carousel__btn carousel__btn--prev" data-carousel-prev aria-label="Previous image">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button class="carousel__btn carousel__btn--next" data-carousel-next aria-label="Next image">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="carousel__dots" data-carousel-dots>
+        {images.map((_, index) => (
+          <button
+            class={`carousel__dot ${index === 0 ? 'carousel__dot--active' : ''}`}
+            data-carousel-dot={index}
+            aria-label={`Go to image ${index + 1}`}
+          />
+        ))}
+      </div>
+    </>
+  )}
+</div>
+
+<script>
+  const carousels = document.querySelectorAll('[data-carousel]');
+
+  carousels.forEach((carousel) => {
+    const track = carousel.querySelector('[data-carousel-track]') as HTMLElement;
+    const slides = carousel.querySelectorAll('[data-carousel-slide]');
+    const prevBtn = carousel.querySelector('[data-carousel-prev]');
+    const nextBtn = carousel.querySelector('[data-carousel-next]');
+    const dots = carousel.querySelectorAll('[data-carousel-dot]');
+
+    let currentIndex = 0;
+    const slideCount = slides.length;
+
+    function goToSlide(index: number) {
+      if (index < 0) index = slideCount - 1;
+      if (index >= slideCount) index = 0;
+
+      currentIndex = index;
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+      // Update dots
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('carousel__dot--active', i === currentIndex);
+      });
+    }
+
+    prevBtn?.addEventListener('click', () => goToSlide(currentIndex - 1));
+    nextBtn?.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => goToSlide(index));
+    });
+
+    // Touch/swipe support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    track.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    track.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          goToSlide(currentIndex + 1);
+        } else {
+          goToSlide(currentIndex - 1);
+        }
+      }
+    }, { passive: true });
+  });
+</script>
+
+<style>
+  .carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--border-radius-md);
+    background: var(--color-bg-secondary);
+  }
+
+  .carousel__track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .carousel__slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+  }
+
+  .carousel__slide img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+  }
+
+  .carousel__btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 50%;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-fast), background var(--transition-fast);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .carousel:hover .carousel__btn {
+    opacity: 1;
+  }
+
+  .carousel__btn:hover {
+    background: var(--color-accent-primary);
+    color: white;
+  }
+
+  .carousel__btn--prev {
+    left: var(--space-md);
+  }
+
+  .carousel__btn--next {
+    right: var(--space-md);
+  }
+
+  .carousel__dots {
+    position: absolute;
+    bottom: var(--space-md);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .carousel__dot {
+    width: 8px;
+    height: 8px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    padding: 0;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .carousel__dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .carousel__dot--active {
+    background: var(--color-accent-primary);
+    transform: scale(1.25);
+  }
+
+  /* Mobile: always show buttons */
+  @media (max-width: 768px) {
+    .carousel__btn {
+      opacity: 1;
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .carousel__track {
+      transition: none;
+    }
+  }
+</style>

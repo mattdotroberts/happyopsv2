@@ -1,0 +1,225 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+  client: string;
+  clientLogo: string;
+  industry: string;
+  heroImage: string;
+  techStack: Array<{ name: string; logo: string }>;
+  featured?: boolean;
+}
+
+const { title, slug, client, clientLogo, industry, heroImage, techStack, featured = false } = Astro.props;
+---
+
+{featured ? (
+  <article class="project-card project-card--featured reveal">
+    <a href={`/projects/${slug}`} class="project-card__link">
+      <div class="project-card__image-wrapper">
+        <img src={heroImage} alt={title} class="project-card__image" loading="lazy" />
+        <div class="project-card__client-logo">
+          <img src={clientLogo} alt={client} />
+        </div>
+        <div class="project-card__overlay">
+          <span class="project-card__industry">{industry}</span>
+          <h2 class="project-card__title">{title}</h2>
+          <div class="project-card__tech">
+            {techStack.slice(0, 4).map((tech) => (
+              <img src={tech.logo} alt={tech.name} title={tech.name} class="project-card__tech-icon" />
+            ))}
+          </div>
+        </div>
+      </div>
+    </a>
+  </article>
+) : (
+  <article class="project-card reveal">
+    <a href={`/projects/${slug}`} class="project-card__link">
+      <div class="project-card__image-wrapper">
+        <img src={heroImage} alt={title} class="project-card__image" loading="lazy" />
+        <div class="project-card__client-logo">
+          <img src={clientLogo} alt={client} />
+        </div>
+      </div>
+      <div class="project-card__content">
+        <span class="project-card__industry">{industry}</span>
+        <h3 class="project-card__title">{title}</h3>
+        <div class="project-card__tech">
+          {techStack.slice(0, 4).map((tech) => (
+            <img src={tech.logo} alt={tech.name} title={tech.name} class="project-card__tech-icon" />
+          ))}
+        </div>
+      </div>
+    </a>
+  </article>
+)}
+
+<style>
+  .project-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    transition:
+      transform var(--transition-lift),
+      border-color var(--transition-fast),
+      box-shadow var(--transition-fast);
+  }
+
+  .project-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .project-card__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .project-card__image-wrapper {
+    position: relative;
+  }
+
+  .project-card__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+  }
+
+  .project-card__client-logo {
+    position: absolute;
+    top: var(--space-md);
+    left: var(--space-md);
+    width: 48px;
+    height: 48px;
+    background: white;
+    border-radius: var(--border-radius-sm);
+    padding: var(--space-xs);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .project-card__client-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .project-card__content {
+    padding: var(--space-lg);
+  }
+
+  .project-card__industry {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: var(--space-sm);
+  }
+
+  .project-card__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+    margin: 0 0 var(--space-md);
+    transition: color var(--transition-fast);
+  }
+
+  .project-card__link:hover .project-card__title {
+    color: var(--color-accent-primary);
+  }
+
+  .project-card__tech {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .project-card__tech-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    opacity: 0.7;
+    transition: opacity var(--transition-fast);
+  }
+
+  .project-card:hover .project-card__tech-icon {
+    opacity: 1;
+  }
+
+  /* Featured card styles */
+  .project-card--featured {
+    grid-column: 1 / -1;
+  }
+
+  .project-card--featured .project-card__image {
+    aspect-ratio: 16 / 9;
+  }
+
+  .project-card--featured .project-card__client-logo {
+    width: 64px;
+    height: 64px;
+    top: var(--space-lg);
+    left: var(--space-lg);
+  }
+
+  .project-card--featured .project-card__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-2xl);
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.6) 50%,
+      transparent 100%
+    );
+    color: white;
+  }
+
+  .project-card--featured .project-card__industry {
+    color: var(--color-accent-primary);
+  }
+
+  .project-card--featured .project-card__title {
+    font-size: var(--text-3xl);
+    color: white;
+    margin-bottom: var(--space-md);
+  }
+
+  .project-card--featured .project-card__link:hover .project-card__title {
+    color: var(--color-accent-primary);
+  }
+
+  .project-card--featured .project-card__tech-icon {
+    width: 32px;
+    height: 32px;
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+  }
+
+  .project-card--featured:hover .project-card__tech-icon {
+    opacity: 1;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .project-card--featured .project-card__title {
+      font-size: var(--text-2xl);
+    }
+
+    .project-card--featured .project-card__overlay {
+      padding: var(--space-lg);
+    }
+
+    .project-card--featured .project-card__client-logo {
+      width: 48px;
+      height: 48px;
+    }
+  }
+</style>

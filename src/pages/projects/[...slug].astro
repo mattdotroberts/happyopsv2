@@ -1,0 +1,375 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ImageCarousel from '../../components/ImageCarousel.astro';
+import TechStackRow from '../../components/TechStackRow.astro';
+import MetricCard from '../../components/MetricCard.astro';
+import TestimonialBlock from '../../components/TestimonialBlock.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+// Get all projects for next/prev navigation
+const allProjects = (await getCollection('projects'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const currentIndex = allProjects.findIndex(p => p.id === project.id);
+const nextProject = allProjects[(currentIndex + 1) % allProjects.length];
+
+const {
+  title,
+  description,
+  client,
+  clientLogo,
+  industry,
+  heroImage,
+  images,
+  techStack,
+  metrics,
+  testimonial,
+} = project.data;
+---
+
+<BaseLayout
+  title={`${title} | Projects | Happy Operators`}
+  description={description}
+>
+  <article class="project">
+    <!-- Hero Section -->
+    <section class="project-hero">
+      <div class="project-hero__image-wrapper">
+        <img
+          src={heroImage}
+          alt={title}
+          class="project-hero__image"
+        />
+        <div class="project-hero__client-logo">
+          <img src={clientLogo} alt={client} />
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <!-- Header -->
+      <header class="project-header">
+        <span class="project-header__industry">{industry}</span>
+        <h1 class="project-header__title">{title}</h1>
+        <p class="project-header__client">for {client}</p>
+      </header>
+
+      <!-- Gallery -->
+      {images && images.length > 0 && (
+        <section class="project-section">
+          <ImageCarousel images={images} alt={`${title} screenshot`} />
+        </section>
+      )}
+
+      <!-- Content -->
+      <section class="project-content">
+        <Content />
+      </section>
+
+      <!-- Tech Stack -->
+      {techStack && techStack.length > 0 && (
+        <section class="project-section">
+          <TechStackRow techStack={techStack} />
+        </section>
+      )}
+
+      <!-- Metrics -->
+      {metrics && metrics.length > 0 && (
+        <section class="project-section">
+          <MetricCard metrics={metrics} />
+        </section>
+      )}
+
+      <!-- Testimonial -->
+      {testimonial && (
+        <section class="project-section">
+          <TestimonialBlock
+            quote={testimonial.quote}
+            author={testimonial.author}
+            role={testimonial.role}
+          />
+        </section>
+      )}
+
+      <!-- CTA -->
+      <section class="project-cta">
+        <h2 class="project-cta__title">Want results like this?</h2>
+        <a href="/contact" class="cta-button">Book a Call</a>
+      </section>
+
+      <!-- Next Project -->
+      {nextProject && nextProject.id !== project.id && (
+        <nav class="project-nav">
+          <a href={`/projects/${nextProject.id}`} class="project-nav__link">
+            <span class="project-nav__label">Next Project</span>
+            <span class="project-nav__title">{nextProject.data.title}</span>
+            <span class="project-nav__arrow">→</span>
+          </a>
+        </nav>
+      )}
+    </div>
+  </article>
+</BaseLayout>
+
+<script>
+  // Hero image scroll animation (scale effect)
+  const heroWrapper = document.querySelector('.project-hero__image-wrapper') as HTMLElement;
+
+  if (heroWrapper) {
+    const updateHeroScale = () => {
+      const scrollY = window.scrollY;
+      const maxScroll = 300;
+      const progress = Math.min(scrollY / maxScroll, 1);
+
+      // Scale from 0.95 to 1 as user scrolls
+      const scale = 0.95 + (0.05 * progress);
+      // Slightly reduce border radius
+      const radius = 24 - (16 * progress);
+
+      heroWrapper.style.transform = `scale(${scale})`;
+      heroWrapper.style.borderRadius = `${radius}px`;
+    };
+
+    // Use requestAnimationFrame for smooth animation
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateHeroScale();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Initial state
+    updateHeroScale();
+  }
+</script>
+
+<style>
+  .project-hero {
+    padding: var(--space-md);
+    overflow: hidden;
+  }
+
+  .project-hero__image-wrapper {
+    position: relative;
+    transform: scale(0.95);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: transform 0.1s ease-out, border-radius 0.1s ease-out;
+    will-change: transform, border-radius;
+  }
+
+  .project-hero__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    display: block;
+  }
+
+  .project-hero__client-logo {
+    position: absolute;
+    top: var(--space-xl);
+    left: var(--space-xl);
+    width: 80px;
+    height: 80px;
+    background: white;
+    border-radius: var(--border-radius-md);
+    padding: var(--space-sm);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .project-hero__client-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .project-header {
+    padding: var(--space-3xl) 0 var(--space-2xl);
+    max-width: var(--max-width-content);
+  }
+
+  .project-header__industry {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-md);
+  }
+
+  .project-header__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-4xl);
+    font-weight: 400;
+    line-height: var(--leading-tight);
+    margin-bottom: var(--space-sm);
+  }
+
+  .project-header__client {
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+  }
+
+  .project-section {
+    padding: var(--space-2xl) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .project-content {
+    padding: var(--space-2xl) 0;
+    max-width: var(--max-width-prose);
+  }
+
+  .project-content :global(p) {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-lg);
+  }
+
+  .project-content :global(h2) {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .project-content :global(h3) {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-sm);
+  }
+
+  .project-content :global(ul),
+  .project-content :global(ol) {
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-lg);
+    padding-left: var(--space-xl);
+  }
+
+  .project-content :global(li) {
+    margin-bottom: var(--space-sm);
+  }
+
+  .project-cta {
+    text-align: center;
+    padding: var(--space-4xl) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .project-cta__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-lg);
+  }
+
+  .cta-button {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-base);
+    color: var(--color-accent-primary);
+    padding: var(--space-md) var(--space-xl);
+    border: 1px solid var(--color-accent-primary);
+    border-radius: var(--border-radius-sm);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .cta-button:hover {
+    background: var(--color-accent-primary);
+    color: white;
+  }
+
+  .project-nav {
+    padding: var(--space-2xl) 0 var(--space-4xl);
+  }
+
+  .project-nav__link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-xl);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-md);
+    text-decoration: none;
+    color: inherit;
+    transition: background var(--transition-fast);
+  }
+
+  .project-nav__link:hover {
+    background: var(--color-bg-tertiary);
+  }
+
+  .project-nav__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .project-nav__title {
+    flex: 1;
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+  }
+
+  .project-nav__arrow {
+    font-size: var(--text-2xl);
+    color: var(--color-accent-primary);
+    transition: transform var(--transition-fast);
+  }
+
+  .project-nav__link:hover .project-nav__arrow {
+    transform: translateX(4px);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .project-hero {
+      padding: var(--space-sm);
+    }
+
+    .project-hero__client-logo {
+      width: 60px;
+      height: 60px;
+      top: var(--space-md);
+      left: var(--space-md);
+    }
+
+    .project-header__title {
+      font-size: var(--text-3xl);
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .project-hero__image-wrapper {
+      transform: none !important;
+      border-radius: var(--border-radius-md) !important;
+    }
+  }
+</style>

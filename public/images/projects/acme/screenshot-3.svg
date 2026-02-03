@@ -1,0 +1,12 @@
+<svg width="1600" height="1000" viewBox="0 0 1600 1000" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1000" fill="#1A1A1A"/>
+  <rect x="50" y="50" width="1500" height="900" rx="12" fill="#252525"/>
+  <rect x="80" y="80" width="180" height="30" rx="4" fill="#F26A3D"/>
+  <rect x="80" y="130" width="300" height="20" rx="4" fill="#3A3A3A"/>
+  <rect x="80" y="180" width="460" height="600" rx="8" fill="#2A2A2A"/>
+  <rect x="560" y="180" width="460" height="600" rx="8" fill="#2A2A2A"/>
+  <rect x="1040" y="180" width="460" height="600" rx="8" fill="#2A2A2A"/>
+  <text x="310" y="480" text-anchor="middle" fill="#666" font-family="system-ui" font-size="16">Slack Alert</text>
+  <text x="790" y="480" text-anchor="middle" fill="#666" font-family="system-ui" font-size="16">HubSpot Update</text>
+  <text x="1270" y="480" text-anchor="middle" fill="#666" font-family="system-ui" font-size="16">Email Sent</text>
+</svg>

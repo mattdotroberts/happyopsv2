@@ -41,4 +41,32 @@ const useCases = defineCollection({
   }),
 });
 
-export const collections = { blog, services, useCases };
+const projects = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    client: z.string(),
+    clientLogo: z.string(),
+    industry: z.string(),
+    pubDate: z.coerce.date(),
+    featured: z.boolean().optional().default(false),
+    heroImage: z.string(),
+    images: z.array(z.string()),
+    techStack: z.array(z.object({
+      name: z.string(),
+      logo: z.string(),
+    })),
+    metrics: z.array(z.object({
+      label: z.string(),
+      value: z.string(),
+    })),
+    testimonial: z.object({
+      quote: z.string(),
+      author: z.string(),
+      role: z.string(),
+    }).optional(),
+  }),
+});
+
+export const collections = { blog, services, useCases, projects };
