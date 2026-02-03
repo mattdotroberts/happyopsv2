@@ -80,9 +80,9 @@ const words = headline.split(' ');
       const sectionHeight = heroSection.offsetHeight;
       const scrollY = window.scrollY;
 
-      // Progress: 0 at section start, 1 when 40% through
+      // Progress: 0 at section start, 1 when 15% through (complete quickly)
       const startOffset = sectionTop;
-      const endOffset = sectionTop + (sectionHeight * 0.4);
+      const endOffset = sectionTop + (sectionHeight * 0.15);
       const scrollProgress = Math.max(0, Math.min(1,
         (scrollY - startOffset) / (endOffset - startOffset)
       ));
