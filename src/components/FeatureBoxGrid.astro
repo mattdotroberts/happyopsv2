@@ -20,9 +20,10 @@ const features = [
     label: "Our Product",
     headline: "We Ship",
     description: "Hapi — AI-powered transcription for macOS. Built by operators, for operators.",
-    href: "https://hapi.so",
+    href: "https://hapi.happyoperators.com",
     linkText: "Try Hapi",
-    external: true
+    external: true,
+    icon: "macos"
   }
 ];
 ---
@@ -36,6 +37,7 @@ const features = [
       href={feature.href}
       linkText={feature.linkText}
       external={feature.external}
+      icon={feature.icon}
     />
   ))}
 </section>

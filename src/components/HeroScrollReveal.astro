@@ -80,9 +80,10 @@ const words = headline.split(' ');
       const sectionHeight = heroSection.offsetHeight;
       const scrollY = window.scrollY;
 
-      // Progress: 0 at section start, 1 when 15% through (complete quickly)
-      const startOffset = sectionTop;
-      const endOffset = sectionTop + (sectionHeight * 0.15);
+      // Progress: starts before user scrolls (negative offset), completes very quickly
+      // This makes words start turning white immediately on the slightest scroll
+      const startOffset = sectionTop - 50;
+      const endOffset = sectionTop + (sectionHeight * 0.08);
       const scrollProgress = Math.max(0, Math.min(1,
         (scrollY - startOffset) / (endOffset - startOffset)
       ));
@@ -186,7 +187,7 @@ const words = headline.split(' ');
 
   .hero-scroll__subtitle {
     font-family: var(--font-serif);
-    font-size: var(--text-xl);
+    font-size: var(--text-2xl);
     color: var(--color-text-secondary);
     line-height: var(--leading-relaxed);
     margin: 0 0 var(--space-2xl);
@@ -197,6 +198,12 @@ const words = headline.split(' ');
     flex-direction: column;
     gap: var(--space-md);
     align-items: flex-start;
+  }
+
+  .hero-scroll__ctas .button {
+    font-size: var(--text-xl);
+    padding: var(--space-lg) var(--space-2xl);
+    font-weight: 600;
   }
 
   .hero-scroll__urgency {

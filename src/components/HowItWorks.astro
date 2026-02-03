@@ -67,9 +67,9 @@ const steps = [
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
 
-      // Start animation as soon as section enters viewport, complete when section is centered
-      const startOffset = sectionTop - viewportHeight;
-      const endOffset = sectionTop - viewportHeight * 0.4;
+      // Start animation well before section enters viewport, complete by the time it's 80% visible
+      const startOffset = sectionTop - viewportHeight * 1.5;
+      const endOffset = sectionTop - viewportHeight * 0.2;
 
       const progress = Math.max(0, Math.min(1,
         (scrollY - startOffset) / (endOffset - startOffset)
