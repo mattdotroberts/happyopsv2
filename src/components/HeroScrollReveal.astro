@@ -233,12 +233,12 @@ const words = headline.split(' ');
   }
 
   .hero-scroll__avatar {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    border: 2px solid var(--color-bg-primary);
+    border: 3px solid var(--color-bg-primary);
     overflow: hidden;
-    margin-left: calc(var(--avatar-index) * -12px);
+    margin-left: -14px;
     position: relative;
     z-index: calc(10 - var(--avatar-index));
     background: var(--color-bg-secondary);
@@ -246,6 +246,12 @@ const words = headline.split(' ');
 
   .hero-scroll__avatar:first-child {
     margin-left: 0;
+  }
+
+  /* Layer the rest behind after first 5 */
+  .hero-scroll__avatar:nth-child(n+6) {
+    margin-left: -30px;
+    opacity: 0.7;
   }
 
   .hero-scroll__avatar img {
