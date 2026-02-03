@@ -1,0 +1,333 @@
+---
+const steps = [
+  {
+    number: 1,
+    label: "Kickoff Call",
+    headline: "Let's see if we vibe",
+    description: "Quick chat to understand your chaos and check if we're the right fit to fix it.",
+    emoji: "☕"
+  },
+  {
+    number: 2,
+    label: "Operational Canvas",
+    headline: "Where's the bottleneck hiding?",
+    description: "We dig into your workflows, spot the AI opportunities, and find what's eating your time.",
+    emoji: "🔍"
+  },
+  {
+    number: 3,
+    label: "Map It Out",
+    headline: "Your game plan, your control",
+    description: "Training, building, or both—we deliver what YOU need to reclaim your calendar.",
+    emoji: "🗺️"
+  }
+];
+---
+
+<section class="how-it-works">
+  <div class="container">
+    <header class="how-it-works__header">
+      <span class="how-it-works__label">[HOW WE ROLL]</span>
+      <h2 class="how-it-works__title">The cr*p-removal process</h2>
+      <p class="how-it-works__subtitle">You stay in control. Our mission? Take the tedious stuff off your plate.</p>
+    </header>
+
+    <div class="how-it-works__timeline">
+      <div class="timeline-track">
+        <div class="timeline-fill"></div>
+      </div>
+
+      <div class="steps-grid">
+        {steps.map((step) => (
+          <div class="step-card" data-step={step.number}>
+            <div class="step-marker">
+              <span class="step-number">{step.number}</span>
+            </div>
+            <div class="step-emoji">{step.emoji}</div>
+            <span class="step-label">{step.label}</span>
+            <h3 class="step-headline">{step.headline}</h3>
+            <p class="step-description">{step.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const section = document.querySelector('.how-it-works') as HTMLElement;
+  const timelineFill = document.querySelector('.timeline-fill') as HTMLElement;
+  const stepCards = document.querySelectorAll('.step-card');
+  const stepEmojis = document.querySelectorAll('.step-emoji');
+
+  if (section && timelineFill && stepCards.length > 0) {
+    const updateTimeline = () => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+
+      // Start animation when section enters viewport (bottom of viewport hits top of section)
+      // End when we're 60% through the section
+      const startOffset = sectionTop - viewportHeight * 0.8;
+      const endOffset = sectionTop + sectionHeight * 0.5;
+
+      const progress = Math.max(0, Math.min(1,
+        (scrollY - startOffset) / (endOffset - startOffset)
+      ));
+
+      // Update timeline fill (horizontal on desktop, vertical on mobile)
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        timelineFill.style.width = '100%';
+        timelineFill.style.height = `${progress * 100}%`;
+      } else {
+        timelineFill.style.height = '100%';
+        timelineFill.style.width = `${progress * 100}%`;
+      }
+
+      // Activate steps based on progress
+      const stepsCount = stepCards.length;
+      stepCards.forEach((card, index) => {
+        const stepThreshold = (index + 0.5) / stepsCount;
+        const isActive = progress >= stepThreshold;
+
+        card.classList.toggle('active', isActive);
+      });
+    };
+
+    // Throttle with requestAnimationFrame
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateTimeline();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    requestAnimationFrame(updateTimeline);
+  }
+</script>
+
+<style>
+  .how-it-works {
+    background: #0A0A0A;
+    padding: var(--space-5xl) 0;
+    overflow: hidden;
+  }
+
+  .how-it-works__header {
+    text-align: center;
+    margin-bottom: var(--space-4xl);
+  }
+
+  .how-it-works__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-md);
+  }
+
+  .how-it-works__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw + 1rem, 3.5rem);
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-md);
+  }
+
+  .how-it-works__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .how-it-works__timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  /* Horizontal timeline track */
+  .timeline-track {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--color-border);
+    border-radius: 2px;
+    z-index: 1;
+  }
+
+  .timeline-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0;
+    background: var(--color-accent-primary);
+    border-radius: 2px;
+    transition: width 0.1s ease-out;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+    position: relative;
+    z-index: 2;
+  }
+
+  .step-card {
+    text-align: center;
+    padding: var(--space-xl);
+    opacity: 0.4;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .step-card.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .step-marker {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-bg-secondary);
+    border: 3px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-xl);
+    transition: background 0.4s ease, border-color 0.4s ease;
+    position: relative;
+    z-index: 3;
+  }
+
+  .step-card.active .step-marker {
+    background: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+  }
+
+  .step-number {
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    font-weight: 700;
+    color: var(--color-text-muted);
+    transition: color 0.4s ease;
+  }
+
+  .step-card.active .step-number {
+    color: #0A0A0A;
+  }
+
+  .step-emoji {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-md);
+    opacity: 0;
+    transform: scale(0.5) rotate(-15deg);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .step-card.active .step-emoji {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+
+  .step-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-sm);
+  }
+
+  .step-headline {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--space-sm);
+  }
+
+  .step-description {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin: 0;
+  }
+
+  /* Mobile: Vertical timeline */
+  @media (max-width: 768px) {
+    .timeline-track {
+      top: 0;
+      left: 24px;
+      right: auto;
+      width: 4px;
+      height: 100%;
+    }
+
+    .timeline-fill {
+      width: 100%;
+      height: 0;
+      transition: height 0.1s ease-out;
+    }
+
+    .steps-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-2xl);
+      padding-left: var(--space-3xl);
+    }
+
+    .step-card {
+      text-align: left;
+    }
+
+    .step-marker {
+      position: absolute;
+      left: 0;
+      margin: 0;
+      transform: translateX(-50%);
+    }
+
+    .step-emoji {
+      font-size: 2rem;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .step-card {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .step-emoji {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+
+    .step-marker {
+      transition: none;
+    }
+
+    .timeline-fill {
+      transition: none;
+    }
+  }
+</style>

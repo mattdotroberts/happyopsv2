@@ -71,23 +71,26 @@ const words = headline.split(' ');
 
   if (words && words.length > 0) {
     const updateWordHighlights = () => {
-      const heroSection = document.querySelector('.hero-scroll');
+      const heroSection = document.querySelector('.hero-scroll') as HTMLElement;
       if (!heroSection) return;
 
-      const rect = heroSection.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      // Start highlighting as soon as page loads, complete by the time section is 30% scrolled
-      const scrollProgress = Math.max(0, Math.min(1, (viewportHeight - rect.top) / (viewportHeight * 0.5)));
+      // Use offsetTop (document-relative) instead of getBoundingClientRect (viewport-relative)
+      // This fixes the issue where sticky positioning breaks the animation
+      const sectionTop = heroSection.offsetTop;
+      const sectionHeight = heroSection.offsetHeight;
+      const scrollY = window.scrollY;
 
-      // Calculate how many words should be highlighted based on scroll
+      // Progress: 0 at section start, 1 when 40% through
+      const startOffset = sectionTop;
+      const endOffset = sectionTop + (sectionHeight * 0.4);
+      const scrollProgress = Math.max(0, Math.min(1,
+        (scrollY - startOffset) / (endOffset - startOffset)
+      ));
+
       const wordsToHighlight = Math.floor(scrollProgress * (words.length + 1));
 
       words.forEach((word, index) => {
-        if (index < wordsToHighlight) {
-          word.classList.add('highlighted');
-        } else {
-          word.classList.remove('highlighted');
-        }
+        word.classList.toggle('highlighted', index < wordsToHighlight);
       });
     };
 
@@ -100,14 +103,21 @@ const words = headline.split(' ');
       });
     };
 
-    // Run on scroll
-    window.addEventListener('scroll', updateWordHighlights, { passive: true });
+    // Add requestAnimationFrame throttling for smooth performance
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateWordHighlights();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
 
-    // Initial state
+    window.addEventListener('scroll', onScroll, { passive: true });
     initHighlight();
-
-    // Also run on load in case page is already scrolled
-    updateWordHighlights();
+    requestAnimationFrame(updateWordHighlights);
   }
 </script>
 
