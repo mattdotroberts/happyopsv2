@@ -1,152 +1,202 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CTASection from '../components/CTASection.astro';
+import PhotoGallery from '../components/PhotoGallery.astro';
+import ImageLightbox from '../components/ImageLightbox.astro';
 
-const workshops = [
+const trainingFormats = [
   {
-    title: "Microsoft Operator",
-    subtitle: "Master Microsoft Automation tools & Processes",
-    description: "A general overview workshop to empower members of your organisation to start running with AI and automation.",
-    goal: "Students will master Microsoft environment automation tools.",
-    duration: "10 hours",
-    sessions: "1.5h",
-    price: "750",
-    level: "Beginner - Advanced",
-    format: "Online & In Person",
-    featured: false,
+    title: "AI Discovery Workshop",
+    subtitle: "Strategy and priorities",
+    duration: "2-6 hours (0.5-1 day)",
+    outcome: "Clear AI roadmap",
+    description: "Before you build anything, you need to know what to build. This workshop is your compass. We use the AI Business Canvas to map your organisation's landscape, then identify where AI can make the biggest difference.",
+    whatYouGet: [
+      "AI Business Canvas: Complete picture of AI readiness, constraints, opportunities",
+      "Problem Discovery: Pain points ranked by impact and feasibility",
+      "Problem to Feature Mapping: Business problems → AI capabilities",
+      "Solution Discovery: Prioritised high-impact projects"
+    ],
+    bestFor: "Agencies starting their AI journey. Leadership teams seeking clarity. Organisations with many ideas but no clear direction.",
+    image: "/images/workshops/discovery-hero.jpg",
+    featured: true
   },
   {
-    title: "Intro to AI Automation",
-    subtitle: "Start automating tasks and learn the basics of automation",
-    description: "Our flagship workshop that equips your team with the skills & mindset to 10x your growth.",
-    goal: "Students will be able to enrich their work, save time and focus on the important parts of the business.",
-    duration: "10 hours",
-    sessions: "1.5h",
-    price: "750",
-    level: "Beginner",
-    format: "Online & In Person",
-    featured: true,
+    title: "AI Hackathons",
+    subtitle: "Hands-on building",
+    duration: "4-12 hours (1-3 days)",
+    outcome: "Working prototypes",
+    description: "Strategy without execution is just conversation. Hackathons bridge the gap. They follow naturally from a Discovery Workshop, giving your team hands-on experience building real AI solutions.",
+    whatYouGet: [
+      "Hands-on Training: Zapier, n8n, Google AI Studio, Claude Code, Codex",
+      "Guided Projects: Build your first AI agent, create automation workflows",
+      "On-Demand Support: Instructors available to debug and unblock",
+      "Working Prototypes: Leave with functional AI solutions, not just slides"
+    ],
+    bestFor: "Teams ready to move from planning to doing. Groups who have completed a Discovery Workshop. Organisations wanting quick wins.",
+    image: "/images/workshops/hackathon-hero.jpg",
+    featured: false
   },
   {
-    title: "Master AI Automation",
-    subtitle: "Build your first AI Agent and focus on what matters",
-    description: "The next level of our flagship training. Master the best tools in the market and generate complex workflows and AI Agents.",
-    goal: "Students will be able to create AI autonomous Agents and implement complex workflows.",
-    duration: "20 hours",
-    sessions: "3h",
-    price: "1,250",
-    level: "Advanced",
-    format: "Online & In Person",
-    featured: true,
+    title: "Domain Specific Workshops",
+    subtitle: "Specific tool or role",
+    duration: "1.5-3 hours",
+    outcome: "Targeted skill uplift",
+    description: "Sometimes you need depth, not breadth. These focused sessions take a single tool or use case and master it.",
+    exampleTopics: [
+      "ChatGPT for Project Managers: prompts, templates, workflows",
+      "Advanced Prompting: from amateur to professional",
+      "AI for Creative Teams: image generation, copywriting, ideation",
+      "Custom topics based on team needs"
+    ],
+    bestFor: "Specific role training. Lunch and learn sessions. Teams needing targeted capability uplift.",
+    image: "/images/workshops/domain-hero.jpg",
+    featured: false
   },
   {
-    title: "Intro to Internal Apps",
-    subtitle: "Learn how to create internal apps for your team",
-    description: "A general overview workshop to empower members of your organisation to start solving internal problems with functional apps.",
-    goal: "Students will understand the principals of AI, Automation and NoCode tools.",
-    duration: "15 hours",
-    sessions: "2h",
-    price: "950",
-    level: "Beginner",
-    format: "Online & In Person",
-    featured: false,
-  },
-  {
-    title: "Custom Workshop",
-    subtitle: "We customize our workshops to meet your specific needs",
-    description: "Based on your team's requirements we generate a tailored workshop.",
-    goal: "Adapt AI and Automation to the needs of your departments and customise use cases for your teams.",
-    duration: "Customizable",
-    sessions: "Flexible",
-    price: "Custom",
-    level: "Beginner - Advanced",
-    format: "Online & In Person",
-    featured: false,
-  },
+    title: "AI Bootcamps",
+    subtitle: "Full transformation",
+    duration: "3-10 weeks",
+    outcome: "AI Operators",
+    description: "The transformation programme. We take someone with no AI experience and turn them into an AI Operator—someone who can build, deploy, and maintain AI solutions independently.",
+    curriculum: [
+      "Foundations: Database design, APIs, front-end UI development",
+      "AI Platforms: ChatGPT, Claude, when to use each",
+      "Automation Tools: Zapier and n8n for workflow automation",
+      "Integration: Connecting AI to existing systems",
+      "Deployment: Prototype to production"
+    ],
+    bestFor: "Building internal AI capability. Upskilling existing staff. Creating a centre of excellence.",
+    image: "/images/workshops/bootcamp-hero.jpg",
+    featured: false
+  }
 ];
 
-const features = [
-  "EN & ES languages",
-  "EU & UK availability",
-  "15 Days Refund Policy",
-  "Group discount available",
+// Gallery images - replace with actual photos once selected
+const galleryImages = [
+  { src: "/images/workshops/gallery/workshop-1.jpg", alt: "Workshop session", caption: "AI Discovery Workshop in action" },
+  { src: "/images/workshops/gallery/workshop-2.jpg", alt: "Hands-on training", caption: "Teams building their first AI agent" },
+  { src: "/images/workshops/gallery/workshop-3.jpg", alt: "Whiteboard session", caption: "Mapping the AI Business Canvas" },
+  { src: "/images/workshops/gallery/workshop-4.jpg", alt: "Group collaboration", caption: "Hackathon prototype session" },
+  { src: "/images/workshops/gallery/workshop-5.jpg", alt: "Presentation", caption: "Sharing solutions with the team" },
+  { src: "/images/workshops/gallery/workshop-6.jpg", alt: "Working together", caption: "Hands-on problem solving" },
+  { src: "/images/workshops/gallery/workshop-7.jpg", alt: "Training session", caption: "Domain-specific deep dive" },
+  { src: "/images/workshops/gallery/workshop-8.jpg", alt: "Team discussion", caption: "Strategy session" },
 ];
 ---
 
 <BaseLayout
-  title="Workshops"
-  description="High impact AI and automation workshops tailored to your team. Learn to automate tasks, build AI agents, and transform your workflows."
+  title="AI Training"
+  description="Building AI capability across your agency. Four training formats for every stage of your AI journey—from discovery workshops to full transformation bootcamps."
 >
+  <ImageLightbox />
+
   <div class="container">
     <header class="page-header">
-      <span class="page-header__label">[WORKSHOPS]</span>
-      <h1 class="page-header__title">Workshops</h1>
-      <p class="page-header__subtitle">
-        High impact workshops tailored to your team
-      </p>
+      <span class="page-header__label">[AI TRAINING]</span>
+      <h1 class="page-header__title">Building AI Capability Across Your Agency</h1>
+      <div class="page-header__intro">
+        <p>AI is not a tool you bolt on. It is a capability you build. The difference between agencies that thrive with AI and those that struggle comes down to one thing: whether their people know how to use it.</p>
+        <p>We offer four training formats, each designed for a different stage of your AI journey. Think of them as rungs on a ladder. Start where you are, climb as high as you need.</p>
+      </div>
     </header>
 
-    <hr />
+    <section class="training-formats">
+      {trainingFormats.map((format, index) => (
+        <article class:list={['format-card', { 'format-card--featured': format.featured }]}>
+          {format.featured && <span class="format-card__badge">Recommended Starting Point</span>}
 
-    <section class="features-bar">
-      <p class="features-bar__title">All our trainings offer:</p>
-      <div class="features-bar__list">
-        {features.map((feature) => (
-          <span class="features-bar__item">{feature}</span>
-        ))}
-      </div>
-    </section>
-
-    <section class="workshops-grid">
-      {workshops.map((workshop) => (
-        <article class:list={['workshop-card', { 'workshop-card--featured': workshop.featured }]}>
-          {workshop.featured && <span class="workshop-card__badge">Popular</span>}
-
-          <div class="workshop-card__header">
-            <h3 class="workshop-card__title">{workshop.title}</h3>
-            <p class="workshop-card__subtitle">{workshop.subtitle}</p>
+          <div class="format-card__image">
+            <img src={format.image} alt={format.title} loading={index === 0 ? "eager" : "lazy"} />
+            <div class="format-card__number">{String(index + 1).padStart(2, '0')}</div>
           </div>
 
-          <div class="workshop-card__meta">
-            <span class="workshop-card__meta-item">{workshop.duration}</span>
-            <span class="workshop-card__meta-item">{workshop.format}</span>
-            <span class="workshop-card__meta-item">{workshop.level}</span>
-          </div>
-
-          <p class="workshop-card__description">{workshop.description}</p>
-
-          <p class="workshop-card__goal">
-            <strong>Goal:</strong> {workshop.goal}
-          </p>
-
-          <div class="workshop-card__footer">
-            <div class="workshop-card__pricing">
-              {workshop.price !== "Custom" ? (
-                <>
-                  <span class="workshop-card__price">€{workshop.price}</span>
-                  <span class="workshop-card__price-note">/person</span>
-                </>
-              ) : (
-                <span class="workshop-card__price">Custom pricing</span>
-              )}
+          <div class="format-card__content">
+            <div class="format-card__header">
+              <h2 class="format-card__title">{format.title}</h2>
+              <p class="format-card__subtitle">{format.subtitle}</p>
             </div>
-            {workshop.sessions !== "Flexible" && (
-              <span class="workshop-card__sessions">{workshop.sessions} sessions</span>
-            )}
-          </div>
 
-          <a href="/contact" class="button workshop-card__cta">
-            Find out more
-          </a>
+            <div class="format-card__meta">
+              <div class="format-card__meta-item">
+                <span class="format-card__meta-label">Duration</span>
+                <span class="format-card__meta-value">{format.duration}</span>
+              </div>
+              <div class="format-card__meta-item">
+                <span class="format-card__meta-label">Outcome</span>
+                <span class="format-card__meta-value">{format.outcome}</span>
+              </div>
+            </div>
+
+            <p class="format-card__description">{format.description}</p>
+
+            {format.whatYouGet && (
+              <div class="format-card__section">
+                <h3 class="format-card__section-title">What You Get</h3>
+                <ul class="format-card__list">
+                  {format.whatYouGet.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {format.exampleTopics && (
+              <div class="format-card__section">
+                <h3 class="format-card__section-title">Example Topics</h3>
+                <ul class="format-card__list">
+                  {format.exampleTopics.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {format.curriculum && (
+              <div class="format-card__section">
+                <h3 class="format-card__section-title">Curriculum</h3>
+                <ul class="format-card__list">
+                  {format.curriculum.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div class="format-card__best-for">
+              <strong>Best For:</strong> {format.bestFor}
+            </div>
+
+            <a href="/contact" class="button format-card__cta">
+              Enquire About This Format
+            </a>
+          </div>
         </article>
       ))}
+    </section>
+
+    <section class="gallery-section">
+      <header class="gallery-section__header">
+        <span class="gallery-section__label">[IN ACTION]</span>
+        <h2 class="gallery-section__title">Workshops in Action</h2>
+        <p class="gallery-section__subtitle">See what our training sessions look like</p>
+      </header>
+
+      <PhotoGallery images={galleryImages} columns={4} />
+    </section>
+
+    <section class="social-proof">
+      <p class="social-proof__text">
+        <strong>See what our clients have built</strong> — real projects, real results from teams we've trained.
+      </p>
+      <a href="/projects" class="button button--secondary">View Our Projects</a>
     </section>
   </div>
 
   <CTASection
-    headline="Not sure which workshop is right for your team?"
-    description="Book a free discovery call and we'll recommend the best fit for your needs."
-    ctaText="Schedule a Call"
+    headline="Most agencies start with a Discovery Workshop"
+    description="It costs a day but saves months of misdirected effort. Contact us to discuss which format fits your needs."
+    ctaText="Get in Touch"
     ctaHref="/contact"
     variant="centered"
   />
@@ -154,7 +204,7 @@ const features = [
 
 <style>
   .page-header {
-    padding: var(--space-2xl) 0;
+    padding: var(--space-3xl) 0 var(--space-2xl);
     text-align: center;
   }
 
@@ -169,85 +219,77 @@ const features = [
   }
 
   .page-header__title {
-    font-size: var(--text-4xl);
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw + 1rem, 3.5rem);
+    margin-bottom: var(--space-xl);
+    line-height: 1.1;
+  }
+
+  .page-header__intro {
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .page-header__intro p {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
     margin-bottom: var(--space-md);
   }
 
-  .page-header__subtitle {
-    font-size: var(--text-lg);
-    color: var(--color-text-secondary);
-    max-width: 600px;
-    margin: 0 auto;
+  .page-header__intro p:last-child {
+    margin-bottom: 0;
   }
 
-  .features-bar {
+  /* Training Formats */
+  .training-formats {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: var(--space-md);
-    padding: var(--space-xl) 0;
-    margin-bottom: var(--space-3xl);
+    gap: var(--space-3xl);
+    padding: var(--space-3xl) 0;
   }
 
-  .features-bar__title {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-  }
-
-  .features-bar__list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--space-md);
-  }
-
-  .features-bar__item {
-    padding: var(--space-xs) var(--space-md);
-    background: var(--color-bg-secondary);
-    border-radius: var(--border-radius-sm);
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-  }
-
-  .workshops-grid {
+  .format-card {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: var(--space-xl);
-    padding-bottom: var(--space-4xl);
-  }
-
-  .workshop-card {
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-2xl);
     position: relative;
-    display: flex;
-    flex-direction: column;
     padding: var(--space-xl);
     border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-md);
+    border-radius: var(--border-radius-lg);
     transition: border-color var(--transition-fast);
   }
 
-  .workshop-card:hover {
+  .format-card:nth-child(even) {
+    direction: rtl;
+  }
+
+  .format-card:nth-child(even) > * {
+    direction: ltr;
+  }
+
+  .format-card:hover {
     border-color: var(--color-accent-primary);
   }
 
-  .workshop-card--featured {
+  .format-card--featured {
     border-color: var(--color-accent-primary);
     background: linear-gradient(
-      to bottom,
+      135deg,
       color-mix(in srgb, var(--color-accent-primary) 5%, transparent),
       transparent
     );
   }
 
-  .workshop-card__badge {
+  .format-card__badge {
     position: absolute;
     top: var(--space-md);
     right: var(--space-md);
-    padding: var(--space-xs) var(--space-sm);
+    padding: var(--space-xs) var(--space-md);
     background: var(--color-accent-primary);
     color: var(--color-bg-primary);
+    font-family: var(--font-mono);
     font-size: var(--text-xs);
     font-weight: 600;
     text-transform: uppercase;
@@ -255,85 +297,219 @@ const features = [
     border-radius: var(--border-radius-sm);
   }
 
-  .workshop-card__header {
+  .format-card__image {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    background: var(--color-bg-secondary);
+  }
+
+  .format-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .format-card__number {
+    position: absolute;
+    bottom: var(--space-md);
+    left: var(--space-md);
+    font-family: var(--font-mono);
+    font-size: var(--text-4xl);
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    opacity: 0.8;
+  }
+
+  .format-card__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .format-card__header {
     margin-bottom: var(--space-lg);
   }
 
-  .workshop-card__title {
-    font-size: var(--text-xl);
+  .format-card__title {
+    font-size: var(--text-2xl);
     margin-bottom: var(--space-xs);
   }
 
-  .workshop-card__subtitle {
+  .format-card__subtitle {
+    font-family: var(--font-mono);
     font-size: var(--text-sm);
-    color: var(--color-text-muted);
-    font-style: italic;
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
   }
 
-  .workshop-card__meta {
+  .format-card__meta {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-md);
-  }
-
-  .workshop-card__meta-item {
-    padding: var(--space-xs) var(--space-sm);
-    background: var(--color-bg-secondary);
-    border-radius: var(--border-radius-sm);
-    font-size: var(--text-xs);
-    color: var(--color-text-secondary);
-  }
-
-  .workshop-card__description {
-    color: var(--color-text-secondary);
-    line-height: var(--leading-relaxed);
-    margin-bottom: var(--space-md);
-    flex-grow: 1;
-  }
-
-  .workshop-card__goal {
-    font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-    padding: var(--space-md);
-    background: var(--color-bg-secondary);
-    border-radius: var(--border-radius-sm);
+    gap: var(--space-xl);
     margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-lg);
+    border-bottom: 1px solid var(--color-border-subtle);
   }
 
-  .workshop-card__footer {
+  .format-card__meta-item {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: var(--space-lg);
-    padding-top: var(--space-md);
-    border-top: 1px solid var(--color-border-subtle);
-  }
-
-  .workshop-card__pricing {
-    display: flex;
-    align-items: baseline;
+    flex-direction: column;
     gap: var(--space-xs);
   }
 
-  .workshop-card__price {
-    font-size: var(--text-2xl);
-    font-weight: 700;
+  .format-card__meta-label {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .format-card__meta-value {
+    font-weight: 500;
     color: var(--color-text-primary);
   }
 
-  .workshop-card__price-note {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
+  .format-card__description {
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-lg);
   }
 
-  .workshop-card__sessions {
-    font-size: var(--text-sm);
-    color: var(--color-text-muted);
+  .format-card__section {
+    margin-bottom: var(--space-lg);
   }
 
-  .workshop-card__cta {
-    width: 100%;
+  .format-card__section-title {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-sm);
+  }
+
+  .format-card__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .format-card__list li {
+    position: relative;
+    padding-left: var(--space-lg);
+    padding-bottom: var(--space-xs);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+  }
+
+  .format-card__list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-accent-primary);
+  }
+
+  .format-card__best-for {
+    padding: var(--space-md);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-lg);
+    margin-top: auto;
+  }
+
+  .format-card__cta {
+    align-self: flex-start;
+  }
+
+  /* Gallery Section */
+  .gallery-section {
+    padding: var(--space-4xl) 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .gallery-section__header {
     text-align: center;
+    margin-bottom: var(--space-2xl);
+  }
+
+  .gallery-section__label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-md);
+  }
+
+  .gallery-section__title {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-sm);
+  }
+
+  .gallery-section__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+  }
+
+  /* Social Proof */
+  .social-proof {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-lg);
+    padding: var(--space-3xl) 0;
+    text-align: center;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .social-proof__text {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .format-card {
+      grid-template-columns: 1fr;
+    }
+
+    .format-card:nth-child(even) {
+      direction: ltr;
+    }
+
+    .format-card__image {
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .page-header {
+      padding: var(--space-2xl) 0 var(--space-xl);
+    }
+
+    .page-header__intro {
+      text-align: center;
+    }
+
+    .format-card {
+      padding: var(--space-lg);
+    }
+
+    .format-card__meta {
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .format-card__cta {
+      width: 100%;
+      text-align: center;
+    }
   }
 </style>
