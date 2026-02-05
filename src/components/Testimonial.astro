@@ -22,16 +22,25 @@ const { quote, author, role, image } = Astro.props;
 
 <style>
   .testimonial {
-    padding: var(--space-xl);
-    border-left: 3px solid var(--color-accent-primary);
-    background-color: var(--color-bg-secondary);
-    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    position: relative;
+    padding: var(--space-xl) 0 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .testimonial::before {
+    content: '“';
+    position: absolute;
+    top: -10px;
+    left: 0;
+    font-family: var(--font-serif);
+    font-size: var(--text-4xl);
+    color: var(--color-accent-primary);
+    line-height: 1;
   }
 
   .testimonial__quote {
     font-family: var(--font-serif);
-    font-size: var(--text-lg);
-    font-style: italic;
+    font-size: var(--text-xl);
     color: var(--color-text-primary);
     line-height: var(--leading-relaxed);
     margin-bottom: var(--space-md);
