@@ -45,17 +45,17 @@ const getLogoUrl = (domain: string) =>
     border-radius: 24px;
     padding: clamp(2rem, 3.5vw, 3rem);
     background:
-      radial-gradient(circle at top, rgba(242, 106, 61, 0.15), transparent 55%),
-      linear-gradient(135deg, #f4f6fb 0%, #eef3f8 100%);
-    border: 1px solid rgba(26, 26, 26, 0.08);
+      radial-gradient(circle at top, rgba(242, 106, 61, 0.12), transparent 55%),
+      linear-gradient(135deg, var(--color-surface) 0%, var(--color-bg-secondary) 100%);
+    border: 1px solid var(--color-border);
     text-align: center;
   }
 
   [data-theme='dark'] .client-logos__card {
     background:
-      radial-gradient(circle at top, rgba(242, 106, 61, 0.2), transparent 55%),
-      linear-gradient(135deg, #202327 0%, #1a1a1a 100%);
-    border-color: rgba(255, 255, 255, 0.08);
+      radial-gradient(circle at top, rgba(242, 106, 61, 0.16), transparent 55%),
+      linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg-primary) 100%);
+    border-color: var(--color-border);
   }
 
   .client-logos__label {
@@ -93,6 +93,11 @@ const getLogoUrl = (domain: string) =>
   .client-logos__item img:hover {
     filter: grayscale(0%);
     opacity: 1;
+  }
+
+  [data-theme='dark'] .client-logos__item img {
+    filter: grayscale(100%) brightness(1.2);
+    opacity: 0.9;
   }
 
   @media (max-width: 640px) {
