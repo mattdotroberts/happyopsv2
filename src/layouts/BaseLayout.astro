@@ -88,6 +88,7 @@ const fullTitle = `${title} | Happy Operators`;
   </script>
 </head>
 <body>
+  <div class="browser-chrome-fix" aria-hidden="true"></div>
   {!hideLeadMagnet && <LeadMagnetBanner />}
   <Header />
 
@@ -122,6 +123,12 @@ const fullTitle = `${title} | Happy Operators`;
 </html>
 
 <style>
+  .browser-chrome-fix {
+    height: 1px;
+    background: var(--color-bg-primary);
+    margin-bottom: -1px;
+  }
+
   .main {
     min-height: calc(100vh - 200px);
     padding-top: var(--space-3xl);
