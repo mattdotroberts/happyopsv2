@@ -66,6 +66,10 @@ const fullTitle = `${title} | Happy Operators`;
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
 
+  <!-- Browser chrome color -->
+  <meta name="theme-color" content="#FAF8F5" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1A1A1A" media="(prefers-color-scheme: dark)" />
+
   <!-- Theme Script (inline to prevent flash) -->
   <script is:inline>
     const theme = (() => {
@@ -78,6 +82,9 @@ const fullTitle = `${title} | Happy Operators`;
       return 'light';
     })();
     document.documentElement.setAttribute('data-theme', theme);
+    // Update theme-color meta for manual toggle
+    const themeColor = theme === 'dark' ? '#1A1A1A' : '#FAF8F5';
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', themeColor);
   </script>
 </head>
 <body>
