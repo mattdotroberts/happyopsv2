@@ -1,515 +1,608 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CTASection from '../components/CTASection.astro';
-import PhotoGallery from '../components/PhotoGallery.astro';
-import ImageLightbox from '../components/ImageLightbox.astro';
 
-const trainingFormats = [
+const frameworks = [
   {
-    title: "AI Discovery Workshop",
-    subtitle: "Strategy and priorities",
-    duration: "2-6 hours (0.5-1 day)",
-    outcome: "Clear AI roadmap",
-    description: "Before you build anything, you need to know what to build. This workshop is your compass. We use the AI Business Canvas to map your organisation's landscape, then identify where AI can make the biggest difference.",
-    whatYouGet: [
-      "AI Business Canvas: Complete picture of AI readiness, constraints, opportunities",
-      "Problem Discovery: Pain points ranked by impact and feasibility",
-      "Problem to Feature Mapping: Business problems → AI capabilities",
-      "Solution Discovery: Prioritised high-impact projects"
-    ],
-    bestFor: "Agencies starting their AI journey. Leadership teams seeking clarity. Organisations with many ideas but no clear direction.",
-    image: "/images/workshops/discovery-hero.jpg",
-    featured: true
+    step: "01",
+    title: "Discovery",
+    subtitle: "Find your focus",
+    duration: "Half day",
+    description: "Map your AI landscape. Identify high-impact opportunities. Leave with a prioritised roadmap.",
+    image: "/images/workshops/discovery.jpg"
   },
   {
-    title: "AI Hackathons",
-    subtitle: "Hands-on building",
-    duration: "4-12 hours (1-3 days)",
-    outcome: "Working prototypes",
-    description: "Strategy without execution is just conversation. Hackathons bridge the gap. They follow naturally from a Discovery Workshop, giving your team hands-on experience building real AI solutions.",
-    whatYouGet: [
-      "Hands-on Training: Zapier, n8n, Google AI Studio, Claude Code, Codex",
-      "Guided Projects: Build your first AI agent, create automation workflows",
-      "On-Demand Support: Instructors available to debug and unblock",
-      "Working Prototypes: Leave with functional AI solutions, not just slides"
-    ],
-    bestFor: "Teams ready to move from planning to doing. Groups who have completed a Discovery Workshop. Organisations wanting quick wins.",
-    image: "/images/workshops/hackathon-hero.jpg",
-    featured: false
+    step: "02",
+    title: "Hackathon",
+    subtitle: "Build real solutions",
+    duration: "1-3 days",
+    description: "Hands-on building with expert guidance. Walk away with working prototypes, not just slides.",
+    image: "/images/workshops/hackathon.jpg"
   },
   {
-    title: "Domain Specific Workshops",
-    subtitle: "Specific tool or role",
-    duration: "1.5-3 hours",
-    outcome: "Targeted skill uplift",
-    description: "Sometimes you need depth, not breadth. These focused sessions take a single tool or use case and master it.",
-    exampleTopics: [
-      "ChatGPT for Project Managers: prompts, templates, workflows",
-      "Advanced Prompting: from amateur to professional",
-      "AI for Creative Teams: image generation, copywriting, ideation",
-      "Custom topics based on team needs"
-    ],
-    bestFor: "Specific role training. Lunch and learn sessions. Teams needing targeted capability uplift.",
-    image: "/images/workshops/domain-hero.jpg",
-    featured: false
-  },
-  {
-    title: "AI Bootcamps",
+    step: "03",
+    title: "Bootcamp",
     subtitle: "Full transformation",
     duration: "3-10 weeks",
-    outcome: "AI Operators",
-    description: "The transformation programme. We take someone with no AI experience and turn them into an AI Operator—someone who can build, deploy, and maintain AI solutions independently.",
-    curriculum: [
-      "Foundations: Database design, APIs, front-end UI development",
-      "AI Platforms: ChatGPT, Claude, when to use each",
-      "Automation Tools: Zapier and n8n for workflow automation",
-      "Integration: Connecting AI to existing systems",
-      "Deployment: Prototype to production"
-    ],
-    bestFor: "Building internal AI capability. Upskilling existing staff. Creating a centre of excellence.",
-    image: "/images/workshops/bootcamp-hero.jpg",
-    featured: false
+    description: "Turn your team into AI Operators who can build, deploy, and maintain AI solutions independently.",
+    image: "/images/workshops/bootcamp.jpg"
   }
 ];
 
-// Gallery images - replace with actual photos once selected
 const galleryImages = [
-  { src: "/images/workshops/gallery/workshop-1.jpg", alt: "Workshop session", caption: "AI Discovery Workshop in action" },
-  { src: "/images/workshops/gallery/workshop-2.jpg", alt: "Hands-on training", caption: "Teams building their first AI agent" },
-  { src: "/images/workshops/gallery/workshop-3.jpg", alt: "Whiteboard session", caption: "Mapping the AI Business Canvas" },
-  { src: "/images/workshops/gallery/workshop-4.jpg", alt: "Group collaboration", caption: "Hackathon prototype session" },
-  { src: "/images/workshops/gallery/workshop-5.jpg", alt: "Presentation", caption: "Sharing solutions with the team" },
-  { src: "/images/workshops/gallery/workshop-6.jpg", alt: "Working together", caption: "Hands-on problem solving" },
-  { src: "/images/workshops/gallery/workshop-7.jpg", alt: "Training session", caption: "Domain-specific deep dive" },
-  { src: "/images/workshops/gallery/workshop-8.jpg", alt: "Team discussion", caption: "Strategy session" },
+  "/images/workshops/gallery/1.jpg",
+  "/images/workshops/gallery/2.jpg",
+  "/images/workshops/gallery/3.jpg",
+  "/images/workshops/gallery/4.jpg",
+  "/images/workshops/gallery/5.jpg",
+  "/images/workshops/gallery/6.jpg",
+  "/images/workshops/gallery/7.jpg",
+  "/images/workshops/gallery/8.jpg",
 ];
 ---
 
 <BaseLayout
   title="AI Training"
-  description="Building AI capability across your agency. Four training formats for every stage of your AI journey—from discovery workshops to full transformation bootcamps."
+  description="Three training formats to build AI capability across your agency. From discovery workshops to full transformation bootcamps."
 >
-  <ImageLightbox />
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__background">
+      <img src="/images/workshops/hero.jpg" alt="Workshop in action" />
+      <div class="hero__overlay"></div>
+    </div>
+    <div class="container hero__content">
+      <span class="hero__label">AI Training</span>
+      <h1 class="hero__title">Build AI capability.<br/>Not dependency.</h1>
+      <p class="hero__subtitle">Three formats. One goal: your team, transformed.</p>
+    </div>
+  </section>
 
-  <div class="container">
-    <header class="page-header">
-      <span class="page-header__label">[AI TRAINING]</span>
-      <h1 class="page-header__title">Building AI Capability Across Your Agency</h1>
-      <div class="page-header__intro">
-        <p>AI is not a tool you bolt on. It is a capability you build. The difference between agencies that thrive with AI and those that struggle comes down to one thing: whether their people know how to use it.</p>
-        <p>We offer four training formats, each designed for a different stage of your AI journey. Think of them as rungs on a ladder. Start where you are, climb as high as you need.</p>
+  <!-- Quick Nav -->
+  <nav class="quick-nav">
+    <div class="container">
+      <div class="quick-nav__items">
+        {frameworks.map((f) => (
+          <a href={`#${f.title.toLowerCase()}`} class="quick-nav__item">
+            <span class="quick-nav__step">{f.step}</span>
+            <span class="quick-nav__title">{f.title}</span>
+            <span class="quick-nav__duration">{f.duration}</span>
+          </a>
+        ))}
       </div>
-    </header>
+    </div>
+  </nav>
 
-    <section class="training-formats">
-      {trainingFormats.map((format, index) => (
-        <article class:list={['format-card', { 'format-card--featured': format.featured }]}>
-          {format.featured && <span class="format-card__badge">Recommended Starting Point</span>}
+  <!-- The Framework -->
+  <section class="framework">
+    <div class="container">
+      <header class="framework__header">
+        <h2 class="framework__title">The Framework</h2>
+        <p class="framework__intro">
+          AI isn't a tool you bolt on. It's a capability you build. Start where you are, climb as high as you need.
+        </p>
+      </header>
+    </div>
 
-          <div class="format-card__image">
-            <img src={format.image} alt={format.title} loading={index === 0 ? "eager" : "lazy"} />
-            <div class="format-card__number">{String(index + 1).padStart(2, '0')}</div>
+    <div class="framework__steps">
+      {frameworks.map((f, i) => (
+        <article class="step" id={f.title.toLowerCase()}>
+          <div class="step__image">
+            <img src={f.image} alt={f.title} loading={i === 0 ? "eager" : "lazy"} />
+            <div class="step__number">{f.step}</div>
           </div>
-
-          <div class="format-card__content">
-            <div class="format-card__header">
-              <h2 class="format-card__title">{format.title}</h2>
-              <p class="format-card__subtitle">{format.subtitle}</p>
+          <div class="container">
+            <div class="step__content">
+              <div class="step__meta">
+                <span class="step__duration">{f.duration}</span>
+              </div>
+              <h3 class="step__title">{f.title}</h3>
+              <p class="step__subtitle">{f.subtitle}</p>
+              <p class="step__description">{f.description}</p>
+              <a href="/contact" class="step__cta">
+                Get started <span class="step__arrow">→</span>
+              </a>
             </div>
-
-            <div class="format-card__meta">
-              <div class="format-card__meta-item">
-                <span class="format-card__meta-label">Duration</span>
-                <span class="format-card__meta-value">{format.duration}</span>
-              </div>
-              <div class="format-card__meta-item">
-                <span class="format-card__meta-label">Outcome</span>
-                <span class="format-card__meta-value">{format.outcome}</span>
-              </div>
-            </div>
-
-            <p class="format-card__description">{format.description}</p>
-
-            {format.whatYouGet && (
-              <div class="format-card__section">
-                <h3 class="format-card__section-title">What You Get</h3>
-                <ul class="format-card__list">
-                  {format.whatYouGet.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {format.exampleTopics && (
-              <div class="format-card__section">
-                <h3 class="format-card__section-title">Example Topics</h3>
-                <ul class="format-card__list">
-                  {format.exampleTopics.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            {format.curriculum && (
-              <div class="format-card__section">
-                <h3 class="format-card__section-title">Curriculum</h3>
-                <ul class="format-card__list">
-                  {format.curriculum.map((item) => (
-                    <li>{item}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-
-            <div class="format-card__best-for">
-              <strong>Best For:</strong> {format.bestFor}
-            </div>
-
-            <a href="/contact" class="button format-card__cta">
-              Enquire About This Format
-            </a>
           </div>
         </article>
       ))}
-    </section>
+    </div>
+  </section>
 
-    <section class="gallery-section">
-      <header class="gallery-section__header">
-        <span class="gallery-section__label">[IN ACTION]</span>
-        <h2 class="gallery-section__title">Workshops in Action</h2>
-        <p class="gallery-section__subtitle">See what our training sessions look like</p>
-      </header>
+  <!-- Gallery -->
+  <section class="gallery">
+    <div class="container">
+      <h2 class="gallery__title">In Action</h2>
+    </div>
+    <div class="gallery__grid">
+      {galleryImages.map((src, i) => (
+        <div class="gallery__item" style={`--delay: ${i * 0.05}s`}>
+          <img src={src} alt="Workshop moment" loading="lazy" />
+        </div>
+      ))}
+    </div>
+  </section>
 
-      <PhotoGallery images={galleryImages} columns={4} />
-    </section>
-
-    <section class="social-proof">
-      <p class="social-proof__text">
-        <strong>See what our clients have built</strong> — real projects, real results from teams we've trained.
-      </p>
-      <a href="/projects" class="button button--secondary">View Our Projects</a>
-    </section>
-  </div>
+  <!-- What You Get -->
+  <section class="details">
+    <div class="container">
+      <div class="details__grid">
+        <div class="details__card">
+          <h3 class="details__card-title">Discovery Workshop</h3>
+          <ul class="details__list">
+            <li>AI Business Canvas assessment</li>
+            <li>Problem discovery & ranking</li>
+            <li>Problem-to-feature mapping</li>
+            <li>Prioritised solution roadmap</li>
+          </ul>
+          <p class="details__best-for">
+            <strong>Best for:</strong> Teams starting their AI journey who need clarity before action.
+          </p>
+        </div>
+        <div class="details__card">
+          <h3 class="details__card-title">Hackathon</h3>
+          <ul class="details__list">
+            <li>Hands-on tool training</li>
+            <li>Guided prototype building</li>
+            <li>On-demand expert support</li>
+            <li>Working solutions, not slides</li>
+          </ul>
+          <p class="details__best-for">
+            <strong>Best for:</strong> Teams ready to move from planning to building.
+          </p>
+        </div>
+        <div class="details__card">
+          <h3 class="details__card-title">Bootcamp</h3>
+          <ul class="details__list">
+            <li>Foundations: databases, APIs, UI</li>
+            <li>AI platforms deep dive</li>
+            <li>Automation tools mastery</li>
+            <li>Prototype to production</li>
+          </ul>
+          <p class="details__best-for">
+            <strong>Best for:</strong> Building internal AI capability and centres of excellence.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <CTASection
-    headline="Most agencies start with a Discovery Workshop"
-    description="It costs a day but saves months of misdirected effort. Contact us to discuss which format fits your needs."
-    ctaText="Get in Touch"
+    headline="Most teams start with Discovery"
+    description="One day of clarity saves months of misdirected effort."
+    ctaText="Book a call"
     ctaHref="/contact"
     variant="centered"
   />
 </BaseLayout>
 
 <style>
-  .page-header {
-    padding: var(--space-3xl) 0 var(--space-2xl);
-    text-align: center;
-  }
-
-  .page-header__label {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-accent-primary);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wider);
-    margin-bottom: var(--space-md);
-  }
-
-  .page-header__title {
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 4vw + 1rem, 3.5rem);
-    margin-bottom: var(--space-xl);
-    line-height: 1.1;
-  }
-
-  .page-header__intro {
-    max-width: 720px;
-    margin: 0 auto;
-    text-align: left;
-  }
-
-  .page-header__intro p {
-    font-size: var(--text-lg);
-    color: var(--color-text-secondary);
-    line-height: var(--leading-relaxed);
-    margin-bottom: var(--space-md);
-  }
-
-  .page-header__intro p:last-child {
-    margin-bottom: 0;
-  }
-
-  /* Training Formats */
-  .training-formats {
+  /* Hero */
+  .hero {
+    position: relative;
+    height: 70vh;
+    min-height: 500px;
     display: flex;
-    flex-direction: column;
-    gap: var(--space-3xl);
-    padding: var(--space-3xl) 0;
-  }
-
-  .format-card {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: var(--space-2xl);
-    position: relative;
-    padding: var(--space-xl);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-lg);
-    transition: border-color var(--transition-fast);
-  }
-
-  .format-card:nth-child(even) {
-    direction: rtl;
-  }
-
-  .format-card:nth-child(even) > * {
-    direction: ltr;
-  }
-
-  .format-card:hover {
-    border-color: var(--color-accent-primary);
-  }
-
-  .format-card--featured {
-    border-color: var(--color-accent-primary);
-    background: linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--color-accent-primary) 5%, transparent),
-      transparent
-    );
-  }
-
-  .format-card__badge {
-    position: absolute;
-    top: var(--space-md);
-    right: var(--space-md);
-    padding: var(--space-xs) var(--space-md);
-    background: var(--color-accent-primary);
-    color: var(--color-bg-primary);
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
-    border-radius: var(--border-radius-sm);
-  }
-
-  .format-card__image {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    border-radius: var(--border-radius-md);
+    align-items: flex-end;
     overflow: hidden;
-    background: var(--color-bg-secondary);
   }
 
-  .format-card__image img {
+  .hero__background {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__background img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .format-card__number {
+  .hero__overlay {
     position: absolute;
-    bottom: var(--space-md);
-    left: var(--space-md);
-    font-family: var(--font-mono);
-    font-size: var(--text-4xl);
-    font-weight: 700;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0.2) 100%
+    );
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    padding-bottom: var(--space-3xl);
     color: white;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    opacity: 0.8;
   }
 
-  .format-card__content {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .format-card__header {
-    margin-bottom: var(--space-lg);
-  }
-
-  .format-card__title {
-    font-size: var(--text-2xl);
-    margin-bottom: var(--space-xs);
-  }
-
-  .format-card__subtitle {
+  .hero__label {
+    display: inline-block;
     font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--color-accent-primary);
+    font-size: var(--text-xs);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
+    letter-spacing: 0.2em;
+    opacity: 0.7;
+    margin-bottom: var(--space-md);
   }
 
-  .format-card__meta {
-    display: flex;
-    gap: var(--space-xl);
-    margin-bottom: var(--space-lg);
-    padding-bottom: var(--space-lg);
-    border-bottom: 1px solid var(--color-border-subtle);
+  .hero__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: var(--space-md);
   }
 
-  .format-card__meta-item {
+  .hero__subtitle {
+    font-size: var(--text-xl);
+    opacity: 0.8;
+    max-width: 400px;
+  }
+
+  /* Quick Nav */
+  .quick-nav {
+    background: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .quick-nav__items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .quick-nav__item {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: var(--space-xs);
+    padding: var(--space-lg) var(--space-md);
+    text-decoration: none;
+    color: var(--color-text-primary);
+    border-right: 1px solid var(--color-border);
+    transition: background var(--transition-fast);
   }
 
-  .format-card__meta-label {
+  .quick-nav__item:last-child {
+    border-right: none;
+  }
+
+  .quick-nav__item:hover {
+    background: var(--color-bg-tertiary);
+  }
+
+  .quick-nav__step {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+  }
+
+  .quick-nav__title {
+    font-weight: 600;
+    font-size: var(--text-lg);
+  }
+
+  .quick-nav__duration {
     font-size: var(--text-xs);
     color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
   }
 
-  .format-card__meta-value {
-    font-weight: 500;
+  /* Framework */
+  .framework {
+    padding: var(--space-4xl) 0 0;
+  }
+
+  .framework__header {
+    max-width: 600px;
+    margin-bottom: var(--space-4xl);
+  }
+
+  .framework__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-md);
+  }
+
+  .framework__intro {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    line-height: 1.4;
     color: var(--color-text-primary);
   }
 
-  .format-card__description {
-    color: var(--color-text-secondary);
-    line-height: var(--leading-relaxed);
+  .framework__steps {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Step */
+  .step {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+  }
+
+  .step:nth-child(even) {
+    direction: rtl;
+  }
+
+  .step:nth-child(even) > * {
+    direction: ltr;
+  }
+
+  .step__image {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .step__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .step__number {
+    position: absolute;
+    bottom: var(--space-xl);
+    left: var(--space-xl);
+    font-family: var(--font-mono);
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 700;
+    color: white;
+    opacity: 0.3;
+    line-height: 1;
+  }
+
+  .step:nth-child(even) .step__number {
+    left: auto;
+    right: var(--space-xl);
+  }
+
+  .step__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-3xl) 0;
+    max-width: 480px;
+  }
+
+  .step:nth-child(even) .step__content {
+    margin-left: auto;
+  }
+
+  .step__meta {
     margin-bottom: var(--space-lg);
   }
 
-  .format-card__section {
-    margin-bottom: var(--space-lg);
-  }
-
-  .format-card__section-title {
-    font-size: var(--text-sm);
-    font-weight: 600;
+  .step__duration {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
     text-transform: uppercase;
-    letter-spacing: var(--tracking-wide);
+    letter-spacing: 0.1em;
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-sm);
     color: var(--color-text-muted);
-    margin-bottom: var(--space-sm);
   }
 
-  .format-card__list {
+  .step__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 400;
+    margin-bottom: var(--space-xs);
+  }
+
+  .step__subtitle {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-xl);
+  }
+
+  .step__description {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-xl);
+  }
+
+  .step__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .step__cta:hover {
+    color: var(--color-accent-primary);
+  }
+
+  .step__arrow {
+    transition: transform var(--transition-fast);
+  }
+
+  .step__cta:hover .step__arrow {
+    transform: translateX(4px);
+  }
+
+  /* Gallery */
+  .gallery {
+    padding: var(--space-4xl) 0;
+    overflow: hidden;
+  }
+
+  .gallery__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-accent-primary);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .gallery__item {
+    aspect-ratio: 1;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards;
+    animation-delay: var(--delay);
+  }
+
+  .gallery__item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .gallery__item:hover img {
+    transform: scale(1.05);
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  /* Details */
+  .details {
+    padding: var(--space-4xl) 0;
+    background: var(--color-bg-secondary);
+  }
+
+  .details__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+  }
+
+  .details__card {
+    padding: var(--space-xl);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-md);
+  }
+
+  .details__card-title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .details__list {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 0 0 var(--space-lg);
   }
 
-  .format-card__list li {
+  .details__list li {
     position: relative;
     padding-left: var(--space-lg);
-    padding-bottom: var(--space-xs);
+    padding-bottom: var(--space-sm);
     font-size: var(--text-sm);
     color: var(--color-text-secondary);
-    line-height: var(--leading-relaxed);
   }
 
-  .format-card__list li::before {
+  .details__list li::before {
     content: '→';
     position: absolute;
     left: 0;
     color: var(--color-accent-primary);
   }
 
-  .format-card__best-for {
-    padding: var(--space-md);
-    background: var(--color-bg-secondary);
-    border-radius: var(--border-radius-sm);
+  .details__best-for {
     font-size: var(--text-sm);
-    color: var(--color-text-secondary);
-    line-height: var(--leading-relaxed);
-    margin-bottom: var(--space-lg);
-    margin-top: auto;
-  }
-
-  .format-card__cta {
-    align-self: flex-start;
-  }
-
-  /* Gallery Section */
-  .gallery-section {
-    padding: var(--space-4xl) 0;
+    color: var(--color-text-muted);
+    padding-top: var(--space-md);
     border-top: 1px solid var(--color-border);
-  }
-
-  .gallery-section__header {
-    text-align: center;
-    margin-bottom: var(--space-2xl);
-  }
-
-  .gallery-section__label {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--color-accent-primary);
-    text-transform: uppercase;
-    letter-spacing: var(--tracking-wider);
-    margin-bottom: var(--space-md);
-  }
-
-  .gallery-section__title {
-    font-size: var(--text-3xl);
-    margin-bottom: var(--space-sm);
-  }
-
-  .gallery-section__subtitle {
-    font-size: var(--text-lg);
-    color: var(--color-text-secondary);
-  }
-
-  /* Social Proof */
-  .social-proof {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-lg);
-    padding: var(--space-3xl) 0;
-    text-align: center;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .social-proof__text {
-    font-size: var(--text-lg);
-    color: var(--color-text-secondary);
   }
 
   /* Responsive */
   @media (max-width: 1024px) {
-    .format-card {
+    .step {
       grid-template-columns: 1fr;
+      min-height: auto;
     }
 
-    .format-card:nth-child(even) {
+    .step:nth-child(even) {
       direction: ltr;
     }
 
-    .format-card__image {
-      aspect-ratio: 16 / 9;
+    .step__image {
+      height: 50vh;
+      min-height: 300px;
+    }
+
+    .step__content {
+      padding: var(--space-2xl) var(--container-padding);
+      max-width: none;
+    }
+
+    .step:nth-child(even) .step__content {
+      margin-left: 0;
+    }
+
+    .step__number {
+      bottom: var(--space-md);
+      left: var(--space-md);
+    }
+
+    .step:nth-child(even) .step__number {
+      left: var(--space-md);
+      right: auto;
+    }
+
+    .details__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .gallery__grid {
+      grid-template-columns: repeat(2, 1fr);
     }
   }
 
   @media (max-width: 640px) {
-    .page-header {
-      padding: var(--space-2xl) 0 var(--space-xl);
+    .hero {
+      height: 60vh;
     }
 
-    .page-header__intro {
-      text-align: center;
+    .quick-nav__items {
+      grid-template-columns: 1fr;
     }
 
-    .format-card {
-      padding: var(--space-lg);
+    .quick-nav__item {
+      flex-direction: row;
+      justify-content: space-between;
+      border-right: none;
+      border-bottom: 1px solid var(--color-border);
     }
 
-    .format-card__meta {
-      flex-direction: column;
-      gap: var(--space-md);
+    .quick-nav__item:last-child {
+      border-bottom: none;
     }
 
-    .format-card__cta {
-      width: 100%;
-      text-align: center;
+    .step__image {
+      height: 40vh;
     }
   }
 </style>
