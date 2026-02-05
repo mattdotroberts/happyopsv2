@@ -1,0 +1,759 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="HappyCEO Build Log"
+  description="The complete changelog and session history of building an AI Co-CEO assistant with Claude Code. A companion resource to the Claude Code Playbook for Agencies."
+  hideLeadMagnet={true}
+>
+  <div class="build-log">
+    <!-- Hero -->
+    <header class="hero">
+      <a href="/claude-code-for-agencies" class="hero__back">← Back to Guide</a>
+      <span class="hero__label">[COMPANION RESOURCE]</span>
+      <h1 class="hero__title">HappyCEO Build Log</h1>
+      <p class="hero__subtitle">
+        The complete changelog showing how we built an AI Co-CEO assistant using Claude Code.
+        Every decision, every session, every lesson learned.
+      </p>
+      <div class="hero__meta">
+        <span>Started: Jan 31, 2026</span>
+        <span class="hero__meta-dot">•</span>
+        <span>Last updated: Feb 5, 2026</span>
+        <span class="hero__meta-dot">•</span>
+        <span>16 skills built</span>
+      </div>
+    </header>
+
+    <div class="content-layout">
+      <!-- Sticky TOC -->
+      <nav class="toc" aria-label="Table of contents">
+        <h2 class="toc__title">Contents</h2>
+        <ul class="toc__list">
+          <li><a href="#the-initial-vision">The Initial Vision</a></li>
+          <li><a href="#discovery-phase">Discovery Phase</a></li>
+          <li><a href="#architecture-decisions">Architecture Decisions</a></li>
+          <li><a href="#implementation">Implementation</a></li>
+          <li><a href="#key-lessons">Key Lessons</a></li>
+          <li>
+            <a href="#session-log">Session Log</a>
+            <ul class="toc__sublist">
+              <li><a href="#2026-01-31">Jan 31: Initial Setup</a></li>
+              <li><a href="#2026-02-01">Feb 1: Operating System</a></li>
+              <li><a href="#2026-02-02">Feb 2: Daily Workflows</a></li>
+              <li><a href="#2026-02-03">Feb 3: Website Redesign</a></li>
+              <li><a href="#2026-02-04">Feb 4: Social Queue</a></li>
+              <li><a href="#2026-02-05">Feb 5: Memory System</a></li>
+            </ul>
+          </li>
+        </ul>
+        <a href="#top" class="toc__top">↑ Back to top</a>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="content prose" id="top">
+        <section id="the-initial-vision">
+          <h2>The Initial Vision</h2>
+
+          <h3>What the User Said (Voice Transcription)</h3>
+          <p>The project started with a voice-to-text message that was somewhat rough:</p>
+          <blockquote>
+            "You are the co CEO of Happy Operators... the first task is to make sure that our website is kept up to date. If I give you requests such as update the website... you're able to do that via a sub agent... I want to send an email to all our customers. So our customers live inside Notion... Maybe it could be a command or a skill I don't know at this point... I want to go okay we're sending January email and you need to look at our recent activity on LinkedIn on our Slack..."
+          </blockquote>
+
+          <h3>Distilled Requirements</h3>
+          <p>From this, I extracted three core capabilities:</p>
+          <ol>
+            <li><strong>Website Updates</strong> - Edit and deploy website changes</li>
+            <li><strong>Monthly Customer Emails</strong> - Aggregate data from multiple sources and send emails</li>
+            <li><strong>Persistent Context</strong> - A persona file so Claude "remembers" the company context</li>
+          </ol>
+          <p><strong>Lesson:</strong> Voice transcriptions are messy. Your job is to extract the <em>intent</em> and <em>requirements</em>, not get hung up on transcription errors.</p>
+        </section>
+
+        <hr />
+
+        <section id="discovery-phase">
+          <h2>Discovery Phase</h2>
+
+          <h3>Step 1: Explore What Exists</h3>
+          <p><strong>Action:</strong> Used the <code>Task</code> tool with <code>subagent_type=Explore</code> to scan the <code>/Users/matt/Code/HappyCEO</code> directory.</p>
+          <p><strong>Finding:</strong> The directory was completely empty - a fresh start.</p>
+          <p><strong>Why This Matters:</strong> Always explore before building. Don't assume. The exploration agent is designed for this - it's faster and more thorough than manual file-by-file searching.</p>
+
+          <h3>Step 2: Ask Clarifying Questions</h3>
+          <p><strong>Tool Used:</strong> <code>AskUserQuestion</code> - Claude Code's built-in tool for structured questions.</p>
+          <p><strong>Questions Asked:</strong></p>
+          <ol>
+            <li>Where does your company website live? → <em>Separate Git repo at /Users/matt/Code/happyopsv2</em></li>
+            <li>How do you want to trigger the monthly email workflow? → <em>Slash command (recommended)</em></li>
+            <li>For sending emails, what service do you use? → <em>Not sure yet</em></li>
+            <li>Do you have MCP servers set up for any services? → <em>None yet</em></li>
+            <li>What does Happy Operators do? → <em>AI training & transformation for founders and teams</em></li>
+            <li>Who are your customers? → <em>Both B2B and B2C</em></li>
+          </ol>
+          <p><strong>Why This Pattern:</strong> Rather than guessing or making assumptions, structured questions give users clear choices, document decisions for later reference, and prevent rework from misunderstandings.</p>
+
+          <h3>Step 3: Explore Connected Systems</h3>
+          <p><strong>Action:</strong> Explored the <code>happyopsv2</code> website repo to understand:</p>
+          <ul>
+            <li>Tech stack: Astro 5.0</li>
+            <li>Content structure: Markdown collections in <code>src/content/</code></li>
+            <li>Deployment: Vercel (auto-deploys on push)</li>
+          </ul>
+          <p><strong>Content Locations Discovered:</strong></p>
+          <table>
+            <thead><tr><th>Content Type</th><th>Path</th></tr></thead>
+            <tbody>
+              <tr><td>Blog posts</td><td><code>src/content/blog/*.md</code></td></tr>
+              <tr><td>Use cases</td><td><code>src/content/use-cases/*.md</code></td></tr>
+              <tr><td>Services</td><td><code>src/content/services/*.md</code></td></tr>
+              <tr><td>Images</td><td><code>public/images/</code></td></tr>
+            </tbody>
+          </table>
+          <p><strong>Why This Matters:</strong> Understanding the existing system architecture determines what's possible. Astro + Vercel means simple Git-based updates work perfectly.</p>
+        </section>
+
+        <hr />
+
+        <section id="architecture-decisions">
+          <h2>Architecture Decisions</h2>
+
+          <h3>Decision 1: Project Structure</h3>
+          <pre><code>/Users/matt/Code/HappyCEO/
+├── PERSONA.md          # Co-CEO role & company context
+├── CLAUDE.md           # Instructions for Claude Code
+├── CHANGELOG.md        # This file - process documentation
+├── skills/             # Custom slash commands
+│   └── monthly-email.md
+├── templates/          # Reusable templates
+│   └── monthly-roundup.md
+└── data/               # Working files, caches</code></pre>
+          <p><strong>Why This Structure:</strong></p>
+          <ol>
+            <li><strong>PERSONA.md</strong> - Central source of truth for company context</li>
+            <li><strong>CLAUDE.md</strong> - Claude Code looks for this file automatically</li>
+            <li><strong>skills/</strong> - Claude Code supports custom slash commands via markdown files</li>
+            <li><strong>templates/</strong> - Separating templates keeps things modular</li>
+            <li><strong>data/</strong> - A place for working files, keeps the root clean</li>
+          </ol>
+
+          <h3>Decision 2: Slash Command vs Other Approaches</h3>
+          <p><strong>Options Considered:</strong></p>
+          <ol>
+            <li>Natural language ("Send January email")</li>
+            <li>Slash command (<code>/monthly-email</code>) ← <strong>Chosen</strong></li>
+            <li>External trigger (n8n webhook, cron job)</li>
+          </ol>
+          <p><strong>Reasoning:</strong></p>
+          <ul>
+            <li><strong>Discoverability</strong> - User can type <code>/</code> to see available commands</li>
+            <li><strong>Consistency</strong> - Same workflow every time</li>
+            <li><strong>Documentation</strong> - The skill file itself documents the workflow</li>
+            <li><strong>Flexibility</strong> - Still supports natural variations</li>
+          </ul>
+
+          <h3>Decision 3: Data Sources Strategy</h3>
+          <p><strong>Problem:</strong> Multiple data sources with different accessibility levels.</p>
+          <p><strong>Solution:</strong> Hybrid approach:</p>
+          <ul>
+            <li><strong>Automated:</strong> Blog posts, use cases (direct repo access)</li>
+            <li><strong>Interactive:</strong> LinkedIn highlights, Slack updates (ask the user)</li>
+            <li><strong>Future MCP:</strong> Notion, Luma (when configured)</li>
+          </ul>
+          <p><strong>Why This Works:</strong> Ship something useful now, enhance later. Don't block on perfect integration.</p>
+
+          <h3>Decision 4: Email Service</h3>
+          <p><strong>Chosen:</strong> Resend (to be configured)</p>
+          <p><strong>Reasoning:</strong> Simple API, good deliverability, affordable for small volumes.</p>
+        </section>
+
+        <hr />
+
+        <section id="implementation">
+          <h2>Implementation</h2>
+
+          <h3>File 1: PERSONA.md</h3>
+          <p><strong>Purpose:</strong> Give Claude persistent context about the company and its role.</p>
+          <p><strong>Key Sections:</strong></p>
+          <ul>
+            <li>Role Definition (what the Co-CEO can do)</li>
+            <li>Company Overview (what Happy Operators does)</li>
+            <li>Key Systems (tools and access)</li>
+            <li>Decision Authority (boundaries)</li>
+            <li>Communication Style</li>
+          </ul>
+          <p><strong>Design Choice:</strong> Keep it scannable with headers and bullet points.</p>
+
+          <h3>File 2: CLAUDE.md</h3>
+          <p><strong>Purpose:</strong> Project-specific instructions that Claude Code automatically loads.</p>
+          <p><strong>Key Sections:</strong></p>
+          <ul>
+            <li>Project overview</li>
+            <li>Cross-repo workflow (HappyCEO + happyopsv2)</li>
+            <li>Available skills</li>
+            <li>Integration notes</li>
+            <li>Common tasks</li>
+          </ul>
+          <p><strong>Design Choice:</strong> Focus on <em>how to work</em> in this project, not company details.</p>
+
+          <h3>File 3: skills/monthly-email.md</h3>
+          <p><strong>Purpose:</strong> Define the <code>/monthly-email</code> slash command workflow.</p>
+          <p><strong>Key Design Choices:</strong></p>
+          <ol>
+            <li><strong>Frontmatter with description</strong> - Claude Code uses this for the skill list</li>
+            <li><strong>Numbered steps</strong> - Clear sequence for Claude to follow</li>
+            <li><strong>Interactive checkpoints</strong> - Uses <code>AskUserQuestion</code> for info Claude can't access</li>
+            <li><strong>Template reference</strong> - Points to separate template file</li>
+            <li><strong>Review gate</strong> - Always shows draft before sending</li>
+          </ol>
+
+          <h3>File 4: templates/monthly-roundup.md</h3>
+          <p><strong>Purpose:</strong> Consistent email format for monthly roundups.</p>
+          <p><strong>Structure:</strong> Greeting, highlights, content sections, CTA, footer.</p>
+          <p><strong>Design Choice:</strong> Use placeholders like <code>{"{{recent_posts}}"}</code> that get filled during composition.</p>
+        </section>
+
+        <hr />
+
+        <section id="key-lessons">
+          <h2>Key Lessons</h2>
+
+          <h3>Lesson 1: Start with Questions, Not Assumptions</h3>
+          <p>The initial voice message was ambiguous. Instead of guessing, use <code>AskUserQuestion</code> to clarify the tech stack, understand user preferences, and discover system boundaries.</p>
+          <p><strong>Takeaway:</strong> Structured questions save hours of rework.</p>
+
+          <h3>Lesson 2: Explore Before Building</h3>
+          <p>Use the Explore agent to understand the empty HappyCEO directory (fresh start) and the happyopsv2 website structure (Astro + Markdown).</p>
+          <p><strong>Takeaway:</strong> 5 minutes of exploration prevents building the wrong thing.</p>
+
+          <h3>Lesson 3: Hybrid Automation is Realistic</h3>
+          <p>Perfect automation requires API access (often limited or expensive), MCP server setup (time investment), and maintained integrations (ongoing work).</p>
+          <p>Hybrid approach: Automate what's easy (file access), ask for what's hard (LinkedIn, Slack highlights), add MCP integrations incrementally.</p>
+          <p><strong>Takeaway:</strong> Ship 80% automation now, iterate to 95% later.</p>
+
+          <h3>Lesson 4: Separation of Concerns</h3>
+          <ul>
+            <li><strong>PERSONA.md</strong> = Who (company context)</li>
+            <li><strong>CLAUDE.md</strong> = How (project instructions)</li>
+            <li><strong>skills/</strong> = What (specific workflows)</li>
+            <li><strong>templates/</strong> = Format (reusable structures)</li>
+          </ul>
+          <p><strong>Takeaway:</strong> Modular structure makes updates easier and keeps files focused.</p>
+
+          <h3>Lesson 5: Skills > Natural Language for Repeatable Tasks</h3>
+          <p>While Claude understands "send the monthly email," a skill provides consistent execution, self-documentation, discoverability, and versioned workflow.</p>
+          <p><strong>Takeaway:</strong> If you'll do it more than twice, make it a skill.</p>
+
+          <h3>Lesson 6: Plan Mode for Complex Projects</h3>
+          <p>This project used Claude Code's Plan Mode: entered plan mode to think through architecture, explored codebases without making changes, documented decisions, got user approval before implementing.</p>
+          <p><strong>Takeaway:</strong> Plan mode prevents wasted effort on wrong approaches.</p>
+        </section>
+
+        <hr />
+
+        <section id="session-log">
+          <h2>Session Log</h2>
+          <p>Below is the detailed session-by-session log of building HappyCEO. Each entry includes changes made, decisions taken, and notes for future reference.</p>
+
+          <article class="session" id="2026-01-31">
+            <h3><span class="session__date">Jan 31, 2026</span> Initial Implementation</h3>
+            <p><strong>Changes:</strong></p>
+            <ul>
+              <li>Created complete project structure</li>
+              <li>PERSONA.md (4.4KB): Co-CEO role, company overview, systems access</li>
+              <li>CLAUDE.md (3.5KB): Project instructions with changelog policy</li>
+              <li>skills/monthly-email.md (3.6KB): 7-step workflow</li>
+              <li>templates/monthly-roundup.md (4KB): Email template with tone guide</li>
+            </ul>
+            <p><strong>Key Decision:</strong> Changelog policy in CLAUDE.md makes updates mandatory. Added "CRITICAL" section requiring dated entries after every change.</p>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Jan 31</span> Integration Setup</h3>
+            <ul>
+              <li>Created INTEGRATIONS.md guide</li>
+              <li>Updated CLAUDE.md with content schemas</li>
+              <li>Researched Notion MCP setup process</li>
+            </ul>
+            <p><strong>Learnings:</strong> MCP servers configured via <code>claude mcp add</code> command. Initial syntax was wrong - URL is positional, not a flag.</p>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Jan 31</span> Notion MCP Connected</h3>
+            <ul>
+              <li>Notion MCP authentication successful</li>
+              <li>Added Notion Database Reference section to CLAUDE.md</li>
+              <li>Configured Resend API with <code>hey@happyoperators.com</code></li>
+              <li>First test email sent successfully</li>
+            </ul>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Jan 31</span> First Monthly Email Sent</h3>
+            <ul>
+              <li>Subject: "What 50 builders learned about Claude Code in Barcelona"</li>
+              <li>Included: Hapi v2.0.5 announcement, 2 LinkedIn summaries, 3 use cases, 2 Luma events</li>
+              <li>Created HTML email template</li>
+            </ul>
+            <p><strong>Learnings:</strong> WebFetch works for Luma events (handles redirects). LinkedIn images are blocked - need user to provide.</p>
+          </article>
+
+          <article class="session" id="2026-02-01">
+            <h3><span class="session__date">Feb 1, 2026</span> Central Operating System Planning</h3>
+            <p><strong>Strategic shift:</strong> Expanded HappyCEO from email-only to full business operating system.</p>
+            <ul>
+              <li>Discovered 7 Notion databases already exist (CRM, Contracts, Invoices, Meetings, Projects, Proposals, Subscribers)</li>
+              <li>Defined <code>/start-day</code> briefing: meetings, pipeline status, action items, stale leads</li>
+              <li>Defined <code>/end-day</code> wrap-up: log wins, review meetings, draft follow-ups, preview tomorrow</li>
+            </ul>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 1</span> API Integrations Setup</h3>
+            <ul>
+              <li>Slack: Bot "Larry" posting to #ceo-bot</li>
+              <li>Google Calendar: Service account configured</li>
+            </ul>
+            <p><strong>Decision:</strong> Use direct API calls (curl) instead of MCP for Slack - simpler setup, no third-party dependency.</p>
+          </article>
+
+          <article class="session" id="2026-02-02">
+            <h3><span class="session__date">Feb 2, 2026</span> Daily Workflow Skills</h3>
+            <ul>
+              <li>Created <code>/start-day</code> skill with automatic calendar fetch</li>
+              <li>Created <code>/end-day</code> skill for daily wrap-up</li>
+              <li>Google Calendar API fully integrated</li>
+            </ul>
+            <p><strong>Challenge:</strong> Calendar sharing permissions were restricted by org policy. Required modifying Google Admin Console settings.</p>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 2</span> Slash Command Discovery Fix</h3>
+            <p><strong>Problem:</strong> Commands weren't appearing in autocomplete.</p>
+            <p><strong>Solution:</strong> Claude Code expects custom commands in <code>.claude/commands/</code>, not <code>skills/</code>.</p>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 2</span> Notion Data Management</h3>
+            <ul>
+              <li>Created <code>/notion-health</code> skill - data hygiene checks</li>
+              <li>Created <code>/log-task</code> skill - quick task capture</li>
+              <li>Added proactive behaviors: detect task mentions, highlight stale leads</li>
+            </ul>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 2</span> Time Logging Feature</h3>
+            <ul>
+              <li>Created <code>/log-time</code> skill</li>
+              <li>Three ways to log: interactive, inline syntax, natural language detection</li>
+              <li>Integrated with <code>/end-day</code> task completion flow</li>
+            </ul>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 2</span> Content System</h3>
+            <ul>
+              <li>Created weekly content calendar (Mon/Wed/Fri mandatory posting)</li>
+              <li>Created post ideas bank (~50+ ideas)</li>
+              <li>Created <code>/draft-post</code> skill with learning loop</li>
+              <li>Integrated ICP document for messaging alignment</li>
+            </ul>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 2</span> Inbox + Memory System</h3>
+            <ul>
+              <li>Created <code>data/inbox.md</code> - daily scratchpad</li>
+              <li>Created <code>data/memory.md</code> - organized archive</li>
+              <li>Created <code>/note</code> skill for quick capture</li>
+              <li>Integrated with <code>/start-day</code> and <code>/end-day</code></li>
+            </ul>
+          </article>
+
+          <article class="session" id="2026-02-03">
+            <h3><span class="session__date">Feb 3, 2026</span> Website Redesign</h3>
+            <ul>
+              <li>Complete homepage redesign with Anthropic-inspired minimal aesthetic</li>
+              <li>Created FeatureBox, MinimalHero, FooterModern components</li>
+              <li>Added scroll reveal animations</li>
+              <li>Created HowItWorks section with timeline animation</li>
+            </ul>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 3</span> Event & Spec Skills</h3>
+            <ul>
+              <li>Created <code>/event</code> skill for Luma descriptions, LinkedIn posts, emails</li>
+              <li>Created <code>/spec</code> skill for deep interview before building</li>
+            </ul>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 3</span> Projects Page</h3>
+            <ul>
+              <li>Created projects showcase page spec</li>
+              <li>Fetched 16 tech stack logos via Brandfetch API</li>
+              <li>Built 6 new components: ProjectCard, ImageCarousel, TechStackRow, etc.</li>
+            </ul>
+          </article>
+
+          <article class="session" id="2026-02-04">
+            <h3><span class="session__date">Feb 4, 2026</span> Social Queue System</h3>
+            <ul>
+              <li>Created <code>/social-idea</code> - capture rough ideas with images</li>
+              <li>Created <code>/social-queue</code> - view ideas grouped by day</li>
+              <li>Created <code>/social-post</code> - polish and post from queue</li>
+              <li>Images stored centrally with vision-generated descriptions</li>
+            </ul>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 4</span> Gmail Inbox Skill</h3>
+            <ul>
+              <li>Created <code>/inbox</code> skill powered by Gmail MCP</li>
+              <li>Full triage: categorize, archive noise, create tasks, draft replies</li>
+              <li>Integrated with <code>/start-day</code> for inbox summary</li>
+            </ul>
+          </article>
+
+          <article class="session" id="2026-02-05">
+            <h3><span class="session__date">Feb 5, 2026</span> Meeting Skills</h3>
+            <ul>
+              <li>Created <code>/meeting-prep</code> - CRM record, research, discovery questions</li>
+              <li>Created <code>/meeting-wrap</code> - follow-up tasks, email draft, 5-touch cadence</li>
+              <li>Bidirectional linking between CRM and Meeting records</li>
+            </ul>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 5</span> Homepage Lead Magnet</h3>
+            <ul>
+              <li>Fixed ClientLogos dark mode</li>
+              <li>Created LeadMagnetBanner and EventPromoBanner components</li>
+              <li>Created <code>/claude-code-for-agencies</code> landing page</li>
+            </ul>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 5</span> Persistent Memory System</h3>
+            <ul>
+              <li>Created <code>MEMORY.md</code> at project root - always loaded</li>
+              <li>Renamed <code>data/memory.md</code> → <code>data/archive.md</code></li>
+              <li>Added auto-capture after each response (silent)</li>
+              <li>Added daily consolidation during <code>/start-day</code></li>
+            </ul>
+            <p><strong>Three-file system:</strong></p>
+            <ul>
+              <li><code>MEMORY.md</code> - Session continuity (~5KB)</li>
+              <li><code>data/archive.md</code> - Long-term organized notes</li>
+              <li><code>data/inbox.md</code> - Daily scratchpad</li>
+            </ul>
+          </article>
+        </section>
+
+        <hr />
+
+        <section class="final-cta">
+          <h2>Want to Build Your Own?</h2>
+          <p>This build log accompanies our free guide on setting up Claude Code for agencies.</p>
+          <a href="/claude-code-for-agencies" class="button button--primary">Get the Free Guide →</a>
+        </section>
+      </main>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .build-log {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: var(--space-xl) 0 var(--space-3xl);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .hero__back {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    margin-bottom: var(--space-lg);
+    transition: color var(--transition-fast);
+  }
+
+  .hero__back:hover {
+    color: var(--color-accent-primary);
+  }
+
+  .hero__label {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wider);
+    margin-bottom: var(--space-md);
+    padding: var(--space-xs) var(--space-sm);
+    background: rgba(242, 106, 61, 0.1);
+    border-radius: 999px;
+  }
+
+  .hero__title {
+    font-family: var(--font-serif);
+    font-size: var(--text-4xl);
+    font-weight: 500;
+    margin-bottom: var(--space-md);
+    line-height: var(--leading-tight);
+  }
+
+  .hero__subtitle {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-relaxed);
+    margin-bottom: var(--space-lg);
+  }
+
+  .hero__meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .hero__meta-dot {
+    margin: 0 var(--space-sm);
+  }
+
+  /* Content Layout */
+  .content-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--space-3xl);
+    align-items: start;
+  }
+
+  @media (max-width: 1024px) {
+    .content-layout {
+      grid-template-columns: 1fr;
+    }
+    .toc {
+      display: none;
+    }
+  }
+
+  /* TOC */
+  .toc {
+    position: sticky;
+    top: 100px;
+    padding: var(--space-lg);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-border);
+  }
+
+  .toc__title {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+  }
+
+  .toc__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc__list li {
+    margin-bottom: var(--space-sm);
+  }
+
+  .toc__list a {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .toc__list a:hover {
+    color: var(--color-accent-primary);
+  }
+
+  .toc__sublist {
+    list-style: none;
+    padding-left: var(--space-md);
+    margin-top: var(--space-sm);
+  }
+
+  .toc__sublist li {
+    margin-bottom: var(--space-xs);
+  }
+
+  .toc__sublist a {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  .toc__top {
+    display: block;
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-decoration: none;
+  }
+
+  .toc__top:hover {
+    color: var(--color-accent-primary);
+  }
+
+  /* Content */
+  .content {
+    padding-bottom: var(--space-3xl);
+  }
+
+  .content h2 {
+    font-size: var(--text-3xl);
+    margin-top: var(--space-3xl);
+    margin-bottom: var(--space-lg);
+    scroll-margin-top: 100px;
+  }
+
+  .content h2:first-child {
+    margin-top: 0;
+  }
+
+  .content h3 {
+    font-size: var(--text-xl);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
+  }
+
+  .content hr {
+    margin: var(--space-3xl) 0;
+    border: none;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .content blockquote {
+    padding: var(--space-lg);
+    background: var(--color-bg-secondary);
+    border-left: 4px solid var(--color-accent-primary);
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    margin: var(--space-lg) 0;
+    font-style: italic;
+    color: var(--color-text-secondary);
+  }
+
+  .content pre {
+    padding: var(--space-lg);
+    background: #1a1a1a;
+    border-radius: var(--border-radius-md);
+    overflow-x: auto;
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  .content code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background: var(--color-bg-secondary);
+    padding: 0.2em 0.4em;
+    border-radius: var(--border-radius-sm);
+  }
+
+  .content pre code {
+    background: none;
+    padding: 0;
+  }
+
+  .content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-lg) 0;
+  }
+
+  .content th,
+  .content td {
+    padding: var(--space-sm) var(--space-md);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .content th {
+    font-weight: 600;
+    background: var(--color-bg-secondary);
+  }
+
+  /* Session entries */
+  .session {
+    padding: var(--space-lg);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--space-lg);
+    scroll-margin-top: 100px;
+  }
+
+  .session h3 {
+    margin-top: 0;
+    margin-bottom: var(--space-md);
+    font-size: var(--text-lg);
+  }
+
+  .session__date {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent-primary);
+    background: rgba(242, 106, 61, 0.1);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 999px;
+    margin-right: var(--space-sm);
+  }
+
+  .session ul,
+  .session ol {
+    margin: var(--space-md) 0;
+    padding-left: var(--space-lg);
+  }
+
+  .session p {
+    margin: var(--space-sm) 0;
+  }
+
+  .session p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Final CTA */
+  .final-cta {
+    text-align: center;
+    padding: var(--space-3xl);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius-lg);
+    margin-top: var(--space-3xl);
+  }
+
+  .final-cta h2 {
+    margin-top: 0;
+    margin-bottom: var(--space-md);
+  }
+
+  .final-cta p {
+    margin-bottom: var(--space-lg);
+    color: var(--color-text-secondary);
+  }
+</style>
