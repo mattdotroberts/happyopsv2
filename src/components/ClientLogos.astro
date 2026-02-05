@@ -1,0 +1,103 @@
+---
+const clients = [
+  { name: 'Sidekick Studios', domain: 'sidekickstudios.co' },
+  { name: 'Salience', domain: 'salience.co.uk' },
+  { name: 'Funktion Events', domain: 'funktionevents.co.uk' },
+  { name: 'WYK Digital', domain: 'wykdigital.com' },
+  { name: 'IMM', domain: 'imm.com' },
+  { name: 'Boost Pro', domain: 'boostprolt.com' },
+  { name: 'JamesEdition', domain: 'jamesedition.com' },
+];
+
+const brandfetchClientId =
+  import.meta.env.BRANDFETCH_CLIENT_ID || '';
+
+const getLogoUrl = (domain: string) =>
+  brandfetchClientId
+    ? `https://cdn.brandfetch.io/${domain}/theme/dark/logo?c=${brandfetchClientId}`
+    : `https://cdn.brandfetch.io/${domain}/logo`;
+---
+
+<section class="container section client-logos">
+  <div class="client-logos__card reveal">
+    <p class="client-logos__label">Trusted by successful teams at</p>
+    <div class="client-logos__grid">
+      {clients.map((client) => (
+        <div class="client-logos__item" aria-label={client.name}>
+          <img
+            src={getLogoUrl(client.domain)}
+            alt={`${client.name} logo`}
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section {
+    padding: var(--space-4xl) 0;
+  }
+
+  .client-logos__card {
+    border-radius: 24px;
+    padding: clamp(2.5rem, 4vw, 4rem);
+    background:
+      radial-gradient(circle at top, rgba(242, 106, 61, 0.15), transparent 55%),
+      linear-gradient(135deg, #f4f6fb 0%, #eef3f8 100%);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    text-align: center;
+  }
+
+  [data-theme='dark'] .client-logos__card {
+    background:
+      radial-gradient(circle at top, rgba(242, 106, 61, 0.2), transparent 55%),
+      linear-gradient(135deg, #202327 0%, #1a1a1a 100%);
+    border-color: rgba(255, 255, 255, 0.08);
+  }
+
+  .client-logos__label {
+    font-size: var(--text-lg);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2xl);
+    font-weight: 500;
+  }
+
+  .client-logos__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  .client-logos__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+    min-height: 72px;
+  }
+
+  .client-logos__item img {
+    max-width: 140px;
+    max-height: 48px;
+    width: auto;
+    height: auto;
+    filter: grayscale(100%);
+    opacity: 0.8;
+    transition: opacity var(--transition-fast), filter var(--transition-fast);
+  }
+
+  .client-logos__item img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+  }
+
+  @media (max-width: 640px) {
+    .client-logos__grid {
+      grid-template-columns: repeat(2, minmax(120px, 1fr));
+    }
+  }
+</style>
