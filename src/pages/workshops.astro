@@ -203,9 +203,9 @@ const galleryImages = [
     inset: 0;
     background: linear-gradient(
       to top,
-      rgba(0, 0, 0, 0.8) 0%,
-      rgba(0, 0, 0, 0.4) 50%,
-      rgba(0, 0, 0, 0.2) 100%
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.6) 50%,
+      rgba(0, 0, 0, 0.4) 100%
     );
   }
 
@@ -222,7 +222,7 @@ const galleryImages = [
     font-size: var(--text-xs);
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    opacity: 0.7;
+    color: rgba(255, 255, 255, 0.8);
     margin-bottom: var(--space-md);
   }
 
@@ -232,11 +232,13 @@ const galleryImages = [
     font-weight: 400;
     line-height: 1.1;
     margin-bottom: var(--space-md);
+    color: #ffffff;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
   }
 
   .hero__subtitle {
     font-size: var(--text-xl);
-    opacity: 0.8;
+    color: rgba(255, 255, 255, 0.9);
     max-width: 400px;
   }
 
@@ -493,13 +495,16 @@ const galleryImages = [
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-xl);
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   .details__card {
-    padding: var(--space-xl);
+    padding: var(--space-2xl);
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius-md);
+    min-width: 280px;
   }
 
   .details__card-title {
@@ -538,6 +543,19 @@ const galleryImages = [
   }
 
   /* Responsive */
+  @media (max-width: 1100px) {
+    .details__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+
+    .details__card:last-child {
+      grid-column: 1 / -1;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  }
+
   @media (max-width: 1024px) {
     .step {
       grid-template-columns: 1fr;
@@ -572,12 +590,19 @@ const galleryImages = [
       right: auto;
     }
 
-    .details__grid {
-      grid-template-columns: 1fr;
-    }
-
     .gallery__grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .details__grid {
+      grid-template-columns: 1fr;
+      max-width: 450px;
+    }
+
+    .details__card:last-child {
+      max-width: none;
     }
   }
 
