@@ -5,6 +5,7 @@ import FeatureBoxGrid from '../components/FeatureBoxGrid.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 import Testimonial from '../components/Testimonial.astro';
 import CTASection from '../components/CTASection.astro';
+import EventsSection from '../components/EventsSection.astro';
 
 const testimonials = [
   {
@@ -49,6 +50,16 @@ const faqs = [
     answer: "You have a money back guarantee if you are not satisfied with the training."
   }
 ];
+
+const nextEvent = {
+  title: 'Happy Operators Live: Automate Your Community Ops',
+  start: new Date('2026-02-18T17:00:00.000Z'),
+  end: new Date('2026-02-18T18:00:00.000Z'),
+  url: 'https://luma.com/happyoperators',
+  location: 'Online + In person',
+  modeLabel: 'Online + In person',
+  timeZone: 'UTC',
+};
 ---
 
 <BaseLayout
@@ -78,6 +89,11 @@ const faqs = [
   <FeatureBoxGrid />
 
   <HowItWorks />
+
+  <EventsSection
+    nextEvent={nextEvent}
+    calendarUrl="https://luma.com/happyoperators_events"
+  />
 
   <section class="container section">
     <header class="section__header reveal">
