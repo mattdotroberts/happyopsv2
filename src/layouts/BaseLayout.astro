@@ -4,6 +4,7 @@ import '../styles/components.css';
 import '../styles/animations.css';
 import Header from '../components/Header.astro';
 import FooterModern from '../components/FooterModern.astro';
+import LeadMagnetBanner from '../components/LeadMagnetBanner.astro';
 
 interface Props {
   title: string;
@@ -11,6 +12,7 @@ interface Props {
   image?: string;
   type?: 'website' | 'article';
   publishedTime?: Date;
+  hideLeadMagnet?: boolean;
 }
 
 const {
@@ -18,7 +20,8 @@ const {
   description,
   image = '/og-default.png',
   type = 'website',
-  publishedTime
+  publishedTime,
+  hideLeadMagnet = false
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -78,6 +81,7 @@ const fullTitle = `${title} | Happy Operators`;
   </script>
 </head>
 <body>
+  {!hideLeadMagnet && <LeadMagnetBanner />}
   <Header />
 
   <main class="main">

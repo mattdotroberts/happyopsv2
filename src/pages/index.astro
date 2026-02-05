@@ -5,7 +5,7 @@ import FeatureBoxGrid from '../components/FeatureBoxGrid.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 import Testimonial from '../components/Testimonial.astro';
 import CTASection from '../components/CTASection.astro';
-import EventsSection from '../components/EventsSection.astro';
+import EventPromoBanner from '../components/EventPromoBanner.astro';
 import ClientLogos from '../components/ClientLogos.astro';
 
 const testimonials = [
@@ -52,14 +52,13 @@ const faqs = [
   }
 ];
 
+// Next event data - update this when you have an upcoming event
 const nextEvent = {
-  title: 'Introduction to Claude Code | Part II *Invite Only',
-  start: new Date('2026-02-06T10:00:00+01:00'),
-  end: null,
-  url: 'https://luma.com/happyoperators',
+  title: 'Introduction to Claude Code | Part II',
+  date: new Date('2026-02-06T10:00:00+01:00'),
+  url: 'https://lu.ma/happyoperators',
   location: 'Zoom',
-  modeLabel: 'Online',
-  timeZone: 'Europe/Madrid',
+  type: 'Online' as const,
 };
 ---
 
@@ -67,6 +66,8 @@ const nextEvent = {
   title="AI & Automation Workshops"
   description="Help your teams work faster and smarter with AI & automation workshops. Practical, team-specific training that delivers results within hours."
 >
+  <EventPromoBanner event={nextEvent} />
+
   <HeroScrollReveal
     headline="The AI transformation partner you didn't know you needed"
     subtitle="Save 10 hours per week, or you get your money back."
@@ -92,11 +93,6 @@ const nextEvent = {
   <ClientLogos />
 
   <HowItWorks />
-
-  <EventsSection
-    nextEvent={nextEvent}
-    calendarUrl="https://luma.com/happyoperators"
-  />
 
   <section class="container section">
     <header class="section__header reveal">

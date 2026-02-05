@@ -67,9 +67,9 @@ const steps = [
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
 
-      // Start animation well before section enters viewport, complete by the time it's 80% visible
-      const startOffset = sectionTop - viewportHeight * 1.5;
-      const endOffset = sectionTop - viewportHeight * 0.2;
+      // Start animation when section is 50% visible, complete at section midpoint
+      const startOffset = sectionTop - viewportHeight * 0.5;
+      const endOffset = sectionTop + sectionHeight * 0.3;
 
       const progress = Math.max(0, Math.min(1,
         (scrollY - startOffset) / (endOffset - startOffset)
@@ -138,13 +138,13 @@ const steps = [
     font-family: var(--font-serif);
     font-size: clamp(2rem, 4vw + 1rem, 3.5rem);
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: #FAFAFA;
     margin: 0 0 var(--space-md);
   }
 
   .how-it-works__subtitle {
     font-size: var(--text-lg);
-    color: var(--color-text-secondary);
+    color: #A1A1A1;
     max-width: 500px;
     margin: 0 auto;
   }
@@ -162,7 +162,7 @@ const steps = [
     left: 0;
     right: 0;
     height: 4px;
-    background: var(--color-border);
+    background: #3A3A3A;
     border-radius: 2px;
     z-index: 1;
   }
@@ -203,8 +203,8 @@ const steps = [
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: var(--color-bg-secondary);
-    border: 3px solid var(--color-border);
+    background: #1A1A1A;
+    border: 3px solid #3A3A3A;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -223,7 +223,7 @@ const steps = [
     font-family: var(--font-mono);
     font-size: var(--text-lg);
     font-weight: 700;
-    color: var(--color-text-muted);
+    color: #6A6A6A;
     transition: color 0.4s ease;
   }
 
@@ -258,13 +258,13 @@ const steps = [
     font-family: var(--font-serif);
     font-size: var(--text-xl);
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: #FAFAFA;
     margin: 0 0 var(--space-sm);
   }
 
   .step-description {
     font-size: var(--text-sm);
-    color: var(--color-text-secondary);
+    color: #A1A1A1;
     line-height: var(--leading-relaxed);
     margin: 0;
   }

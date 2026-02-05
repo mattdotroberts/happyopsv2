@@ -1,0 +1,70 @@
+---
+// Sticky lead magnet banner - sits above the header
+---
+
+<a href="/claude-code-for-agencies" class="lead-magnet-banner">
+  <div class="container lead-magnet-banner__inner">
+    <span class="lead-magnet-banner__text">
+      <span class="lead-magnet-banner__icon">📘</span>
+      Get the Claude Code for Agencies Guide — <strong>Free</strong>
+    </span>
+    <span class="lead-magnet-banner__arrow">→</span>
+  </div>
+</a>
+
+<style>
+  .lead-magnet-banner {
+    display: block;
+    background: var(--color-accent-primary);
+    color: white;
+    text-decoration: none;
+    padding: var(--space-sm) 0;
+    position: relative;
+    z-index: calc(var(--z-sticky) + 10);
+    transition: background var(--transition-fast);
+  }
+
+  .lead-magnet-banner:hover {
+    background: var(--color-accent-secondary);
+    text-decoration: none;
+    color: white;
+  }
+
+  .lead-magnet-banner__inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 500;
+  }
+
+  .lead-magnet-banner__text {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .lead-magnet-banner__icon {
+    font-size: 1rem;
+  }
+
+  .lead-magnet-banner__text strong {
+    font-weight: 700;
+  }
+
+  .lead-magnet-banner__arrow {
+    transition: transform var(--transition-fast);
+  }
+
+  .lead-magnet-banner:hover .lead-magnet-banner__arrow {
+    transform: translateX(4px);
+  }
+
+  @media (max-width: 640px) {
+    .lead-magnet-banner__inner {
+      font-size: var(--text-xs);
+    }
+  }
+</style>

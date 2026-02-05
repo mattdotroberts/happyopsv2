@@ -19,74 +19,63 @@ const getLogoUrl = (domain: string) =>
 ---
 
 <section class="container section client-logos">
-  <div class="client-logos__card reveal">
-    <p class="client-logos__label">Trusted by successful teams at</p>
-    <div class="client-logos__grid">
-      {clients.map((client) => (
-        <div class="client-logos__item" aria-label={client.name}>
-          <img
-            src={getLogoUrl(client.domain)}
-            alt={`${client.name} logo`}
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-      ))}
-    </div>
+  <p class="client-logos__label reveal">Trusted by successful teams at</p>
+  <div class="client-logos__grid reveal">
+    {clients.map((client) => (
+      <div class="client-logos__item" aria-label={client.name}>
+        <img
+          src={getLogoUrl(client.domain)}
+          alt={`${client.name} logo`}
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+    ))}
   </div>
 </section>
 
 <style>
   .section {
-    padding: var(--space-4xl) 0;
+    padding: var(--space-3xl) 0;
   }
 
-  .client-logos__card {
-    border-radius: 24px;
-    padding: clamp(2rem, 3.5vw, 3rem);
-    background:
-      radial-gradient(circle at top, rgba(242, 106, 61, 0.12), transparent 55%),
-      linear-gradient(135deg, var(--color-surface) 0%, var(--color-bg-secondary) 100%);
-    border: 1px solid var(--color-border);
+  .client-logos {
     text-align: center;
   }
 
-  [data-theme='dark'] .client-logos__card {
-    background:
-      radial-gradient(circle at top, rgba(242, 106, 61, 0.16), transparent 55%),
-      linear-gradient(135deg, var(--color-bg-secondary) 0%, var(--color-bg-primary) 100%);
-    border-color: var(--color-border);
-  }
-
   .client-logos__label {
-    font-size: var(--text-base);
-    color: var(--color-text-primary);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
     margin-bottom: var(--space-xl);
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+    font-family: var(--font-mono);
   }
 
   .client-logos__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-template-columns: repeat(7, 1fr);
     gap: var(--space-lg);
     align-items: center;
+    justify-items: center;
   }
 
   .client-logos__item {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-md);
-    min-height: 56px;
+    padding: var(--space-sm);
+    min-height: 48px;
   }
 
   .client-logos__item img {
-    max-width: 120px;
-    max-height: 36px;
+    max-width: 100px;
+    max-height: 32px;
     width: auto;
     height: auto;
     filter: grayscale(100%);
-    opacity: 0.8;
+    opacity: 0.6;
     transition: opacity var(--transition-fast), filter var(--transition-fast);
   }
 
@@ -95,14 +84,31 @@ const getLogoUrl = (domain: string) =>
     opacity: 1;
   }
 
+  /* Dark mode: invert logos so they're visible on dark background */
   [data-theme='dark'] .client-logos__item img {
-    filter: grayscale(100%) brightness(1.2);
-    opacity: 0.9;
+    filter: grayscale(100%) invert(1) brightness(1.5);
+    opacity: 0.7;
+  }
+
+  [data-theme='dark'] .client-logos__item img:hover {
+    filter: invert(1) brightness(1.5);
+    opacity: 1;
+  }
+
+  @media (max-width: 1024px) {
+    .client-logos__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
   }
 
   @media (max-width: 640px) {
     .client-logos__grid {
-      grid-template-columns: repeat(2, minmax(110px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .client-logos__item img {
+      max-width: 80px;
+      max-height: 28px;
     }
   }
 </style>
