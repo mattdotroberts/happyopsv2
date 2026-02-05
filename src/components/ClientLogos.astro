@@ -43,7 +43,7 @@ const getLogoUrl = (domain: string) =>
 
   .client-logos__card {
     border-radius: 24px;
-    padding: clamp(2.5rem, 4vw, 4rem);
+    padding: clamp(2rem, 3.5vw, 3rem);
     background:
       radial-gradient(circle at top, rgba(242, 106, 61, 0.15), transparent 55%),
       linear-gradient(135deg, #f4f6fb 0%, #eef3f8 100%);
@@ -59,16 +59,16 @@ const getLogoUrl = (domain: string) =>
   }
 
   .client-logos__label {
-    font-size: var(--text-lg);
+    font-size: var(--text-base);
     color: var(--color-text-primary);
-    margin-bottom: var(--space-2xl);
+    margin-bottom: var(--space-xl);
     font-weight: 500;
   }
 
   .client-logos__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: var(--space-xl);
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--space-lg);
     align-items: center;
   }
 
@@ -77,12 +77,12 @@ const getLogoUrl = (domain: string) =>
     align-items: center;
     justify-content: center;
     padding: var(--space-md);
-    min-height: 72px;
+    min-height: 56px;
   }
 
   .client-logos__item img {
-    max-width: 140px;
-    max-height: 48px;
+    max-width: 120px;
+    max-height: 36px;
     width: auto;
     height: auto;
     filter: grayscale(100%);
@@ -97,7 +97,7 @@ const getLogoUrl = (domain: string) =>
 
   @media (max-width: 640px) {
     .client-logos__grid {
-      grid-template-columns: repeat(2, minmax(120px, 1fr));
+      grid-template-columns: repeat(2, minmax(110px, 1fr));
     }
   }
 </style>
