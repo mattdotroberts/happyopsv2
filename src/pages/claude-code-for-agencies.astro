@@ -322,25 +322,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-md);
-  }
-
-  @media (max-width: 800px) {
-    .skills-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 500px) {
-    .skills-grid {
-      grid-template-columns: 1fr;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
   }
 
   .skill-card {
-    padding: var(--space-lg);
+    padding: var(--space-md) var(--space-lg);
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius-md);
@@ -354,7 +342,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: rgba(242, 106, 61, 0.1);
     padding: var(--space-xs) var(--space-sm);
     border-radius: var(--border-radius-sm);
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-xs);
   }
 
   .skill-card__desc {
