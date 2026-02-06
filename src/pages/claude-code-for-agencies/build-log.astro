@@ -20,9 +20,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <div class="hero__meta">
         <span>Started: Jan 31, 2026</span>
         <span class="hero__meta-dot">•</span>
-        <span>Last updated: Feb 5, 2026</span>
+        <span>Last updated: Feb 6, 2026</span>
         <span class="hero__meta-dot">•</span>
-        <span>16 skills built</span>
+        <span>17 skills built</span>
       </div>
     </header>
 
@@ -45,6 +45,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
               <li><a href="#2026-02-03">Feb 3: Website Redesign</a></li>
               <li><a href="#2026-02-04">Feb 4: Social Queue</a></li>
               <li><a href="#2026-02-05">Feb 5: Memory System</a></li>
+              <li><a href="#2026-02-06">Feb 6: Scope Proposal</a></li>
             </ul>
           </li>
         </ul>
@@ -451,6 +452,39 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
               <li><code>data/archive.md</code> - Long-term organized notes</li>
               <li><code>data/inbox.md</code> - Daily scratchpad</li>
             </ul>
+          </article>
+
+          <article class="session" id="2026-02-06">
+            <h3><span class="session__date">Feb 6, 2026</span> Scope Proposal Skill + IMM Proposal</h3>
+            <ul>
+              <li>Created <code>/scope-proposal</code> skill - interactive, staged proposal generation from meeting notes</li>
+              <li>Created reusable proposal template with 6 modular sections</li>
+              <li>Generated first client proposal for IMM (Content Factory Phase 2)</li>
+              <li>Full spec interview process to define the skill requirements</li>
+            </ul>
+            <p><strong>Document structure:</strong></p>
+            <ol>
+              <li>Who We Are - "We built this ourselves" positioning (skippable)</li>
+              <li>Case Studies - Named clients with reported metrics</li>
+              <li>How We Work - Workshop / Project / Retainer models</li>
+              <li>What We'd Do For You - Client-specific scope</li>
+              <li>Investment Summary - Low-high pricing ranges</li>
+              <li>Next Steps - Recommended starting point</li>
+            </ol>
+            <p><strong>Key decisions:</strong> Simple pricing ranges (details on call), client owns API keys, retainer positioned as recommended, interactive staged flow with outline approval before writing.</p>
+          </article>
+
+          <article class="session">
+            <h3><span class="session__date">Feb 6</span> Visual Proposal Slide Deck</h3>
+            <ul>
+              <li>Created cinematic slide deck viewer at <code>/proposal/[slug]</code></li>
+              <li>Password-protected via URL param or manual entry</li>
+              <li>Navigate with arrows, scroll, swipe, or clickable dots</li>
+              <li>7 slide layout types: title, text, case study, features, pricing, comparison, CTA</li>
+              <li>Dark theme with film grain, Crimson Pro + Geist Mono typography</li>
+              <li>Mobile-friendly, reduced motion support</li>
+            </ul>
+            <p><strong>Shareable link format:</strong> <code>happyoperators.com/proposal/[slug]?key=[password]</code></p>
           </article>
         </section>
 
