@@ -498,6 +498,8 @@ const proposalData = proposal ? JSON.stringify(proposal) : 'null';
     function initDeck(total) {
       let current = 0;
       let transitioning = false;
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
       const slides = document.querySelectorAll('.deck__slide');
       const dots = document.querySelectorAll('.deck__dot');
@@ -505,6 +507,7 @@ const proposalData = proposal ? JSON.stringify(proposal) : 'null';
       const counterCurrent = document.getElementById('counter-current');
       const prevBtn = document.getElementById('nav-prev');
       const nextBtn = document.getElementById('nav-next');
+      const deck = document.getElementById('deck');
 
       function goTo(index, direction) {
         if (transitioning || index === current || index < 0 || index >= total) return;
@@ -518,7 +521,8 @@ const proposalData = proposal ? JSON.stringify(proposal) : 'null';
         leaving.classList.add(dir > 0 ? 'deck__slide--exit-left' : 'deck__slide--exit-right');
         leaving.classList.remove('deck__slide--active');
 
-        // Enter new
+        // Enter new — reset scroll position
+        entering.scrollTop = 0;
         entering.classList.add(dir > 0 ? 'deck__slide--enter-right' : 'deck__slide--enter-left');
         entering.classList.add('deck__slide--active');
 
@@ -560,34 +564,89 @@ const proposalData = proposal ? JSON.stringify(proposal) : 'null';
       prevBtn.addEventListener('click', () => goTo(current - 1, -1));
       nextBtn.addEventListener('click', () => goTo(current + 1, 1));
 
-      // Touch / swipe
+      // ─── TOUCH / SWIPE (rewritten for reliable mobile) ───
       let touchStartX = 0;
       let touchStartY = 0;
-      const deck = document.getElementById('deck');
+      let touchDeltaX = 0;
+      let touchDeltaY = 0;
+      let isSwiping = false;
+      let swipeDecided = false;
 
       deck.addEventListener('touchstart', (e) => {
+        if (transitioning) return;
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
+        touchDeltaX = 0;
+        touchDeltaY = 0;
+        isSwiping = false;
+        swipeDecided = false;
       }, { passive: true });
+
+      deck.addEventListener('touchmove', (e) => {
+        if (transitioning) return;
+        touchDeltaX = e.touches[0].clientX - touchStartX;
+        touchDeltaY = e.touches[0].clientY - touchStartY;
+
+        // Decide swipe direction once movement exceeds 10px
+        if (!swipeDecided && (Math.abs(touchDeltaX) > 10 || Math.abs(touchDeltaY) > 10)) {
+          swipeDecided = true;
+          isSwiping = Math.abs(touchDeltaX) > Math.abs(touchDeltaY);
+        }
+
+        // If horizontal swipe, prevent vertical scroll and show drag feedback
+        if (isSwiping) {
+          e.preventDefault();
+          const activeSlide = slides[current];
+          const clamped = Math.max(-120, Math.min(120, touchDeltaX));
+          activeSlide.style.transform = `translateX(${clamped * 0.4}px)`;
+          activeSlide.style.transition = 'none';
+        }
+        // If vertical, let native scroll happen within the slide
+      }, { passive: false });
 
       deck.addEventListener('touchend', (e) => {
-        const dx = e.changedTouches[0].clientX - touchStartX;
-        const dy = e.changedTouches[0].clientY - touchStartY;
-        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
-          if (dx < 0) goTo(current + 1, 1);
+        const activeSlide = slides[current];
+        // Reset inline transform
+        activeSlide.style.transform = '';
+        activeSlide.style.transition = '';
+
+        if (isSwiping && Math.abs(touchDeltaX) > 50) {
+          if (touchDeltaX < 0) goTo(current + 1, 1);
           else goTo(current - 1, -1);
         }
+
+        isSwiping = false;
+        swipeDecided = false;
       }, { passive: true });
 
-      // Scroll (debounced)
-      let scrollTimeout;
-      deck.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        if (scrollTimeout) return;
-        scrollTimeout = setTimeout(() => { scrollTimeout = null; }, 800);
-        if (e.deltaY > 30) goTo(current + 1, 1);
-        else if (e.deltaY < -30) goTo(current - 1, -1);
-      }, { passive: false });
+      // ─── SCROLL / WHEEL (desktop only, or smart on mobile) ───
+      if (!isTouch) {
+        // Desktop: wheel navigates slides, but respects internal scroll
+        let scrollTimeout;
+        deck.addEventListener('wheel', (e) => {
+          const activeSlide = slides[current];
+          const scrollTop = activeSlide.scrollTop;
+          const scrollHeight = activeSlide.scrollHeight;
+          const clientHeight = activeSlide.clientHeight;
+          const isScrollable = scrollHeight > clientHeight + 2;
+
+          // If slide has scrollable content, only navigate at boundaries
+          if (isScrollable) {
+            const atTop = scrollTop <= 1;
+            const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+            if (e.deltaY > 0 && !atBottom) return; // let native scroll
+            if (e.deltaY < 0 && !atTop) return;    // let native scroll
+          }
+
+          e.preventDefault();
+          if (scrollTimeout) return;
+          scrollTimeout = setTimeout(() => { scrollTimeout = null; }, 800);
+          if (e.deltaY > 30) goTo(current + 1, 1);
+          else if (e.deltaY < -30) goTo(current - 1, -1);
+        }, { passive: false });
+      }
+      // On touch devices, no wheel listener — swipe handles navigation,
+      // native vertical scroll handles overflow within slides.
 
       // Initial state
       updateUI();
@@ -914,6 +973,8 @@ const proposalData = proposal ? JSON.stringify(proposal) : 'null';
                   transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
       will-change: opacity, transform;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .deck__slide--active {
@@ -1372,19 +1433,35 @@ const proposalData = proposal ? JSON.stringify(proposal) : 'null';
        ═══════════════════════════════════════════ */
 
     @media (max-width: 768px) {
+      html, body {
+        overflow: hidden;
+        height: 100%;
+        /* Keep hidden on mobile — slides handle their own scroll */
+      }
+
+      .deck__slide {
+        align-items: flex-start;
+      }
+
       .slide__content {
-        padding: 3rem 2rem;
+        padding: 3rem 2rem 5rem;
+        /* Extra bottom padding for scroll clearance above nav */
       }
 
       .deck__dots { display: none; }
-      .deck__nav--prev { left: 0.75rem; }
-      .deck__nav--next { right: 0.75rem; }
+
+      /* Nav buttons — 44x44px minimum tap target per Apple HIG */
       .deck__nav {
-        width: 36px;
-        height: 36px;
+        width: 44px;
+        height: 44px;
         border: none;
-        background: rgba(10, 10, 10, 0.5);
+        background: rgba(10, 10, 10, 0.6);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
       }
+      .deck__nav--prev { left: 0.5rem; }
+      .deck__nav--next { right: 0.5rem; }
+
       .deck__watermark { left: 1rem; bottom: 1rem; font-size: 0.5625rem; }
       .deck__counter { right: 1rem; bottom: 1rem; }
 
@@ -1414,14 +1491,103 @@ const proposalData = proposal ? JSON.stringify(proposal) : 'null';
       .slide__cta-title {
         font-size: clamp(2rem, 8vw, 3rem);
       }
+
+      /* Ensure body text is at least 14px on mobile */
+      .slide__body { font-size: 0.9375rem; line-height: 1.7; }
+      .slide__bullet { font-size: 0.875rem; }
     }
 
     @media (max-width: 480px) {
-      .slide__content { padding: 2.5rem 1.5rem; }
+      .slide__content { padding: 2.5rem 1.25rem 4.5rem; }
       .slide__body { font-size: 0.875rem; }
       .slide__bullet { font-size: 0.8125rem; }
-      .slide__table-cell { font-size: 0.75rem; padding: 0.625rem 0; }
+      .slide__table-cell { font-size: 0.8125rem; padding: 0.625rem 0; }
       .slide__table-cell--value { min-width: 70px; }
+      .slide__title { font-size: clamp(1.5rem, 6vw, 2rem); }
+      .slide__metric-value { font-size: clamp(2.5rem, 12vw, 4rem); }
+    }
+
+    /* ─── Phone landscape ─── */
+    @media (orientation: landscape) and (max-height: 500px) {
+      .deck__slide {
+        align-items: flex-start;
+      }
+
+      .slide__content {
+        padding: 1.5rem 3rem 2rem;
+        max-width: 900px;
+      }
+
+      .slide__content--center {
+        padding-top: 1.5rem;
+      }
+
+      /* Shrink typography ~30% for landscape */
+      .slide__hero-title { font-size: clamp(1.5rem, 5vw, 2.5rem); margin-bottom: 0.75rem; }
+      .slide__hero-sub { font-size: 0.75rem; }
+      .slide__hero-line { margin-top: 1rem; }
+      .slide__title { font-size: clamp(1.25rem, 3.5vw, 1.75rem); margin-bottom: 0.75rem; }
+      .slide__cta-title { font-size: clamp(1.5rem, 5vw, 2.5rem); margin-bottom: 0.75rem; }
+      .slide__body { font-size: 0.8125rem; line-height: 1.6; margin-bottom: 0.75rem; }
+      .slide__label { margin-bottom: 0.75rem; font-size: 0.625rem; }
+      .slide__note { margin-top: 1rem; padding-top: 0.75rem; }
+      .slide__bullet { padding: 0.375rem 0; font-size: 0.8125rem; }
+      .slide__metric-value { font-size: clamp(2rem, 6vw, 3rem); }
+      .slide__metric-label { font-size: 0.625rem; }
+      .slide__quote { margin-top: 1rem; padding-top: 1rem; }
+      .slide__quote-text { font-size: 1rem; }
+
+      /* Columns side-by-side with horizontal scroll */
+      .slide__columns {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 0.75rem;
+        margin-top: 1rem;
+        padding-bottom: 0.5rem;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .slide__column {
+        flex: 0 0 70%;
+        scroll-snap-align: start;
+        padding: 1.25rem;
+      }
+
+      /* Pricing table compact */
+      .slide__table-cell { padding: 0.5rem 0; font-size: 0.75rem; }
+      .slide__subtitle--badge { margin-top: -0.25rem; margin-bottom: 0.75rem; }
+
+      /* Move dots to bottom-center horizontal */
+      .deck__dots {
+        display: flex;
+        flex-direction: row;
+        position: fixed;
+        right: auto;
+        top: auto;
+        bottom: 0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        gap: 6px;
+      }
+
+      .deck__dot { width: 6px; height: 6px; }
+
+      /* Nav buttons */
+      .deck__nav {
+        width: 36px;
+        height: 36px;
+        top: 50%;
+      }
+      .deck__nav--prev { left: 0.5rem; }
+      .deck__nav--next { right: 0.5rem; }
+
+      .deck__watermark { bottom: 0.5rem; left: 0.75rem; font-size: 0.5rem; }
+      .deck__counter { bottom: 0.5rem; right: 0.75rem; font-size: 0.5625rem; }
+
+      /* CTA actions more compact */
+      .slide__cta-actions { margin-top: 1rem; gap: 0.5rem; }
+      .slide__cta-btn { padding: 0.75rem 2rem; font-size: 0.75rem; }
     }
 
     /* ─── Reduced motion ─── */
