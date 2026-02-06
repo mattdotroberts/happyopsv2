@@ -31,6 +31,7 @@ const proposals: Record<string, { password: string; data: any }> = {
           label: 'RESULTS',
           headline: 'JamesEdition',
           subtitle: 'Luxury Marketplace',
+          logo: { src: '/images/case-study/jamesedition-logo.png', alt: 'JamesEdition logo' },
           metric: { value: '250+', label: 'hours saved annually' },
           body: '4-hour workshop with leadership, followed by 7 hours of hands-on troubleshooting. Automated 6 internal systems including email classification, client feature requests, and a knowledge bot.',
           quote: { text: 'Those who run it, fix it best.', author: 'Eric Finnas', role: 'CEO, JamesEdition' },
@@ -41,6 +42,7 @@ const proposals: Record<string, { password: string; data: any }> = {
           label: 'RESULTS',
           headline: 'IMM \u2014 Phase 1',
           subtitle: 'Content Factory',
+          logo: { src: '/images/projects/logos/imm.svg', alt: 'IMM logo' },
           metric: { value: '20+', label: 'hours/week saved' },
           body: 'Built an AI-powered Content Factory that maps client context into advertising campaigns across Meta, PMAX, and video formats. Produces multiple ad variations in minutes instead of hours.',
           quote: { text: 'The system completely changed how we approach content creation for our clients.', author: 'Mariah Kamei', role: 'Director of Strategy, IMM' },
@@ -54,14 +56,16 @@ const proposals: Record<string, { password: string; data: any }> = {
           label: 'RESULTS',
           headline: 'Sidekick Studios',
           subtitle: 'Creative Agency',
+          logo: { src: '/images/projects/logos/sidekickstudios-co.svg', alt: 'Sidekick Studios logo' },
           metric: { value: '5\u00d7', label: 'faster context-switching' },
           body: 'Built a tone of voice tool that manages client brand voice across a 5-person creative team. Combined with AI training and custom GPTs to reduce context-switching from hours to minutes.',
         },
         {
           type: 'case-study',
           label: 'RESULTS',
-          headline: 'Funktion Events',
+          headline: 'Funktion Event',
           subtitle: 'Events Agency',
+          logo: { src: '/images/projects/logos/funktionevents-co-uk.svg', alt: 'Funktion Event logo' },
           metric: { value: '2\u00d7', label: 'team capacity' },
           body: 'SOP-based custom GPTs that let any team member perform tasks outside their role. Sales independently handles marketing deliverables when the team is at capacity.',
         },
@@ -70,6 +74,7 @@ const proposals: Record<string, { password: string; data: any }> = {
           label: 'RESULTS',
           headline: 'WYK Digital',
           subtitle: 'Digital Consultancy',
+          logo: { src: '/images/projects/logos/wykdigital-com.png', alt: 'WYK Digital logo' },
           metric: { value: '3\u00d7', label: 'faster analysis' },
           body: 'Built a ChatGPT-to-Zapier agent for individual analysis workflows and a LinkedIn scraper to track participant history and progression. Result: 3\u00d7 faster analysis, 2\u00d7 more data captured.',
         },
@@ -78,6 +83,7 @@ const proposals: Record<string, { password: string; data: any }> = {
           label: 'RESULTS',
           headline: 'Salience',
           subtitle: 'B2B Marketing Agency',
+          logo: { src: '/images/projects/logos/salience-co-uk.png', alt: 'Salience logo' },
           metric: { value: '260+', label: 'hours saved per year' },
           body: 'Team members built their own AI agents: a Reddit Mentions Agent surfacing relevant conversations for B2B clients (104 hrs/yr saved), and an SEO JSON automation generating metadata for content pipelines (156 hrs/yr saved).',
         },
@@ -443,6 +449,7 @@ const proposalData = proposal ? JSON.stringify(proposal) : 'null';
             <section class="${cls} ${vis}" data-index="${index}">
               <div class="slide__content">
                 ${slide.label ? `<span class="slide__label">[${slide.label}]</span>` : ''}
+                ${slide.logo ? `<img class="slide__cs-logo" src="${slide.logo.src}" alt="${slide.logo.alt}" loading="lazy" />` : ''}
                 <div class="slide__cs-header">
                   <div class="slide__cs-info">
                     <h2 class="slide__title">${slide.headline}</h2>
@@ -1224,6 +1231,15 @@ const proposalData = proposal ? JSON.stringify(proposal) : 'null';
 
     /* ─── CASE STUDY SLIDE ─── */
 
+    .slide__cs-logo {
+      max-width: 120px;
+      max-height: 40px;
+      object-fit: contain;
+      filter: grayscale(100%) brightness(1.8);
+      opacity: 0.7;
+      margin-bottom: 1.5rem;
+    }
+
     .slide__cs-header {
       display: flex;
       align-items: flex-start;
@@ -1708,8 +1724,9 @@ const proposalData = proposal ? JSON.stringify(proposal) : 'null';
       .slide__body { font-size: 0.9375rem; line-height: 1.7; }
       .slide__bullet { font-size: 0.875rem; }
 
-      /* Avatar smaller on mobile */
+      /* Avatar and logo smaller on mobile */
       .slide__avatar { width: 44px; height: 44px; }
+      .slide__cs-logo { max-width: 100px; max-height: 32px; margin-bottom: 1rem; }
 
       /* Screenshots stack */
       .slide__screenshots { flex-direction: column; }
@@ -1815,6 +1832,7 @@ const proposalData = proposal ? JSON.stringify(proposal) : 'null';
 
       /* Avatar, screenshots, logos compact in landscape */
       .slide__avatar { width: 40px; height: 40px; }
+      .slide__cs-logo { max-width: 80px; max-height: 28px; margin-bottom: 0.75rem; }
       .slide__screenshots { margin: 0.75rem 0; }
       .slide__screenshot { max-height: 120px; }
       .slide__logo-grid { gap: 1.5rem; margin-top: 1.5rem; }
